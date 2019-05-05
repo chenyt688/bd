@@ -8,7 +8,7 @@
       </div>
       <p v-for="item in diaryList" :key="item.diaryId">
         <br><br>
-        <i class="col-sm-2">{{item.userAccount}}</i><i class="col-sm-2">{{item.diaryTime}}</i><i class="col-sm-2">{{item.weather}}</i><i class="col-sm-4">{{item.diaryTopic}}</i><i class="col-sm-2"><a @click="">查看日记内容</a></i>
+        <i class="col-sm-2">{{item.userAccount}}</i><i class="col-sm-2">{{item.diaryTime}}</i><i class="col-sm-2">{{item.weather}}</i><i class="col-sm-4">{{item.diaryTopic}}</i><i class="col-sm-2"><a @click="lookDiary(item.diaryContent)">查看日记内容</a></i>
       </p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
@@ -93,7 +93,7 @@
           this.getPublishDiary();
 
         },
-        getDiaryInfo(){
+        getDiaryInfo(val){
 
         }
       }
