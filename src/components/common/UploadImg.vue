@@ -1,39 +1,63 @@
 <template>
     <div>
-      <el-upload
-        action="https://jsonplaceholder.typicode.com/posts/"
-        list-type="picture-card"
-        :on-preview="handlePictureCardPreview"
-        :on-remove="handleRemove">
-        <i class="el-icon-plus"></i>
+      <el-upload :data="imgType"
+        class="upload-demo"
+        action="/api/uploadImg"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :file-list="fileList"
+        :before-upload="msgTip"
+        :auto-upload="false"
+        list-type="picture">
+        <el-button size="small" type="primary" title="只能上传jpg/png文件，且不超过500kb">图片上传</el-button>
       </el-upload>
-      <el-dialog :visible.sync="dialogVisible">
-        <img width="100%" :src="dialogImageUrl" alt="">
-      </el-dialog>
     </div>
 </template>
 
 <script>
     export default {
       name: "UploadImg",
+      props:["imgType"],
       data() {
         return {
-          dialogImageUrl: '',
-          dialogVisible: false
+          fileList: []
         };
+
       },
       methods: {
         handleRemove(file, fileList) {
-          console.log(file, fileList);
+          alert(this.imgType);
         },
-        handlePictureCardPreview(file) {
-          this.dialogImageUrl = file.url;
-          this.dialogVisible = true;
+        handlePreview(file,fileList) {
+          file.name = '学籍.jpg'
+          alert(file.name);
+        },
+        msgTip(file,fileList) {
+          switch (this.imgType){
+            case "个人照片":
+              break;
+            case "":
+              break;
+            case "":
+              break;
+            case "":
+              break;
+            case "":
+              break;
+            case "":
+              break;
+            case "":
+              break;
+          }
+          alert(file.name);
+          this.$message({type: 'warning', showClose: true, message: '最多上传一张图片!'});
         }
       }
     }
 </script>
 
 <style scoped>
-
+  input[type="file"] {
+    display: none;
+  }
 </style>

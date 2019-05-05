@@ -90,6 +90,7 @@
           }
         }
       },
+
       methods:{
         editForm:function () {
           this.flag=false;
@@ -146,24 +147,12 @@
 
           this.$axios.post("/api/addActivityInfo",data).then((response) =>{
             if(response.data =="S"){
-              this.$message({
-                type: 'success',
-                showClose: true,
-                message: '保存成功!'
-              });
+              this.$message({type: 'success', showClose: true, message: '保存成功!'});
             }else {
-              this.$message({
-                type: 'success',
-                showClose: true,
-                message: '用户未登陆!  保存失败!'
-              });
+              this.$message({type: 'success', showClose: true, message: '用户未登陆!  保存失败!'});
             }
           }).catch((error) =>{
-            this.$message({
-              type: 'success',
-              showClose: true,
-              message: '操作失败!'
-            });
+            this.$message({type: 'success', showClose: true, message: '操作失败!'});
           })
 
         }

@@ -26,7 +26,7 @@
           <i class="el-icon-edit" title="编辑" style="position: relative;left: 10px" @click="editActivityInfo(scope.$index, scope.row)"></i>
           <i class="el-icon-delete" title="删除" style="position:relative;left: 20px" @click="confirmDeleteActivityInfo(scope.$index, scope.row)"></i>
           <i class="el-icon-s-custom" title="查看用户信息" style="position: relative;left: 30px" @click="queryUserInfo(scope.$index, scope.row,dialogVisible = true)"></i>
-          <i class="el-icon-document" title="查看活动信息" style="position:relative;left: 40px" @click="queryActivityInfo(scope.$index, scope.row,dialogVisibleActiVity=true)"></i>
+          <i class="el-icon-document" title="查看活动信息" style="position:relative;left: 40px" @click="toActivityInfo(scope.row,dialogVisibleLook =true)"></i>
           <i class="el-icon-view" title="审核活动信息"  v-show="checkIcon" style="position:relative;left: 50px;"  @click="checkActivityInfo(scope.row,0,dialogVisibleCheck = true)"></i>
           <i class="el-icon-finished" title="发布"  v-show="publishIcon" style="position:relative;left: 60px;" @click="publishActivityInfo(scope.row)"></i>
 
@@ -76,7 +76,15 @@
         </span>
       </el-dialog>
     </div>
-
+    <!--活动报名-->
+    <!--<div>
+      <el-dialog title="志愿者活动报名" center="true" :visible.sync="dialogVisibleLook" width="100%" :before-close="handleClose">
+        <look-activity-info></look-activity-info>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogVisibleLook = false">关 闭</el-button>
+        </span>
+      </el-dialog>
+    </div>-->
   </div>
 
 </template>
@@ -86,9 +94,10 @@
   import ApplyActivity from "./ApplyActivity";
   import LookUserInfo from "./LookUserInfo";
   import EditActivity from "./EditActivity";
+  import LookActivityInfo from "./LookActivityInfo";
     export default {
       name: "ActivityTable",
-      components: {EditActivity, LookUserInfo, ApplyActivity},
+      components: {LookActivityInfo, EditActivity, LookUserInfo, ApplyActivity},
       data(){
         return{
           saveTempActivity:'',
@@ -97,6 +106,7 @@
           inputCondition:'',
           dialogVisible: false,
           dialogVisibleActiVityToEdit:false,
+          dialogVisibleLook:false,
           dialogVisibleCheck:false,
           hiddenFlag:'hidden',
           page:'1',                  //页数
@@ -163,7 +173,6 @@
 
       },
       methods:{
-
         //更新状态
         updateActivityState:function(activityId,reviewStatus){
           var readyData=Qs.stringify({
@@ -375,10 +384,22 @@
           this.$axios.post('/api/queryActivityInfoByActivityId?activityId='+activityId).then((response) =>{
             var _this = this;
             _this.activityFormData = response.data;
-            //alert(_this.activityFormData.activityAddress)
           }).catch((error) =>{
             this.$message({type: 'success', showClose: true, message: '请求数据失败!'});
           })
+        },
+
+        //跳转到活动信息页面
+        toActivityInfo:function(rowData){
+          var activityId = rowData.activityId;
+          this.$router.push({
+            path: '/lookActivityInfo',
+            query: {
+              activityId:activityId
+
+            }
+          })
+
         },
 
         //条件查询活动信息
