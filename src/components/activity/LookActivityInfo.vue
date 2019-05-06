@@ -77,6 +77,7 @@
         getParams() {
           // 取到路由带过来的参数
           var activityId = this.$route.query.activityId;
+
           //请求活动信息
           this.$axios.post('/api/queryActivityInfoByActivityId?activityId='+activityId).then((response) =>{
             var _this = this;

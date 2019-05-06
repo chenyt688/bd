@@ -1,6 +1,6 @@
 <template>
     <div>
-      <el-upload :data="imgType"
+      <el-upload :data="imgType" ref='upload'
         class="upload-demo" name="picture"
         action="/api/uploadImg"
         :on-preview="handlePreview"
@@ -9,7 +9,7 @@
         :before-upload="msgTip"
         :auto-upload="true"
         list-type="picture">
-        <el-button size="small" type="primary" title="只能上传jpg/png文件，且不超过500kb">图片上传</el-button>
+        <el-button size="small" type="primary" title="只能上传jpg/png文件，且不超过500kb">图片上传({{this.imgType+".jpg/png"}})</el-button>
       </el-upload>
     </div>
 </template>
@@ -33,24 +33,14 @@
           alert(file.name);
         },
         msgTip(file,fileList) {
-          switch (this.imgType){
-
-            case "个人照片":
-              break;
-            case "个人申请书":
-              break;
-            case "个人户口页":
-              break;
-            case "村级证明":
-              break;
-            case "乡级证明":
-              break;
-            case "学籍表":
-              break;
-            case "二维码":
-              break;
+          var fileName = file.name.substring(0,file.name.indexOf("."));
+          if(fileName != this.imgType){
+            this.$message({type: 'warning', showClose: true, message: '图片命名不规则！请重新上传' });
+            this.$refs.upload.clearFiles();
+          }else {
+            this.$message({type: 'warning', showClose: true, message: '最多上传一张图片!'});
           }
-          this.$message({type: 'warning', showClose: true, message: '最多上传一张图片!'});
+
         }
       }
     }
