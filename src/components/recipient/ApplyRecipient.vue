@@ -70,8 +70,8 @@
         return{
           msg:'申请资助',
           imgType1:'个人照片',
-          imgType2:'个人申请',
-          imgType3:'个人户口',
+          imgType2:'个人申请书',
+          imgType3:'个人户口页',
           imgType4:'村级证明',
           imgType5:'乡级证明',
           imgType6:'学籍表',

@@ -20,7 +20,7 @@
             </li>
             <input type="hidden" value="1" id="loginId"></input>
             <li><a  title="登陆/注册" @click="login" ><i class="icon icon-User"></i></a></li>
-            <li><a  title="搜索" @click="search"><i class="icon icon-Search"></i></a></li>
+            <!--<li><a  title="搜索" @click="search"><i class="icon icon-Search"></i></a></li>-->
             <li><a  title="退出" @click="exitLogin"><i class="icon icon-Exit"></i></a></li>
             <li><a  title="">欢迎您:{{state}}</a></li>
           </ul>
@@ -48,6 +48,7 @@
         data(){
             return{
               state:'游客',
+              accout:'',
               roleMenuInfo:[{
                 roleId:'',
                 roleName:'',
@@ -82,7 +83,8 @@
             this.state = this.$store.state.userName + roleName;
           }else {
             if(this.$store.state.userAccount != '' && this.$store.state.userAccount != null){
-              this.state = this.$store.state.userAccount + roleName;
+              this.accout=this.$store.state.userAccount.substr(0,3)+"***"+this.$store.state.userAccount.substr(18,20)
+              this.state = this.accout + roleName;
             }
 
           }

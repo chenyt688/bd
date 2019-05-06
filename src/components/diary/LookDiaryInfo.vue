@@ -8,7 +8,11 @@
       </div>
       <p v-for="item in diaryList" :key="item.diaryId">
         <br><br>
-        <i class="col-sm-2">{{item.userAccount}}</i><i class="col-sm-2">{{item.diaryTime}}</i><i class="col-sm-2">{{item.weather}}</i><i class="col-sm-4">{{item.diaryTopic}}</i><i class="col-sm-2"><a @click="lookDiary(item.diaryContent)">查看日记内容</a></i>
+        <i class="col-sm-2">{{item.userAccount}}</i>
+        <i class="col-sm-2">{{item.diaryTime}}</i>
+        <i class="col-sm-2">{{item.weather}}</i>
+        <i class="col-sm-4">{{item.diaryTopic}}</i>
+        <i class="col-sm-2"><a @click="lookDiary(item.diaryContent,dialogVisibleDiary=true)">查看日记内容</a></i>
       </p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
@@ -23,8 +27,24 @@
                        :total="allNum">
         </el-pagination>
       </div>
-    </template><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </template>
+    <div>
+      <div>
+        <el-dialog title="日记正文" center="true" :visible.sync="dialogVisibleDiary" width="60%" :before-close="close">
+          <br>
+            <el-input v-model="diaryContentInfo" type="textarea" placeholder="1000字符以内"  clearable :rows="10" style="width: 100%"></el-input>
+          <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="close">关 闭</el-button>
+        </span>
+        </el-dialog>
+      </div>
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
   </div>
+
+
+  <!--查看日志内容-->
+
 </template>
 
 <script>
@@ -39,6 +59,8 @@
           page:'1',                  //页数
           pageSize:'10',
           allNum:'',
+          dialogVisibleDiary:false,
+          diaryContentInfo:' ',
           diaryList:[{
             diaryId:'',
             userId:'',
@@ -60,6 +82,9 @@
         this.getPublishDiaryNum();
       },
       methods:{
+        close:function(){
+          this.dialogVisibleDiary = false;
+        },
         //获取发布的日记
         getPublishDiary(){
           var readyData=Qs.stringify({
@@ -93,8 +118,8 @@
           this.getPublishDiary();
 
         },
-        getDiaryInfo(val){
-
+        lookDiary(val){
+          this.diaryContentInfo = val;
         }
       }
     }

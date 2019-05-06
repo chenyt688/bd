@@ -1,6 +1,8 @@
 <template>
   <div>
     <img-com></img-com>
+
+
     <div>
       <br><br>
       <section id="about" class="section about">
@@ -16,10 +18,8 @@
             </div>
 
             <div class="col-sm-6">
-
               <h3 class="section-title multiple-title">资助信息&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<a @click="queryMoreRe">查看更多</a>]</h3>
-
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<a>查看更多</a>]</h3>
               <p></p>
 
 
@@ -81,14 +81,13 @@
             path: '/lookActivityInfo',
             query: {
               activityId:activityId
-
             }
           })
-          location.reload();
+          //location.reload();
         },
         queryMoreActivity(){
           this.$router.push('/manageActivityPage');
-          location.reload();
+          //location.reload();
         }
       }
     }
