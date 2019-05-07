@@ -18,9 +18,13 @@
             </div>
 
             <div class="col-sm-6">
-              <h3 class="section-title multiple-title">资助信息&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <h3 class="section-title multiple-title">财务监督&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<a>查看更多</a>]</h3>
-              <p></p>
+              <br>
+              <p v-for="item in activityList" :key="item.activityId">
+                <a @click="getActivityById(item)">[{{item.provinceName}}]【{{item.activityEndTime}}】 {{item.topic}} （{{item.demandNum}}）</a>
+                <br><br>
+              </p>
 
 
             </div><!-- /.col-sm-6 -->
@@ -83,11 +87,9 @@
               activityId:activityId
             }
           })
-          //location.reload();
         },
         queryMoreActivity(){
           this.$router.push('/manageActivityPage');
-          //location.reload();
         }
       }
     }

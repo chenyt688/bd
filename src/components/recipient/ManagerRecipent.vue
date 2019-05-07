@@ -15,7 +15,7 @@
       components: {RecipientTable, PageTitle},
       data(){
         return{
-          msg:'申请资助信息',
+          msg:'受助人信息',
         }
       }
     }

@@ -14,6 +14,8 @@ import lookDiaryPage from '@/pages/lookDiaryPage'
 import manageParticipantPage from '@/pages/manageParticipantPage'
 import manageRecipentPage from '@/pages/manageRecipentPage'
 import LookRecipientInfo from '@/components/recipient/LookRecipientInfo'
+import manageFinancePage from '@/pages/manageFinancePage'
+
 
 
 Vue.use(Router)
@@ -33,6 +35,7 @@ export default new Router({
     {path: '/manageParticipantPage', name: 'manageParticipantPage', component: manageParticipantPage},
     {path: '/manageRecipentPage', name: 'manageRecipentPage', component: manageRecipentPage},
     {path: '/LookRecipientInfo', name: 'LookRecipientInfo', component: LookRecipientInfo},
+    {path: '/manageFinancePage', name: 'manageFinancePage', component: manageFinancePage},
 
 
   ],

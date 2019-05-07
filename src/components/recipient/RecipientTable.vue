@@ -11,19 +11,16 @@
              {{scope.$index+1}}
         </template>
       </el-table-column>
-      <el-table-column prop="userName" label="姓名" width="150px" :formatter="roleStatus"></el-table-column>
-      <el-table-column prop="userIdCard" label="身份证号" width="250px" :formatter="getIdCard"></el-table-column>
-      <el-table-column prop="userPhone" label="电话" width="250px" :formatter="getPhone"></el-table-column>
-      <el-table-column prop="userImgUrl" label="个人照片" width="450" > <!--插入图片链接的代码-->
-        <template slot-scope="scope">
-          <img src="E://BD/UserInfo/用户cyt/个人照片.jpg" alt="" style="width: 50px;height: 50px">
-        </template></el-table-column>
+      <el-table-column prop="userName" label="姓名" width="180px" :formatter="roleStatus"></el-table-column>
+      <el-table-column prop="userIdCard" label="身份证号" width="300px" :formatter="getIdCard"></el-table-column>
+      <el-table-column prop="userPhone" label="电话" width="240px" :formatter="getPhone"></el-table-column>
+      <el-table-column prop="userImgUrl" label="个人照片" width="450" > </el-table-column>
       <el-table-column prop="reviewStatus" label="报名状态" width="150px" :formatter="getApplyState"></el-table-column>
-      <el-table-column  label="操作" width="200px" fixed="right">
+      <el-table-column  label="操作" width="150px" fixed="right">
         <template slot-scope="scope">
-          <i class="el-icon-delete" title="删除" @click="deleterecipient(scope.row)"></i>
+          <i class="el-icon-delete" v-show="deleteFlag" title="删除" @click="deleterecipient(scope.row)"></i>
           <i class="el-icon-document" title="查看申请材料" @click="lookRecipientInfo(scope.row)" style="position:relative;left: 30px;"></i>
-          <i class="el-icon-view" title="审核材料信息" @click="dialogVisibleCheck =true" style="position:relative;left: 60px;" ></i>
+          <i class="el-icon-view" v-show="checkFlag" title="审核材料信息" @click="checkInfo(scope.row,dialogVisibleCheck =true)" style="position:relative;left: 60px;" ></i>
         </template>
       </el-table-column>
     </el-table>
@@ -64,7 +61,10 @@
             pageSize:'10',
             allNum:'',
             inputCondition:'',
+            tempRecipientId:'',
             dialogVisibleCheck:false,
+            deleteFlag:false,
+            checkFlag:false,
             recipientTableData:{
               recipientId:'',
               userId:'',
@@ -92,6 +92,10 @@
         if(this.$store.state.userId == null || this.$store.state.userId ==''){
           this.recipientTableData ='';
           this.allNum = 0;
+        }
+        if(this.$store.state.roleId == '2'){
+          this.deleteFlag = true;
+          this.checkFlag = true;
         }
           this.getRecipientInfo();
           this.getNum();
@@ -205,27 +209,34 @@
           })
         },
         //更新状态
-        checkInfo(val){
-          let reviewStatus = 1;
-          switch (val){
-            case '审核未过':
-              reviewStatus = 3;
-              break;
-            case '已审核':
-              reviewStatus = 2;
-              break;
+        checkInfo(rowData){
+          if(rowData.recipientId != null){
 
+            this.tempRecipientId = rowData.recipientId;
+          }else {
+
+            let reviewStatus = 1;
+            switch (rowData){
+              case '审核未过':
+                reviewStatus = 3;
+                break;
+              case '已审核':
+                reviewStatus = 2;
+                break;
+            }
+            let readyData=Qs.stringify({
+              recipientId:this.tempRecipientId,
+              reviewStatus:reviewStatus,
+            });
+            this.$axios.put("/api/updateRecipientInfoByRecipientId?"+readyData).then(() =>{
+              this.getRecipientInfo();
+              this.$message({type: 'success', showClose: true, message: '状态更新成功!'});
+            }).catch(() =>{
+              //请求失败返回的数据
+              this.$message({type: 'success', showClose: true, message: '请求数据失败!'});
+            });
           }
-          let readyData=Qs.stringify({
-            recipientId:this.recipientTableData.recipientId,
-            reviewStatus:reviewStatus,
-          });
-          this.$axios.put("/api/updateRecipientInfoByRecipientId?"+readyData).then(() =>{
-            this.$message({type: 'success', showClose: true, message: '状态更新成功!'});
-          }).catch(() =>{
-            //请求失败返回的数据
-            this.$message({type: 'success', showClose: true, message: '请求数据失败!'});
-          });
+
         }
 
       }
