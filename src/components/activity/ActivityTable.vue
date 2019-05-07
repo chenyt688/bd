@@ -282,10 +282,12 @@
               this.$message({type: 'success', showClose: true, message: '删除成功!'});
               this.getActivityCount();
               this.getAllActivityInfo();
+            }else {
+              this.$message({type: 'success', showClose: true, message: '无权限,删除失败!'});
             }
+
           }).catch(() =>{
-            this.$message({type: 'success', showClose: true, message: '删除失败!'
-            });
+            this.$message({type: 'success', showClose: true, message: '删除失败!'});
           })
         },
         //删除活动信息   若一般用户只能删除未审核状态的活动，管理员若删除已发布的活动进行逻辑删除
@@ -299,7 +301,7 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            if(roldId == 2){      //管理员可以直接删除
+            if(roldId == '2'){      //管理员可以直接删除
               this.deleteActivity(rowData);
             }else{                //一般用户只能删除自己申请的未审核的活动
               if(activityState == 0 && userIdSaved == userIdSelect){  //待审核状态可以删除

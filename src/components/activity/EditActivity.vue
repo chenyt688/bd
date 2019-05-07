@@ -90,6 +90,9 @@
       },
       submitForm:function () {
         let time = this.activityFormData.time;    //开始时间和截至时间数组
+        if(time == null){
+          this.$message({type: 'success', showClose: true, message: '请选择时间!'});
+        }
         let data = {
           activityId:this.activityFormData.activityId,
           userId:this.activityFormData.userId,
@@ -113,15 +116,12 @@
 
         this.$axios.post("/api/editActivityInfoById",data).then((response) =>{
           if(response.data =="S"){
-            this.$message({type: 'success', showClose: true, message: '修改成功!'
-            });
+            this.$message({type: 'success', showClose: true, message: '修改成功!'});
           }else {
-            this.$message({type: 'success', showClose: true, message: '修改失败!'
-            });
+            this.$message({type: 'success', showClose: true, message: '修改失败!'});
           }
         }).catch(() =>{
-          this.$message({type: 'success', showClose: true, message: '操作失败!'
-          });
+          this.$message({type: 'success', showClose: true, message: '操作失败!'});
         })
 
       }

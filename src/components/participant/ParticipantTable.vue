@@ -143,7 +143,8 @@
             });
             this.$axios.put("/api/updateJoinState?"+readyData).then((response) =>{
               let _this= this;
-              _this.participantTableData = response.data;
+              //_this.participantTableData = response.data;*/
+              _this.queryAllJoinInfo();
             }).catch(() =>{
               this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
             })

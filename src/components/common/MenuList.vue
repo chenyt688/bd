@@ -79,15 +79,9 @@
           if(this.$store.state.roleId == '2') {
             roleName = '（管理员）';
           }
-          if(this.$store.state.userName !='' && this.$store.state.userName != null){
-            this.state = this.$store.state.userName + roleName;
-          }else {
-            if(this.$store.state.userAccount != '' && this.$store.state.userAccount != null){
-              this.accout=this.$store.state.userAccount.substr(0,3)+"***"+this.$store.state.userAccount.substr(18,20)
-              this.state = this.accout + roleName;
-            }
+          this.accout=this.$store.state.userAccount.substr(0,3)+"***"+this.$store.state.userAccount.substr(18,20)
+          this.state = this.accout + roleName;
 
-          }
 
         },
         methods: {

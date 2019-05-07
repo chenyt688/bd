@@ -465,6 +465,7 @@
               this.$message({type: 'success', showClose: true, message: '操作成功!'});
               //this.formData = response.data;
               //this.tableData = response.data;
+              this.clearData();
               this.getAllUserInfo();
               this.getUserInfoNum();
             }else {
