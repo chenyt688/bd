@@ -49,13 +49,12 @@
 
     </div>
 
-
   </div>
 </template>
 
 <script>
-  var countsec = 60;
-  var time;
+  let countsec = 60;
+  let time;
   export default {
     name: "ForgetPassword",
     methods:{
@@ -68,19 +67,19 @@
 
       //获取短信验证码倒计时
       getNewMsg_f:function(){
-        var self=this;
+        let self=this;
         //60秒倒计时
         if (countsec == 0) {
           $("#codeButton_f").val("获取验证码");
           //document.getElementById('codeButton_f').style.cursor = 'pointer';
-          var codeButton_f = document.getElementById("codeButton_f");//设置按钮为不可用
+          let codeButton_f = document.getElementById("codeButton_f");//设置按钮为不可用
           codeButton_f.disabled=false;
           countsec = 60;
         } else {
           $("#codeButton_f").val("重新发送(" +countsec+ "S)");
           //60秒内按钮不可点击
           //document.getElementById('codeButton_f').style.cursor = 'not-allowed';
-          var codeButton_f = document.getElementById("codeButton_f");//设置按钮为不可用
+          let codeButton_f = document.getElementById("codeButton_f");//设置按钮为不可用
           codeButton_f.disabled=true;
 
 
@@ -101,31 +100,31 @@
               $("#returnYzmForForget").val(result);
             }
           },
-          error: function (errorMsg) {
+          error: function () {
             //请求失败时执行该函数
             alert("发送短信失败!");
           }
         })
       },
       formSubmit:function () {
-        var firPassword = $("#firstUserPassword").val();
-        var secPassword = $("#secUserPassword").val();
-        var inputMsg = $("#msgYzm").val();
-        var returnYzm = $("#returnYzmForForget").val();
-        var userPhone = $("#userPhoneForget").val();
+        let firPassword = $("#firstUserPassword").val();
+        let secPassword = $("#secUserPassword").val();
+        let inputMsg = $("#msgYzm").val();
+        let returnYzm = $("#returnYzmForForget").val();
+        let userPhone = $("#userPhoneForget").val();
         //alert("firPassword" + firPassword + "   secPassword" + secPassword + "   inputMsg" +inputMsg +"   returnYzm"+returnYzm)
         if(firPassword == secPassword){
           if(inputMsg == returnYzm){
             this.$axios.post("/api/userForgetPassword?userPhone="+userPhone+"&userPassword="+firPassword+"").then((response) =>{          //这里使用了ES6的语法
               //alert(response.data)
-            }).catch((error) =>{
-              alert("请求数据失败！")     //请求失败返回的数据
+            }).catch(() =>{
+              alert("请求数据失败！");    //请求失败返回的数据
             })
           }else{
-            alert("验证码错误！！！")
+            alert("验证码错误！！！");
           }
         }else {
-          alert("输入密码不一致！！！")
+          alert("输入密码不一致！！！");
           clearTimeout(time);
         }
 

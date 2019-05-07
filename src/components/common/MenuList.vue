@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  var _this1;
+  let _this1;
   export default {
         name: "MenuList",
 
@@ -72,12 +72,12 @@
           */
           this.getMenu();
           this.getBaseMenu();
-          var roleName = '';
+          let roleName = '';
           if(this.$store.state.roleId == '1'){
-            roleName = '(用户）'
+            roleName = '(用户）';
           }
           if(this.$store.state.roleId == '2') {
-            roleName = '（管理员）'
+            roleName = '（管理员）';
           }
           if(this.$store.state.userName !='' && this.$store.state.userName != null){
             this.state = this.$store.state.userName + roleName;
@@ -97,13 +97,13 @@
               method:'post',
               url:'/api/getBaseMenu'
             }).then((response) =>{          //这里使用了ES6的语法
-              var _this = this
+              let _this = this;
               //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
-              _this.baseMenuInfo = response.data
-              console.log(response.data)       //请求成功返回的数据
+              _this.baseMenuInfo = response.data;
+              console.log(response.data)  ;     //请求成功返回的数据
 
-            }).catch((error) =>{
-              alert("请求数据失败！")     //请求失败返回的数据
+            }).catch(() =>{
+              alert("请求数据失败！");     //请求失败返回的数据
             })
           },
 
@@ -113,13 +113,13 @@
               method:'post',
               url:'/api/getSupmenu'
             }).then((response) =>{          //这里使用了ES6的语法
-              var _this = this
+              let _this = this;
               //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
-              _this.roleMenuInfo = response.data
-              console.log(response.data)       //请求成功返回的数据
+              _this.roleMenuInfo = response.data;
+              console.log(response.data) ;      //请求成功返回的数据
 
-            }).catch((error) =>{
-              alert("请求数据失败！")     //请求失败返回的数据
+            }).catch(() =>{
+              alert("请求数据失败！");     //请求失败返回的数据
             })
           },
 
@@ -130,22 +130,12 @@
               cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
-              this.$message({
-                type: 'success',
-                message: '退出成功!'
-              });
-              this.$axios({
-                method:'get',
-                url:'/api/loginOut'
-              });
+              this.$message({type: 'success', message: '退出成功!'});
+              this.$axios({method:'get', url:'/api/loginOut'});
               localStorage.clear();
               location.reload();
             }).catch(() => {
-              this.$message({
-                type: 'info',
-                showClose: true,
-                message: '已取消退出'
-              });
+              this.$message({type: 'info', showClose: true, message: '已取消退出'});
 
             });
 
@@ -156,7 +146,7 @@
 
 
           search: function () {
-            var val = $("#searchInput").val();
+            let val = $("#searchInput").val();
             if(val == 1){
               document.getElementById("divsearch").style = "display: block";
               document.getElementById("loginDiv").style = "display: none";
@@ -177,24 +167,24 @@
             document.getElementById("divsearch").style = "display: none";
           },
           submit: function () {
-            alert("确认搜索")
+            alert("确认搜索");
 
           },
 
           //登录
           login: function () {
-            var val= $("#loginId").val();
+            let val= $("#loginId").val();
             if(val ==1){
               document.getElementById("loginDiv").style = "display: block";
               document.getElementById("registDiv").style = "display: none";
               document.getElementById("divsearch").style="display: none";
               document.getElementById("forgetDiv").style = "display: none";
-              $("#loginId").val("2")
+              $("#loginId").val("2");
             }else {
               document.getElementById("loginDiv").style = "display: none";
               document.getElementById("registDiv").style = "display: none";
               document.getElementById("forgetDiv").style = "display: none";
-              $("#loginId").val("1")
+              $("#loginId").val("1");
             }
 
 

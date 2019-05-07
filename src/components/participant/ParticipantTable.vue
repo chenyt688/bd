@@ -86,30 +86,30 @@
       methods:{
         //查询报名情况
         queryAllJoinInfo(){
-          var readyData=Qs.stringify({
+          let readyData=Qs.stringify({
             page:this.page,
             pageSize:this.pageSize,
           });
           this.$axios.put("/api/queryAllJoinInfo?"+readyData).then((response) =>{
-            var _this= this;
+            let _this= this;
             _this.participantTableData = response.data;
-          }).catch((error) =>{
+          }).catch(() =>{
             this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
           })
         },
         //查询数量
         queryParticipantNum(){
           this.$axios.put("/api/queryParticipantNum").then((response) =>{
-            var _this= this;
+            let _this= this;
             _this.allNum = response.data;
-          }).catch((error) =>{
+          }).catch(() =>{
             this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
           })
         },
         getState(row){
-          var state = row.reviewStatus;
+          let state = row.reviewStatus;
           // 1表示报名 2 表示审核成功 3表示上岗中 4 表示活动结束
-          var stateV = "";
+          let stateV = "";
           switch (state){
             case 1:
               stateV = "已报名";
@@ -135,16 +135,16 @@
             this.saveUserId = rowdata.userId;
             this.saveActivityId = rowdata.activityId;
           }else {
-            var readyData=Qs.stringify({
+            let readyData=Qs.stringify({
               userId:this.saveUserId,
               activityId:this.saveActivityId,
               reviewStatus:rowdata
 
             });
             this.$axios.put("/api/updateJoinState?"+readyData).then((response) =>{
-              var _this= this;
+              let _this= this;
               _this.participantTableData = response.data;
-            }).catch((error) =>{
+            }).catch(() =>{
               this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
             })
           }

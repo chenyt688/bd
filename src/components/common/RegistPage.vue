@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    var countsec = 60;
+    let countsec = 60;
     export default {
         name: "RegistPage",
         data(){
@@ -60,19 +60,19 @@
 
           //获取短信验证码倒计时
           getNewMsg_r:function(){
-            var self=this;
+            let self=this;
             //60秒倒计时
             if (countsec == 0) {
               $("#codeButton_r").val("获取验证码");
               //document.getElementById('codeButton_r').style.cursor = 'pointer';
-              var codeButton_r = document.getElementById("codeButton_r");//设置按钮为不可用
+              let codeButton_r = document.getElementById("codeButton_r");//设置按钮为不可用
               codeButton_r.disabled=false;
               countsec = 60;
             } else {
               $("#codeButton_r").val("重新发送(" +countsec+ "S)");
               //60秒内按钮不可点击
               //document.getElementById('codeButton_r').style.cursor = 'not-allowed';
-              var codeButton_r = document.getElementById("codeButton_r");//设置按钮为不可用
+              let codeButton_r = document.getElementById("codeButton_r");//设置按钮为不可用
               codeButton_r.disabled=true;
               countsec--;
               setTimeout(function() {
@@ -91,7 +91,7 @@
                   $("#returnYzmforRegister").val(result);
                 }
               },
-              error: function (errorMsg) {
+              error: function () {
                 //请求失败时执行该函数
                 alert("发送短信失败!");
               }
@@ -99,15 +99,15 @@
           },
           //注册
           submitInfo: function () {
-            var inputMsg = $("#inputMsgforRegister").val();
-            var returnYzm = $("#returnYzmforRegister").val();
-            var userPhone = $("#userPhoneforRegister").val();
+            let inputMsg = $("#inputMsgforRegister").val();
+            let returnYzm = $("#returnYzmforRegister").val();
+            let userPhone = $("#userPhoneforRegister").val();
             if(inputMsg == returnYzm &&inputMsg != '' &&inputMsg != null){
               this.$axios.post("/api/userRegister?userPhone="+userPhone+"").then((response) =>{          //这里使用了ES6的语法
-                alert(response.data)
+                alert(response.data);
 
-              }).catch((error) =>{
-                alert("请求数据失败！")     //请求失败返回的数据
+              }).catch(() =>{
+                alert("请求数据失败！") ;    //请求失败返回的数据
               })
             }else {
               alert("验证码错误！！！");

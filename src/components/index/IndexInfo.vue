@@ -68,15 +68,15 @@
       methods:{
         getActivityInfo(){
           this.$axios.post("/api/queryActivityInfoIndex").then((respones) =>{
-            var _this = this;
+            let _this = this;
             _this.activityList = respones.data;
-          }).catch((error) =>{
+          }).catch(() =>{
             //请求失败返回的数据
             this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
           })
         },
         getActivityById:function (item) {
-          var activityId = item.activityId;
+          let activityId = item.activityId;
           this.$router.push({
             path: '/lookActivityInfo',
             query: {

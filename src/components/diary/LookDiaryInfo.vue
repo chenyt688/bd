@@ -87,23 +87,23 @@
         },
         //获取发布的日记
         getPublishDiary(){
-          var readyData=Qs.stringify({
+          let readyData=Qs.stringify({
             page:this.page,
             pageSize:this.pageSize,
           });
           this.$axios.put("/api/queryPublishDiary?"+readyData).then((response) =>{          //这里使用了ES6的语法
-            var _this = this
+            let _this = this;
             _this.diaryList =response.data;
-          }).catch((error) =>{
+          }).catch(() =>{
             //请求失败返回的数据
             this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
           })
         },
         getPublishDiaryNum(){
           this.$axios.post("/api/queryPublishDiaryNum").then((response) =>{
-            var _this = this;
+            let _this = this;
             _this.allNum = response.data;
-          }).catch((error) =>{
+          }).catch(() =>{
             this.$message({type: 'danger', showClose: true, message: '请求异常!'});
           })
         },

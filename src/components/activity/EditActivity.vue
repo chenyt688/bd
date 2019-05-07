@@ -89,7 +89,7 @@
 
       },
       submitForm:function () {
-        var time = this.activityFormData.time;    //开始时间和截至时间数组
+        let time = this.activityFormData.time;    //开始时间和截至时间数组
         let data = {
           activityId:this.activityFormData.activityId,
           userId:this.activityFormData.userId,
@@ -109,27 +109,18 @@
           reviewStatus:this.activityFormData.reviewStatus,
           delFlag:this.activityFormData.delFlag,
           provinceName:this.activityFormData.provinceName,
-        }
+        };
 
         this.$axios.post("/api/editActivityInfoById",data).then((response) =>{
           if(response.data =="S"){
-            this.$message({
-              type: 'success',
-              showClose: true,
-              message: '修改成功!'
+            this.$message({type: 'success', showClose: true, message: '修改成功!'
             });
           }else {
-            this.$message({
-              type: 'success',
-              showClose: true,
-              message: '修改失败!'
+            this.$message({type: 'success', showClose: true, message: '修改失败!'
             });
           }
-        }).catch((error) =>{
-          this.$message({
-            type: 'success',
-            showClose: true,
-            message: '操作失败!'
+        }).catch(() =>{
+          this.$message({type: 'success', showClose: true, message: '操作失败!'
           });
         })
 

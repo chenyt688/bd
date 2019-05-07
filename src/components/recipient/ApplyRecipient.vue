@@ -1,9 +1,9 @@
 <template>
     <div>
       <page-title :msg="msg" :img-url="imgUrl"></page-title>
-      <el-form :model="recipientFormData"  :inline="true" style="position:relative;left:80px" :disabled="flag">
+      <el-form :model="recipientFormData"  :inline="true" style="position:relative;left:80px" :disabled="subFlag">
         <el-form-item label="姓名">
-          <el-input v-model="recipientFormData.userId" clearable style="width: 250px"></el-input>
+          <el-input v-model="recipientFormData.userName" clearable style="width: 250px"></el-input>
         </el-form-item>
         <el-form-item label="身份证号" style="position: relative;left: 80px">
           <el-input v-model="recipientFormData.userIdCard" clearable style="width: 250px"></el-input>
@@ -50,9 +50,8 @@
       </el-form>
 
       <div align="center" style="position: absolute;left: 600px;top:1050px">
-        <el-button @click="backForm" icon="el-icon-s-release" style="position:relative;right: 150px" :disabled="backFlag">重 置</el-button>
-        <el-button @click="editForm" icon="el-icon-edit-outline" style="position:relative;right: 70px" :disabled="editFlag">编 辑</el-button>
-        <el-button  @click="submitForm" icon="el-icon-success" :disabled="subFlag">提 交</el-button>
+        <el-button @click="backForm" icon="el-icon-s-release" style="position:relative;right: 75px">重 置</el-button>
+        <el-button  @click="submitInfo"  icon="el-icon-success" :disabled="subFlag" style="position:relative;right: -75px" >提 交</el-button>
         <br><br><br><br><br><br>
       </div>
 
@@ -61,6 +60,7 @@
 </template>
 
 <script>
+  import Qs from 'qs';
     import PageTitle from "../common/PageTitle";
     import UploadImg from "../common/UploadImg";
     export default {
@@ -76,6 +76,7 @@
           imgType5:'乡级证明',
           imgType6:'学籍表',
           imgType7:'二维码',
+          subFlag:true,
           recipientFormData:{
             recipientId:'',
             userId:'',
@@ -100,7 +101,44 @@
 
         }
       },
+      created(){
+        if(this.$store.state.userId != null && this.$store.state.userId != ""){
+          this.subFlag = false;
+        }
+      },
       methods: {
+        submitInfo:function () {
+          this.$confirm('提交申请, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            let readyData=Qs.stringify({
+              userName:this.recipientFormData.userName,
+              userIdCard:this.recipientFormData.userIdCard,
+              userPhone:this.recipientFormData.userPhone,
+              familyStatus:this.recipientFormData.familyStatus,
+            });
+            this.$axios.put("/api/inserRecipientInfo?"+readyData).then((response) =>{
+              if(response.data =="S"){
+                this.$message({type: 'success', showClose: true, message: '提交成功!'});
+              }else{
+                this.$message({type: 'success', showClose: true, message: '用户已经申请!提交失败!'});
+              }
+            }).catch(() =>{
+              this.$message({type: 'success', showClose: true, message: '提交失败!'});
+            })
+          }).catch(() => {
+            this.$message({type: 'info', showClose: true, message: '已取消提交'});
+          });
+        },
+        backForm(){
+          this.recipientFormData.userName ='';
+          this.recipientFormData.userIdCard ='';
+          this.recipientFormData.userPhone ='';
+          this.recipientFormData.familyStatus ='';
+        }
+
 
       }
     }

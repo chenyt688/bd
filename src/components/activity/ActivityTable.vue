@@ -5,7 +5,7 @@
     <el-button  icon="el-icon-search" style="position:relative;left:40px" @click="searchByCondition('personal')">查询个人申请的活动</el-button>
     <br><br>
 
-    <el-table :data="tableData" style="width: 100%" height="400" ref="multipleTable" border  @selection-change="saveMultipleSelection">
+    <el-table :data="tableData" style="width: 100%" height="400"  border  @selection-change="saveMultipleSelection">
       <el-input prop="activityId"  hidden></el-input>
       <el-input prop="userId"  hidden></el-input>
       <!--<el-table-column type="selection"  fixed width="60px"></el-table-column>-->
@@ -175,20 +175,20 @@
       methods:{
         //更新状态
         updateActivityState:function(activityId,reviewStatus){
-          var readyData=Qs.stringify({
+          let readyData=Qs.stringify({
             activityId:activityId,
             reviewStatus:reviewStatus,
           });
-          this.$axios.put("/api/updateActivityState?"+readyData).then((response) =>{
+          this.$axios.put("/api/updateActivityState?"+readyData).then(() =>{
             this.$message({type: 'success', showClose: true, message: '活动状态更新!'});
-          }).catch((error) =>{
+          }).catch(() =>{
             this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
-          })
+          });
           this.getAllActivityInfo();
         },
         publishActivityInfo:function(rowData){
-          var activityId = rowData.activityId;
-          var reviewStatus = 2;
+          let activityId = rowData.activityId;
+          let reviewStatus = 2;
           this.$confirm('发布选中志愿者活动, 是否继续?', '提示', {
             confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'}).then(() => {
             this.updateActivityState(activityId,reviewStatus);
@@ -196,12 +196,12 @@
             this.$message({type: 'info', showClose: true, message: '已取消发布'});
           });
         },
-        checkActivityInfo:function(rowData,val){
+        checkActivityInfo:function(rowData){
           if(rowData.activityId != null){
             this.saveTempActivity = rowData.activityId;
           }
-          var activityId = this.saveTempActivity;
-          var reviewStatus = 0;
+          let activityId = this.saveTempActivity;
+          let reviewStatus = 0;
           if(rowData == "审核未过"){
             reviewStatus = 3;
             this.updateActivityState(activityId,reviewStatus);
@@ -213,7 +213,7 @@
         },
 
         closeEdit:function(){
-          this.dialogVisibleActiVityToEdit = false
+          this.dialogVisibleActiVityToEdit = false;
           this.getAllActivityInfo();
         },
         handleClose(done){
@@ -222,38 +222,38 @@
         },
         //管理员获取所有的活动信息
         getAllActivityInfo:function () {
-          var readyData=Qs.stringify({
+          let readyData=Qs.stringify({
             page:this.page,
             pageSize:this.pageSize,
           });
           this.$axios.put("/api/queryAllActivityInfo?"+readyData).then((response) =>{
-            var _this= this;
+            let _this= this;
             _this.tableData = response.data;
-          }).catch((error) =>{
+          }).catch(() =>{
             this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
           })
         },
         //获取登录用户申请志愿者活动的数量
         queryActivityNumByUserLoging:function(){
           this.$axios.post("/api/queryActivityNumByUserLoging").then((response) =>{
-            var _this= this;
+            let _this= this;
             _this.allNum = response.data;
-          }).catch((error) =>{
+          }).catch(() =>{
             this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
           })
         },
 
         //获取活动总数
         getActivityCount:function () {
-          var input = this.inputCondition;
+          let input = this.inputCondition;
           if(this.$store.state.roleId != null && this.$store.state.roleId == '2'){
             if(input == 'personal'){
               this.queryActivityNumByUserLoging();
             }else {
               this.$axios.post("/api/getActivityAccount").then((response) =>{
-                var _this= this;
+                let _this= this;
                 _this.allNum = response.data;
-              }).catch((error) =>{
+              }).catch(() =>{
                 this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
               })
             }
@@ -263,9 +263,9 @@
               this.queryActivityNumByUserLoging();
             }else {
               this.$axios.post("/api/getActivityAccountPublished").then((response) =>{
-                var _this= this;
+                let _this= this;
                 _this.allNum = response.data;
-              }).catch((error) =>{
+              }).catch(() =>{
                 this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
               })
             }
@@ -274,7 +274,7 @@
         },
 
         deleteActivity:function(rowData){
-          var readyData=Qs.stringify({
+          let readyData=Qs.stringify({
             activityId:rowData.activityId,
           });
           this.$axios.put("/api/deleteActivityInfoById?"+readyData).then((response) =>{
@@ -283,17 +283,17 @@
               this.getActivityCount();
               this.getAllActivityInfo();
             }
-          }).catch((error) =>{
+          }).catch(() =>{
             this.$message({type: 'success', showClose: true, message: '删除失败!'
             });
           })
         },
         //删除活动信息   若一般用户只能删除未审核状态的活动，管理员若删除已发布的活动进行逻辑删除
         confirmDeleteActivityInfo:function(index,rowData){
-          var roldId = this.$store.state.roleId;  //登录用户的角色id
-          var userIdSaved = this.$store.state.userId; //已经保存的用户id
-          var userIdSelect = rowData.userId;      //选中申请活动的用户id
-          var activityState = rowData.reviewStatus;
+          let roldId = this.$store.state.roleId;  //登录用户的角色id
+          let userIdSaved = this.$store.state.userId; //已经保存的用户id
+          let userIdSelect = rowData.userId;      //选中申请活动的用户id
+          let activityState = rowData.reviewStatus;
           this.$confirm('删除选中活动数据, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -315,8 +315,8 @@
         },
         //将状态转换为相应的值
         getActivityState:function(rowData){
-          var flag = rowData.reviewStatus;
-          var statusW = "";
+          let flag = rowData.reviewStatus;
+          let statusW = "";
           switch(flag) {
             case 1:
               statusW = "已审核";
@@ -337,18 +337,18 @@
         //查看申请活动的用户信息
         queryUserInfo:function(index,rowData){
 
-          var userId = rowData.userId;
+          let userId = rowData.userId;
           this.$axios.post('/api/getUserInfoByUserIdToActivity?userId='+userId).then((response) =>{
-            var _this = this;
+            let _this = this;
             _this.userInfo = response.data;
             if(_this.userInfo.userGender == 1){
               _this.userInfo.userGender = '男'
             }else{
               _this.userInfo.userGender = '女'
             }
-            var idCard = _this.userInfo.userIdentityData;
+            let idCard = _this.userInfo.userIdentityData;
             _this.userInfo.userIdentityData = idCard.replace(/^(.{3})(?:\d+)(.{4})$/,"$1******$2");
-          }).catch((error) =>{
+          }).catch(() =>{
               this.$message({type: 'success', showClose: true, message: '请求数据失败!'});
           })
         },
@@ -356,10 +356,10 @@
         //编辑活动信息
         editActivityInfo:function(index,rowData){
 
-          var roldId = this.$store.state.roleId;  //登录用户的角色id
-          var userIdSaved = this.$store.state.userId; //已经保存的用户id
-          var userIdSelect = rowData.userId;      //选中申请活动的用户id
-          var activityState = rowData.reviewStatus;
+          let roldId = this.$store.state.roleId;  //登录用户的角色id
+          let userIdSaved = this.$store.state.userId; //已经保存的用户id
+          let userIdSelect = rowData.userId;      //选中申请活动的用户id
+          let activityState = rowData.reviewStatus;
 
           if(roldId == 2){      //管理员可以直接编辑
             this.queryActivityBySelected(rowData);
@@ -380,18 +380,18 @@
 
         //查询选中活动的信息
         queryActivityBySelected:function(row){
-          var activityId = row.activityId;
+          let activityId = row.activityId;
           this.$axios.post('/api/queryActivityInfoByActivityId?activityId='+activityId).then((response) =>{
-            var _this = this;
+            let _this = this;
             _this.activityFormData = response.data;
-          }).catch((error) =>{
+          }).catch(() =>{
             this.$message({type: 'success', showClose: true, message: '请求数据失败!'});
           })
         },
 
         //跳转到活动信息页面
         toActivityInfo:function(rowData){
-          var activityId = rowData.activityId;
+          let activityId = rowData.activityId;
           this.$router.push({
             path: '/lookActivityInfo',
             query: {
@@ -408,19 +408,19 @@
           if(val != null){      //查询个人申办的志愿者活动  val ='personal'
             this.inputCondition = val;
           }
-          var readyData=Qs.stringify({
+          let readyData=Qs.stringify({
             page:this.page,
             pageSize:this.pageSize,
             inputCondition:this.inputCondition
           });
           this.$axios.put("/api/getActivityInfoByCondition?"+readyData).then((response) =>{          //这里使用了ES6的语法
-            var _this = this
+            let _this = this;
             //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
             _this.tableData =response.data;
-          }).catch((error) =>{
+          }).catch(() =>{
             //请求失败返回的数据
             this.$message({type: 'success', showClose: true, message: '请求数据失败!'});
-          })
+          });
 
           this.getActivityCount();
         },

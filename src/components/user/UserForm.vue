@@ -126,34 +126,34 @@
       },
       methods:{
         //地址级联
-        getProvinceInfo:function (val) {
+        getProvinceInfo:function () {
           this.$axios.put("/api/getProvinceInfo").then((response) =>{          //省
-            var _this = this
+            let _this = this;
             //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
             _this.provinces= response.data;
           })
         },
         getCityInfo:function(val){
           this.$axios.post("/api/getCityInfo?provinceId="+val).then((response) =>{          //市
-            var _this = this
+            let _this = this;
             _this.cities= response.data;
           })
         },
         getCountyInfo:function(val){
           this.$axios.post("/api/getCountyInfo?cityId="+val).then((response) =>{          //区
-            var _this = this
+            let _this = this;
             _this.counties= response.data;
           })
         },
         getTownInfo:function(val){
           this.$axios.post("/api/getTownInfo?countyId="+val).then((response) =>{          //乡
-            var _this = this
+            let _this = this;
             _this.towns= response.data;
           })
         },
         getVillageInfo:function(val){
           this.$axios.post("/api/getVillageInfo?townId="+val).then((response) =>{          //村
-            var _this = this
+            let _this = this;
             _this.villages= response.data;
           })
         },
@@ -192,8 +192,8 @@
           if(this.formData.speAdd == null){
             this.formData.speAdd= " ";
           }
-          var userAddress = this.formData.province + "-" + this.formData.city + "-" + this.formData.county + "-" + this.formData.town + "-" + this.formData.village;
-          var data =
+          let userAddress = this.formData.province + "-" + this.formData.city + "-" + this.formData.county + "-" + this.formData.town + "-" + this.formData.village;
+          let data =
             'userId=' + this.formData.userId +
             '&userAccount=' + this.formData.userAccount +
             '&userPassword=' + this.formData.userPassword +
@@ -209,25 +209,13 @@
             '&opeType=' + '编辑用户';
           this.$axios.post("/api/addOrEditUserInfo?"+data).then((response) =>{
             if(response.data !="F"){
-              this.$message({
-                type: 'success',
-                showClose: true,
-                message: '操作成功!'
-              });
+              this.$message({type: 'success', showClose: true, message: '操作成功!'});
               location.reload();
             }else {
-              this.$message({
-                type: 'success',
-                showClose: true,
-                message: '该用户存在!,操作失败!'
-              });
+              this.$message({type: 'success', showClose: true, message: '该用户存在!,操作失败!'});
             }
-          }).catch((error) =>{
-            this.$message({
-              type: 'success',
-              showClose: true,
-              message: '操作失败!'
-            });
+          }).catch(() =>{
+            this.$message({type: 'success', showClose: true, message: '操作失败!'});
           })
 
           //this.flag =true;

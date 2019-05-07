@@ -12,6 +12,8 @@ import lookActivityInfo from '@/components/activity/LookActivityInfo'
 import progressPage from '@/pages/progressPage'
 import lookDiaryPage from '@/pages/lookDiaryPage'
 import manageParticipantPage from '@/pages/manageParticipantPage'
+import manageRecipentPage from '@/pages/manageRecipentPage'
+import LookRecipientInfo from '@/components/recipient/LookRecipientInfo'
 
 
 Vue.use(Router)
@@ -29,6 +31,8 @@ export default new Router({
     {path: '/progressPage', name: 'progressPage', component: progressPage},
     {path: '/lookDiaryPage', name: 'lookDiaryPage', component: lookDiaryPage},
     {path: '/manageParticipantPage', name: 'manageParticipantPage', component: manageParticipantPage},
+    {path: '/manageRecipentPage', name: 'manageRecipentPage', component: manageRecipentPage},
+    {path: '/LookRecipientInfo', name: 'LookRecipientInfo', component: LookRecipientInfo},
 
 
   ],

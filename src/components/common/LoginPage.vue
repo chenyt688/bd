@@ -82,8 +82,8 @@
 
 <script>
 
-    var countsec = 60;
-    var verifyCode;
+  let countsec = 60;
+  let verifyCode;
     export default {
       name: "LoginAndRegist",
       data(){
@@ -124,7 +124,7 @@
       methods: {
         //获取短信验证码倒计时
         getNewMsg:function(){
-          var self=this;
+          let self=this;
 
           //60秒倒计时
           if (countsec == 0) {
@@ -155,7 +155,7 @@
                 $("#returnYzm").val(result);
               }
             },
-            error: function (errorMsg) {
+            error: function () {
               //请求失败时执行该函数
               alert("发送短信失败!");
             }
@@ -193,27 +193,19 @@
         submitInfo: function () {
           if (this.$store.state.userId == null) {
             if (accoutA1.style.color == "green") {      //账号密码登录
-              var code_input = $("#code_input").val();
-              var res = verifyCode.validate(code_input);  //判断验证码是否正确
+              let code_input = $("#code_input").val();
+              let res = verifyCode.validate(code_input);  //判断验证码是否正确
               if (res) {
                 //$("#form1").submit();
-                var userAccount = $("#userAccount").val();
-                var userPassword = $("#userPassword").val();
-                var roleId = $("#roleId").val();
+                let userAccount = $("#userAccount").val();
+                let userPassword = $("#userPassword").val();
+                let roleId = $("#roleId").val();
                 let data = 'userAccount=' + userAccount + '&userPassword=' + userPassword + '&roleId=' + roleId;
                 this.$axios.post("/api/acountLogin?" + data).then((response) => {          //这里使用了ES6的语法
                   if (response.data == 'F') {
-                    this.$message({
-                      type: 'success',
-                      showClose: true,
-                      message: '登录失败!'
-                    });
+                    this.$message({type: 'success', showClose: true, message: '登录失败!'});
                   } else {
-                    this.$message({
-                      type: 'success',
-                      showClose: true,
-                      message: '登录成功!'
-                    });
+                    this.$message({type: 'success', showClose: true, message: '登录成功!'});
                     location.reload();
                     this.user = response.data;
                     localStorage.setItem('userId', this.user.userId);
@@ -223,37 +215,25 @@
                     this.$store.commit('changeState', this.user.userId, this.user.userAccount, this.user.userName, this.user.roleId);
 
                   }
-                }).catch((error) => {
-                  alert("请求数据失败！")     //请求失败返回的数据
+                }).catch(() => {
+                  alert("请求数据失败！");     //请求失败返回的数据
                 })
               } else {
-                this.$message({
-                  type: 'success',
-                  showClose: true,
-                  message: '验证码错误！！！请重新输入！!'
-                });
+                this.$message({type: 'success', showClose: true, message: '验证码错误！！！请重新输入！!'});
 
                 $("#code_input").val("");
               }
             } else {                                    //手机号登录
-              var inputMsg = $("#inputMsg").val();
-              var returnYzm = $("#returnYzm").val();
-              var userPhone = $("#userPhoneL").val();
+              let inputMsg = $("#inputMsg").val();
+              let returnYzm = $("#returnYzm").val();
+              let userPhone = $("#userPhoneL").val();
               //alert(returnYzm + "   " +inputMsg);
               if (inputMsg == returnYzm) {
                 this.$axios.post("/api/phoneLogin?userPhone=" + userPhone).then((response) => {          //这里使用了ES6的语法
                   if (response.data == 'F') {
-                    this.$message({
-                      type: 'success',
-                      showClose: true,
-                      message: '登录失败!'
-                    });
+                    this.$message({type: 'success', showClose: true, message: '登录失败!'});
                   } else {
-                    this.$message({
-                      type: 'success',
-                      showClose: true,
-                      message: '登录成功!'
-                    });
+                    this.$message({type: 'success', showClose: true, message: '登录成功!'});
                     location.reload();
                     this.user = response.data;
                     localStorage.setItem('userId', this.user.userId);
@@ -263,25 +243,17 @@
                     this.$store.commit('changeState', this.user.userId, this.user.userAccount, this.user.userName, this.user.roleId);
 
                   }
-                }).catch((error) => {
+                }).catch(() => {
                   alert("请求数据失败！")     //请求失败返回的数据
                 })
                 //$("#form2").submit();
               } else {
-                this.$message({
-                  type: 'success',
-                  showClose: true,
-                  message: '验证码错误！！！登陆失败！！！'
-                });
+                this.$message({type: 'success', showClose: true, message: '验证码错误！！！登陆失败！！！'});
               }
 
             }
           }else {
-            this.$message({
-              type: 'success',
-              showClose: true,
-              message: '已有账户登录！！！请先退出！！！'
-            });
+            this.$message({type: 'success', showClose: true, message: '已有账户登录！！！请先退出！！！'});
           }
         }
       }

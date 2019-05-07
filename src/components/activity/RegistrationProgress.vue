@@ -49,7 +49,7 @@
         getState:function () {
           if(this.$store.state.userId != null && this.$store.state.userId != ""){
             this.$axios.post("/api/queryJoinByUserId").then((response) =>{
-              var _this = this;
+              let _this = this;
               _this.joinState = response.data;
               _this.active = _this.joinState.state + 1;
               if(_this.active == 6){    //审核失败
@@ -57,7 +57,7 @@
                 this.sucesss = false;
                 this.faild = true;
               }
-            }).catch((error) =>{
+            }).catch(() =>{
               //请求失败返回的数据
               this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
             })

@@ -153,15 +153,15 @@
         },
         //条件查询
         searchDiaryByCondition:function(){
-          var readyData=Qs.stringify({
+          let readyData=Qs.stringify({
             page:this.page,
             pageSize:this.pageSize,
             inputCondition:this.inputCondition
           });
           this.$axios.put("/api/queryAllDiaryByCondition?"+readyData).then((response) =>{          //这里使用了ES6的语法
-            var _this = this
+            let _this = this;
             _this.diaryTableData =response.data;
-          }).catch((error) =>{
+          }).catch(() =>{
             //请求失败返回的数据
             this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
           })
@@ -178,12 +178,12 @@
         },
         //打开将要修改日记
         openEditDiaryInfo:function(rowData){
-          var diaryUserId = rowData.userId;
-          var logingUserId = this.$store.state.userId;
+          let diaryUserId = rowData.userId;
+          let logingUserId = this.$store.state.userId;
           if(diaryUserId == logingUserId){             //日记只有本人可以修改
-            var diaryId = rowData.diaryId;
+            let diaryId = rowData.diaryId;
             this.$axios.post("/api/queryDiaryByDiaryId?diaryId="+diaryId).then((response) =>{     //根具diaryid查询
-              var _this = this;
+              let _this = this;
               _this.addDiaryData = response.data;
               if(_this.addDiaryData.diaryShow == 0){
                 _this.addDiaryData.diaryShow = false;
@@ -191,7 +191,7 @@
                 _this.addDiaryData.diaryShow = true;
               }
               this.dialogVisibleDiaryEdit=true;
-            }).catch((error) =>{
+            }).catch(() =>{
               this.$message({type: 'danger', showClose: true, message: '请求异常!'});
             })
           }else {
@@ -201,8 +201,8 @@
         },
         //保存修改后的日志信息
         saveEditDiary:function(){
-          var isShow = 0;
-          var userId = this.$store.state.userId;
+          let isShow = 0;
+          let userId = this.$store.state.userId;
           if(this.addDiaryData.diaryShow == true){
             isShow = 1;
           }
@@ -214,7 +214,7 @@
             diaryTime:this.addDiaryData.diaryTime,
             diaryContent:this.addDiaryData.diaryContent,
             diaryShow:isShow,
-          }
+          };
           if(this.$store.state.userId != "" && this.$store.state.userId != null){
             this.$axios.put("/api/updateDiaryByDiaryId",diaryData).then((response) =>{
               if(response.data =="1"){
@@ -225,7 +225,7 @@
                 this.$message({type: 'warning', showClose: true, message: '修改失败!'
                 });
               }
-            }).catch((error) =>{
+            }).catch(() =>{
               this.$message({type: 'danger', showClose: true, message: '请求异常!'});
             })
           }else {
@@ -235,15 +235,15 @@
         //查询日记数量
         queryDiaryNum:function(){
           this.$axios.post("/api/queryDiaryNum").then((response) =>{
-            var _this = this;
+            let _this = this;
             _this.allNum = response.data;
-          }).catch((error) =>{
+          }).catch(() =>{
             this.$message({type: 'danger', showClose: true, message: '请求异常!'});
           })
         },
         //删除日记信息
         deleteDiaryInfo:function(rowData){
-          var diaryId = rowData.diaryId;
+          let diaryId = rowData.diaryId;
           this.$confirm('删除选中日记数据, 是否继续?', '提示', {
             confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
           }).then(() => {
@@ -256,7 +256,7 @@
                 this.$message({type: 'danger', showClose: true, message: '删除失败!'});
               }
 
-            }).catch((error) =>{
+            }).catch(() =>{
               this.$message({type: 'danger', showClose: true, message: '请求异常!'});
             })
           }).catch(() => {
@@ -267,8 +267,8 @@
         },
         //转换表格中的数据
         getState:function(row){
-          var flag = row.diaryShow;
-          var stateV = "";
+          let flag = row.diaryShow;
+          let stateV = "";
           switch (flag) {
             case 0:
               stateV = "自己可见";
@@ -282,15 +282,15 @@
 
       //查询日记信息
         queryDiaryTableDataInfo:function(){
-          var readyData=Qs.stringify({
+          let readyData=Qs.stringify({
             page:this.page,
             pageSize:this.pageSize,
           });
           if(this.$store.state.userId != "" && this.$store.state.userId != null){     //登陆状态可以管理日记信息
             this.$axios.put("/api/queryDiaryInfo?" +readyData).then((response) =>{
-              var _this = this;
+              let _this = this;
               _this.diaryTableData = response.data;
-            }).catch((error) =>{
+            }).catch(() =>{
               this.$message({type: 'danger', showClose: true, message: '请求异常!'});
             })
           }else{
@@ -300,8 +300,8 @@
         },
         //新增日志信息
         saveDiary(){
-          var isShow = 0;
-          var userId = this.$store.state.userId;
+          let isShow = 0;
+          let userId = this.$store.state.userId;
           if(this.addDiaryData.diaryShow == true){
             isShow = 1;
           }
@@ -313,7 +313,7 @@
             diaryTime:this.addDiaryData.diaryTime,
             diaryContent:this.addDiaryData.diaryContent,
             diaryShow:isShow,
-          }
+          };
 
           if(this.$store.state.userId != "" && this.$store.state.userId != null){
             this.$axios.post("/api/insertDiary",diaryData).then((response) =>{
@@ -326,7 +326,7 @@
                 this.$message({type: 'warning', showClose: true, message: '保存失败!'
                 });
               }
-            }).catch((error) =>{
+            }).catch(() =>{
               this.$message({type: 'danger', showClose: true, message: '请求异常!'});
             })
           }else {

@@ -68,7 +68,7 @@
       methods:{
         getUserInfoByUserId:function () {
           this.$axios.post("/api/getUserInfoByUserId").then((response) =>{          //初始用户信息
-            var _this = this
+            let _this = this
             _this.formData= response.data;
             _this.formData.roleId = '' + _this.formData.roleId;
             _this.formData.userGender = ''+_this.formData.userGender;
@@ -78,7 +78,7 @@
         getUserResumeByUserId:function () {
 
           this.$axios.post("/api/getUserResumeByUserId").then((response) =>{        //初始化用户简历
-            var _this = this
+            let _this = this
             _this.resumeFormData= response.data;
             if(_this.resumeFormData.adjustment==1){
               _this.resumeFormData.adjustment =true;

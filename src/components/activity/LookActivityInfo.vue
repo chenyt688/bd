@@ -42,7 +42,6 @@
 </template>
 
 <script>
-  import Qs from 'qs';
     export default {
       name: "LookActivityInfo",
       data(){
@@ -76,19 +75,19 @@
       methods: {
         getParams() {
           // 取到路由带过来的参数
-          var activityId = this.$route.query.activityId;
+          let activityId = this.$route.query.activityId;
 
           //请求活动信息
           this.$axios.post('/api/queryActivityInfoByActivityId?activityId='+activityId).then((response) =>{
-            var _this = this;
+            let _this = this;
             _this.activityFormData = response.data;
-          }).catch((error) =>{
+          }).catch(() =>{
             this.$message({type: 'success', showClose: true, message: '请求数据失败!'});
           })
         },
         joinActivity:function () {
 
-          var readyData = 'userId='+this.activityFormData.userId + '&activityId=' +this.activityFormData.activityId;
+          let readyData = 'userId='+this.activityFormData.userId + '&activityId=' +this.activityFormData.activityId;
           if(this.$store.state.userId != null && this.$store.state.userId != ""){     //判断用户是否已经登录
             this.$axios.put("/api/queryParticipantIsExistence?"+readyData).then((response)=>{     //判断是否已经报名
               if(response.data == "S"){     //用户没有报名该活动
@@ -97,14 +96,14 @@
                   if(response.data =="1"){
                     this.$message({type: 'success', showClose: true, message: '报名成功!'});
                   }
-                }).catch((error) =>{
+                }).catch(() =>{
                   //请求失败返回的数据
                   this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
                 })
               }else {
                 this.$message({type: 'warning', showClose: true, message: '用户已经报名该活动!'});
               }
-            }).catch((error) =>{
+            }).catch(() =>{
               //请求失败返回的数据
               this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
             })

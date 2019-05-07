@@ -84,11 +84,11 @@
       },
       methods: {
         insertOrEditUserResume:function () {
-          var adjustment = 0;
+          let adjustment = 0;
           if(this.resumeFormData.adjustment == true){
             adjustment = 1;
           }
-          var data =
+          let data =
             'userId=' + this.resumeFormData.userId +
             '&userCareer=' + this.resumeFormData.userCareer +
             '&educationLevel=' + this.resumeFormData.educationLevel +
@@ -102,18 +102,10 @@
             '&adjustment=' + adjustment;
           this.$axios.post("/api/insertOrEditUserResume?"+data).then((response) =>{
             if(response.data =="1"){
-              this.$message({
-                type: 'success',
-                showClose: true,
-                message: '操作成功!'
-              });
+              this.$message({type: 'success', showClose: true, message: '操作成功!'});
             }
-          }).catch((error) =>{
-            this.$message({
-              type: 'success',
-              showClose: true,
-              message: '操作失败!'
-            });
+          }).catch(() =>{
+            this.$message({type: 'success', showClose: true, message: '操作失败!'});
           })
         },
         backStatue:function () {      //取消编辑

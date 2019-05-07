@@ -214,11 +214,7 @@
       },
       methods:{
         handleClose(done){
-          this.$confirm('确认关闭？')
-            .then(_ => {
-              done();
-            })
-            .catch(_ => {});
+          this.$confirm('确认关闭？').then(_ => {done();}).catch(_ => {});
         },
         //获取用户数量
         getUserInfoNum:function(){
@@ -226,48 +222,48 @@
             method:'post',
             url:'/api/getUserInfoNum'
           }).then((response) =>{          //这里使用了ES6的语法
-            var _this = this
+            let _this = this;
             //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
             _this.userAllNum =response.data;
             //请求成功返回的数据
-          }).catch((error) =>{
-            alert("请求数据失败！")     //请求失败返回的数据
+          }).catch(() =>{
+            alert("请求数据失败！");     //请求失败返回的数据
           })
         },
         //条件查询获取查询的数量
         getUserInfoNumByCondition:function(){
-          var readyData=Qs.stringify({
+          let readyData=Qs.stringify({
             inputCondition:this.inputCondition
           });
           this.$axios.put("/api/getUserInfoNumByCondition?"+readyData).then((response) =>{          //这里使用了ES6的语法
-            var _this = this
+            let _this = this;
             //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
             _this.userAllNum =response.data;
-          }).catch((error) =>{
-            alert("请求数据失败！")     //请求失败返回的数据
-          })
+          }).catch(() =>{
+            alert("请求数据失败！");    //请求失败返回的数据
+          });
 
         },
         //获取所有用户数据
         getAllUserInfo:function () {
-          var readyData=Qs.stringify({
+          let readyData=Qs.stringify({
             page:this.page,
             pageSize:this.pageSize
           });
           this.$axios.put("/api/getAllUserInfo?"+readyData).then((response) =>{          //这里使用了ES6的语法
-            var _this = this
+            let _this = this;
             //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
             _this.tableData = response.data;
             //请求成功返回的数据
-          }).catch((error) =>{
-            alert("请求数据失败！")     //请求失败返回的数据
+          }).catch(() =>{
+            alert("请求数据失败！");     //请求失败返回的数据
           })
         },
 
         //删除选中的用户数据
         deleteUserInfo:function(index,row){
-          var userIdSelected = row.userId;
-          var readyData=Qs.stringify({
+          let userIdSelected = row.userId;
+          let readyData=Qs.stringify({
             userId:userIdSelected,
           });
           this.$confirm('删除选中用户数据, 是否继续?', '提示', {
@@ -277,28 +273,16 @@
           }).then(() => {
             this.$axios.put("/api/deleteUserInfoByUserId?"+readyData).then((response) =>{
               if(response.data =="S"){
-                this.$message({
-                  type: 'success',
-                  showClose: true,
-                  message: '删除成功!'
-                });
+                this.$message({type: 'success', showClose: true, message: '删除成功!'});
                 this.getAllUserInfo();
                 this.getUserInfoNum();
               }
             }).catch((error) =>{
-              this.$message({
-                type: 'success',
-                showClose: true,
-                message: '删除失败!'
-              });
+              this.$message({type: 'success', showClose: true, message: '删除失败!'});
             })
 
           }).catch(() => {
-            this.$message({
-              type: 'info',
-              showClose: true,
-              message: '已取消删除'
-            });
+            this.$message({type: 'info', showClose: true, message: '已取消删除'});
           });
         },
         //判断角色
@@ -347,15 +331,15 @@
         //批量删除用户数据
         deletMulUserInfo:function () {
           if(this.multipleSelection.length !=0){
-            var mulUserId='';
-            for(var i=0;i<this.multipleSelection.length;i++){
+            let mulUserId='';
+            for(let i=0;i<this.multipleSelection.length;i++){
               if(i!=this.multipleSelection.length-1){
                 mulUserId = mulUserId + this.multipleSelection[i].userId+",";          //多个用户id
               }else {
                 mulUserId = mulUserId + this.multipleSelection[i].userId
               }
             }
-            var readyData=Qs.stringify({
+            let readyData=Qs.stringify({
               userId:mulUserId,
             });
             this.$confirm('删除选中用户数据, 是否继续?', '提示', {
@@ -365,35 +349,19 @@
             }).then(() => {
               this.$axios.put("/api/deleteMulUserInfoByUserId?"+readyData).then((response) =>{
                 if(response.data =="S"){
-                  this.$message({
-                    type: 'success',
-                    showClose: true,
-                    message: '删除成功!'
-                  });
+                  this.$message({type: 'success', showClose: true, message: '删除成功!'});
                   this.getAllUserInfo();
                   this.getUserInfoNum();
                 }
-              }).catch((error) =>{
-                this.$message({
-                  type: 'success',
-                  showClose: true,
-                  message: '删除失败!'
-                });
+              }).catch(() =>{
+                this.$message({type: 'success', showClose: true, message: '删除失败!'});
               })
 
             }).catch(() => {
-              this.$message({
-                type: 'info',
-                showClose: true,
-                message: '已取消删除'
-              });
+              this.$message({type: 'info', showClose: true, message: '已取消删除'});
             });
           }else {
-            this.$message({
-              type: 'info',
-              showClose: true,
-              message: '无选中用户！'
-            });
+            this.$message({type: 'info', showClose: true, message: '无选中用户！'});
           }
 
 
@@ -401,19 +369,19 @@
         //按条件查询用户数据
         searchUserInfoByCondition:function(){
 
-          var readyData=Qs.stringify({
+          let readyData=Qs.stringify({
             page:this.page,
             pageSize:this.pageSize,
             inputCondition:this.inputCondition
           });
           this.$axios.put("/api/getUserInfoByCondition?"+readyData).then((response) =>{          //这里使用了ES6的语法
-            var _this = this
+            let _this = this;
             //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
             _this.tableData = response.data;
             //请求成功返回的数据
-          }).catch((error) =>{
-            alert("请求数据失败！")     //请求失败返回的数据
-          })
+          }).catch(() =>{
+            alert("请求数据失败！");    //请求失败返回的数据
+          });
           this.getUserInfoNumByCondition();
 
 
@@ -443,42 +411,42 @@
         },
 
         //地址级联
-        getProvinceInfo:function (val) {
+        getProvinceInfo:function () {
           this.$axios.put("/api/getProvinceInfo").then((response) =>{          //省
-            var _this = this
+            let _this = this;
             //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
             _this.provinces= response.data;
           })
         },
         getCityInfo:function(val){
           this.$axios.post("/api/getCityInfo?provinceId="+val).then((response) =>{          //市
-            var _this = this
+            let _this = this;
             _this.cities= response.data;
           })
         },
         getCountyInfo:function(val){
           this.$axios.post("/api/getCountyInfo?cityId="+val).then((response) =>{          //区
-            var _this = this
+            let _this = this;
             _this.counties= response.data;
           })
         },
         getTownInfo:function(val){
           this.$axios.post("/api/getTownInfo?countyId="+val).then((response) =>{          //乡
-            var _this = this
+            let _this = this;
             _this.towns= response.data;
           })
         },
         getVillageInfo:function(val){
           this.$axios.post("/api/getVillageInfo?townId="+val).then((response) =>{          //村
-            var _this = this
+            let _this = this;
             _this.villages= response.data;
           })
         },
 
         //新增或者修改用户信息
         addOrEditUserInfo:function () {
-          var userAddress = this.formData.province + "-" + this.formData.city + "-" + this.formData.county + "-" + this.formData.town + "-" + this.formData.village;
-          var data =
+          let userAddress = this.formData.province + "-" + this.formData.city + "-" + this.formData.county + "-" + this.formData.town + "-" + this.formData.village;
+          let data =
             'userId=' + this.formData.userId +
             '&userAccount=' + ""+ this.formData.userAccount +
             '&userPassword=' + ""+this.formData.userPassword +
@@ -494,28 +462,16 @@
             '&opeType=' + this.opeType;
           this.$axios.post("/api/addOrEditUserInfo?"+data).then((response) =>{
             if(response.data !="F"){
-              this.$message({
-                type: 'success',
-                showClose: true,
-                message: '操作成功!'
-              });
+              this.$message({type: 'success', showClose: true, message: '操作成功!'});
               //this.formData = response.data;
               //this.tableData = response.data;
               this.getAllUserInfo();
               this.getUserInfoNum();
             }else {
-              this.$message({
-                type: 'success',
-                showClose: true,
-                message: '该用户存在后者修改后的号码已经注册！,操作失败！'
-              });
+              this.$message({type: 'success', showClose: true, message: '该用户存在后者修改后的号码已经注册！,操作失败！'});
             }
-          }).catch((error) =>{
-            this.$message({
-              type: 'success',
-              showClose: true,
-              message: '操作失败!'
-            });
+          }).catch(() =>{
+            this.$message({type: 'success', showClose: true, message: '操作失败!'});
           })
 
 
