@@ -15,6 +15,7 @@ import manageParticipantPage from '@/pages/manageParticipantPage'
 import manageRecipentPage from '@/pages/manageRecipentPage'
 import LookRecipientInfo from '@/components/recipient/LookRecipientInfo'
 import manageFinancePage from '@/pages/manageFinancePage'
+import ActivityCharPage from '@/pages/ActivityCharPage'
 
 
 
@@ -36,6 +37,7 @@ export default new Router({
     {path: '/manageRecipentPage', name: 'manageRecipentPage', component: manageRecipentPage},
     {path: '/LookRecipientInfo', name: 'LookRecipientInfo', component: LookRecipientInfo},
     {path: '/manageFinancePage', name: 'manageFinancePage', component: manageFinancePage},
+    {path: '/ActivityCharPage', name: 'ActivityCharPage', component: ActivityCharPage},
 
 
   ],

@@ -10,12 +10,14 @@ import qs from 'qs'
 import axios from 'axios'
 import $ from 'jquery'
 import store from './store'
+import echarts from 'echarts'
 
 import verifyCode from "../static/js/VerifyCode.js"
 Vue.prototype.$axios = axios;
 Vue.prototype.qs = qs;
 Vue.use(verifyCode);
 Vue.use(ElementUI);
+Vue.prototype.$echarts = echarts;    //将echarts注册成Vue的全局属性
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
