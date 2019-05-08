@@ -11,10 +11,15 @@
              {{scope.$index+1}}
         </template>
       </el-table-column>
-      <el-table-column prop="userName" label="姓名" width="180px" :formatter="roleStatus"></el-table-column>
-      <el-table-column prop="userIdCard" label="身份证号" width="300px" :formatter="getIdCard"></el-table-column>
+      <el-table-column prop="userName" label="姓名" width="200px" :formatter="roleStatus"></el-table-column>
+      <el-table-column prop="userIdCard" label="身份证号" width="500px" :formatter="getIdCard"></el-table-column>
       <el-table-column prop="userPhone" label="电话" width="240px" :formatter="getPhone"></el-table-column>
-      <el-table-column prop="userImgUrl" label="个人照片" width="450" > </el-table-column>
+
+
+      <el-table-column  label="个人照片" width="200" >
+        <img :src="img[0]" style="height: 100px;width: 100px"/>
+      </el-table-column>
+
       <el-table-column prop="reviewStatus" label="报名状态" width="150px" :formatter="getApplyState"></el-table-column>
       <el-table-column  label="操作" width="150px" fixed="right">
         <template slot-scope="scope">
@@ -65,6 +70,7 @@
             dialogVisibleCheck:false,
             deleteFlag:false,
             checkFlag:false,
+            img:[],
             recipientTableData:{
               recipientId:'',
               userId:'',
@@ -114,6 +120,7 @@
             let _this = this;
             //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
             _this.recipientTableData =response.data;
+            this.img[0] =_this.recipientTableData[0].userImgUrl;
             _this.getNum();
           }).catch(() =>{
             //请求失败返回的数据

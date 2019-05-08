@@ -35,7 +35,7 @@
             <label>短信验证码:</label><br>
             <input type="text" style="width: 110px;height: 30px" maxlength="16" id="msgYzm" name="msgYzm" class="i-text" placeholder="请输入验证码" >
             &nbsp;&nbsp;
-            <input type="button" style="height: 30px;width: 95px" id="codeButton_f" @click="getNewMsg_f" value="获取验证码">
+            <input type="button" style="height: 30px;width: 100px" id="codeButton_f" @click="getNew_f" value="获取验证码">
             <input type="hidden" id="returnYzmForForget" name="returnYzmForForget" value="">
           </div>
           <br><br>
@@ -66,6 +66,17 @@
 
 
       //获取短信验证码倒计时
+      getNew_f(){
+        //发送验证码短信
+        let userPhone = $("#userPhoneForget").val();
+        alert(userPhone)
+        this.$axios.put("/api/yzmData?userPhone="+userPhone).then((response) =>{
+          $("#returnYzmForForget").val(response.data);
+        }).catch(() =>{
+          this.$message({type: 'success', showClose: true, message: '操作失败!'});
+        });
+        this.getNewMsg_f();
+      },
       getNewMsg_f:function(){
         let self=this;
         //60秒倒计时
@@ -88,7 +99,7 @@
             self.getNewMsg_f();
           },1000)
         }
-        //发送验证码短信
+       /* //发送验证码短信
         $.ajax({
           type: "post",
           async: true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
@@ -104,7 +115,7 @@
             //请求失败时执行该函数
             alert("发送短信失败!");
           }
-        })
+        })*/
       },
       formSubmit:function () {
         let firPassword = $("#firstUserPassword").val();
@@ -112,20 +123,24 @@
         let inputMsg = $("#msgYzm").val();
         let returnYzm = $("#returnYzmForForget").val();
         let userPhone = $("#userPhoneForget").val();
-        //alert("firPassword" + firPassword + "   secPassword" + secPassword + "   inputMsg" +inputMsg +"   returnYzm"+returnYzm)
         if(firPassword == secPassword){
           if(inputMsg == returnYzm){
             this.$axios.post("/api/userForgetPassword?userPhone="+userPhone+"&userPassword="+firPassword+"").then((response) =>{          //这里使用了ES6的语法
-              //alert(response.data)
+              if(response.data == "S"){
+                this.$message({type: 'success', showClose: true, message: '密码修改成功！！！'});
+              }else {
+                this.$message({type: 'success', showClose: true, message: '用户不存在！！！'});
+              }
             }).catch(() =>{
-              alert("请求数据失败！");    //请求失败返回的数据
+              this.$message({type: 'success', showClose: true, message: '请求数据失败！！！'});
+              //alert("请求数据失败！");    //请求失败返回的数据
             })
           }else{
-            alert("验证码错误！！！");
+            this.$message({type: 'warning', showClose: true, message: '验证码错误！！！请重新输入！！！'});
           }
         }else {
-          alert("输入密码不一致！！！");
-          clearTimeout(time);
+          this.$message({type: 'warning', showClose: true, message: '输入密码不一致！！！'});
+          //alert("输入密码不一致！！！");
         }
 
 

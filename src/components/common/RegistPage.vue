@@ -24,8 +24,8 @@
           <div class="fm-item">
             <label>短信验证码:</label><br>
             <input type="text" style="width: 110px;height: 30px" maxlength="6" id="inputMsgforRegister" name="inputMsgforRegister" class="i-text" placeholder="请输入验证码" >
-            &nbsp;&nbsp;
-            <input type="button" style="height: 30px;width: 95px" id="codeButton_r" @click="getNewMsg_r" value="获取验证码">
+            &nbsp;
+            <input type="button" style="height: 30px;width: 100px" id="codeButton_r" @click="getMsg_r" value="获取验证码">
             <input type="hidden" id="returnYzmforRegister" name="returnYzmforRegister" value="">
           </div>
           <br><br>
@@ -59,6 +59,16 @@
           },
 
           //获取短信验证码倒计时
+          getMsg_r(){
+            //发送验证码短信
+            let userPhone = $("#userPhoneforRegister").val();
+            this.$axios.put("/api/yzmData?userPhone="+userPhone).then((response) =>{
+              $("#returnYzmforRegister").val(response.data);
+            }).catch(() =>{
+              this.$message({type: 'success', showClose: true, message: '操作失败!'});
+            });
+            this.getNewMsg_r();
+          },
           getNewMsg_r:function(){
             let self=this;
             //60秒倒计时
@@ -79,7 +89,7 @@
                 self.getNewMsg_r();
               },1000)
             }
-            //发送验证码短信
+           /* //发送验证码短信
             $.ajax({
               type: "post",
               async: true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
@@ -95,7 +105,7 @@
                 //请求失败时执行该函数
                 alert("发送短信失败!");
               }
-            })
+            })*/
           },
           //注册
           submitInfo: function () {
@@ -105,12 +115,14 @@
             if(inputMsg == returnYzm &&inputMsg != '' &&inputMsg != null){
               this.$axios.post("/api/userRegister?userPhone="+userPhone+"").then((response) =>{          //这里使用了ES6的语法
                 alert(response.data);
+                document.getElementById("loginDiv").style = "display: block";
+                document.getElementById("registDiv").style = "display: none";
 
               }).catch(() =>{
-                alert("请求数据失败！") ;    //请求失败返回的数据
+                this.$message({type: 'success', showClose: true, message: '请求数据失败！！！'});
               })
             }else {
-              alert("验证码错误！！！");
+              this.$message({type: 'success', showClose: true, message: '验证码错误！！！'});
             }
           }
         }

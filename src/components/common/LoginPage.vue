@@ -57,8 +57,8 @@
           <div class="fm-item">
             <label>短信验证码:</label><br>
             <input type="text" style="width: 110px;height: 30px" maxlength="6" id="inputMsg" name="inputMsg" class="i-text" placeholder="请输入验证码" >
-            &nbsp;&nbsp;
-            <input type="button" style="height: 30px;width: 95px" id="codeButton" @click="getNewMsg" value="获取验证码">
+            &nbsp;
+            <input type="button" style="height: 30px;width: 100px" id="codeButton" @click="getNew" value="获取验证码">
             <input type="hidden" id="returnYzm" name="returnYzm" value="">
           </div>
           <br><br>
@@ -123,9 +123,18 @@
       },
       methods: {
         //获取短信验证码倒计时
+        getNew:function(){
+          //发送验证码短信
+          let userPhone = $("#userPhoneL").val();
+          this.$axios.put("/api/yzmData?userPhone="+userPhone).then((response) =>{
+              $("#returnYzm").val(response.data);
+          }).catch(() =>{
+            this.$message({type: 'success', showClose: true, message: '操作失败!'});
+          });
+          this.getNewMsg();
+        },
         getNewMsg:function(){
           let self=this;
-
           //60秒倒计时
           if (countsec == 0) {
             $("#codeButton").val("获取验证码");
@@ -142,8 +151,8 @@
               self.getNewMsg();
             },1000)
           }
-          //发送验证码短信
-          $.ajax({
+
+          /*$.ajax({
             type: "post",
             async: true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
             url: "/api/yzmData",       //请求发送到/yzmData处
@@ -159,7 +168,7 @@
               //请求失败时执行该函数
               alert("发送短信失败!");
             }
-          })
+          })*/
         },
 
         //忘记密码
@@ -203,7 +212,7 @@
                 let data = 'userAccount=' + userAccount + '&userPassword=' + userPassword + '&roleId=' + roleId;
                 this.$axios.post("/api/acountLogin?" + data).then((response) => {          //这里使用了ES6的语法
                   if (response.data == 'F') {
-                    this.$message({type: 'success', showClose: true, message: '登录失败!'});
+                    this.$message({type: 'success', showClose: true, message: '登录失败!   账号密码错误!'});
                   } else {
                     this.$message({type: 'success', showClose: true, message: '登录成功!'});
                     location.reload();

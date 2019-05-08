@@ -119,6 +119,10 @@
 
           //用户退出登录
           exitLogin: function(){
+            document.getElementById("divsearch").style = "display: none";
+            document.getElementById("loginDiv").style = "display: none";
+            document.getElementById("registDiv").style = "display: none";
+            document.getElementById("forgetDiv").style = "display: none";
             this.$confirm('用户退出登陆, 是否继续?', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
