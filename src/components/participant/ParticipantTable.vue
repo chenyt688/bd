@@ -16,7 +16,8 @@
         <el-table-column prop="reviewStatus" label="报名状态" width="150px" :formatter="getState"></el-table-column>
         <el-table-column  label="操作" width="100px" fixed="right">
           <template slot-scope="scope">
-            <i class="el-icon-view" title="审核活动信息"  @click="checkInfo(scope.row,dialogVisibleCheck=true)"></i>
+            <i class="el-icon-delete" title="删除报名信息"  @click="deleteInfo(scope.row)"></i>
+            <i class="el-icon-view" title="审核报名信息" style="position: relative;left: 20px" @click="checkInfo(scope.row,dialogVisibleCheck=true)"></i>
           </template>
         </el-table-column>
       </el-table>
@@ -152,6 +153,33 @@
 
 
         },
+        deleteInfo(rowData){
+          let readyData=Qs.stringify({
+            id:rowData.id,
+          });
+
+          this.$confirm('删除选中财政数据, 是否继续?', '提示', {
+            confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
+          }).then(() => {
+            this.$axios.put("/api/deleteById?"+readyData).then((response) =>{
+              if(response.data =="1"){
+                this.queryParticipantNum();
+                this.queryAllJoinInfo();
+                this.$message({type: 'success', showClose: true, message: '删除成功!'});
+
+              }else {
+                this.$message({type: 'success', showClose: true, message: '无权限,删除失败!'});
+              }
+
+            }).catch(() =>{
+              this.$message({type: 'success', showClose: true, message: '删除失败!'});
+            })
+          }).catch(() => {
+            this.$message({type: 'info', showClose: true, message: '已取消删除'});
+          });
+
+
+        }
 
 
       }
