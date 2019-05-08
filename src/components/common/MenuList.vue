@@ -127,6 +127,7 @@
               this.$message({type: 'success', message: '退出成功!'});
               this.$axios({method:'get', url:'/api/loginOut'});
               localStorage.clear();
+              this.$router.push('/');
               location.reload();
             }).catch(() => {
               this.$message({type: 'info', showClose: true, message: '已取消退出'});

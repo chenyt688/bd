@@ -181,6 +181,7 @@
           });
           this.$axios.put("/api/updateActivityState?"+readyData).then(() =>{
             this.$message({type: 'success', showClose: true, message: '活动状态更新!'});
+            this.getAllActivityInfo();
           }).catch(() =>{
             this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
           });

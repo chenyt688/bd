@@ -19,10 +19,10 @@
 
             <div class="col-sm-6">
               <h3 class="section-title multiple-title">财务监督&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<a>查看更多</a>]</h3>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<a @click="queryMoreFinance">查看更多</a>]</h3>
               <br>
-              <p v-for="item in activityList" :key="item.activityId">
-                <a @click="getActivityById(item)">[{{item.provinceName}}]【{{item.activityEndTime}}】 {{item.topic}} （{{item.demandNum}}）</a>
+              <p v-for="item in financeTableData" :key="item.financeId">
+                <a>[{{item.userName}}]【{{item.financeTime}}】 {{item.financeAbout}} （￥{{item.financeAmount}}）</a>
                 <br><br>
               </p>
 
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+  import Qs from 'qs';
     import ImgCom from "./ImgCom";
     export default {
       name: "IndexInfo",
@@ -64,12 +65,34 @@
             delFlag:'',
             provinceName:'',
           }],
+          financeTableData:{
+            financeId:'',
+            financeType:'', //收入  支出
+            financeTime:'',
+            financeAbout:'',  //财务用途
+            financeChannel:'', //财务渠道
+            financeAmount:'', //金额额度
+            userName:'',
+          }
         }
       },
       created(){
         this.getActivityInfo();
+        this.getFinanceInfo();
       },
       methods:{
+        getFinanceInfo(){
+          let readyData=Qs.stringify({
+            page:1,
+            pageSize:15,
+          });
+          this.$axios.put("/api/queryFinanceInfo?" +readyData).then((response) =>{
+            let _this = this;
+            _this.financeTableData = response.data;
+          }).catch(() =>{
+            this.$message({type: 'danger', showClose: true, message: '请求异常!'});
+          });
+        },
         getActivityInfo(){
           this.$axios.post("/api/queryActivityInfoIndex").then((respones) =>{
             let _this = this;
@@ -90,6 +113,9 @@
         },
         queryMoreActivity(){
           this.$router.push('/manageActivityPage');
+        },
+        queryMoreFinance(){
+          this.$router.push('/manageFinancePage');
         }
       }
     }

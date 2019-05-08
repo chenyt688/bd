@@ -189,10 +189,27 @@
         },
         //新增或者修改用户信息
         editUserInfo:function () {
-          if(this.formData.speAdd == null){
-            this.formData.speAdd= " ";
+          if(this.formData.province == null){
+            this.formData.province= "";
           }
-          let userAddress = this.formData.province + "-" + this.formData.city + "-" + this.formData.county + "-" + this.formData.town + "-" + this.formData.village;
+          if(this.formData.city == null){
+            this.formData.city= "";
+          }
+          if(this.formData.county == null){
+            this.formData.county= "";
+          }
+          if(this.formData.town == null){
+            this.formData.town= "";
+          }
+          if(this.formData.village == null){
+            this.formData.village= "";
+          }
+          if(this.formData.speAdd == null){
+            this.formData.speAdd= "";
+          }
+          let userAddress = this.formData.province + "-" + this.formData.city + "-" + this.formData.county + "-" +
+            this.formData.town + "-" + this.formData.village;
+
           let data =
             'userId=' + this.formData.userId +
             '&userAccount=' + this.formData.userAccount +

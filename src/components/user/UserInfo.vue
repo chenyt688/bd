@@ -465,7 +465,7 @@
               this.$message({type: 'success', showClose: true, message: '操作成功!'});
               //this.formData = response.data;
               //this.tableData = response.data;
-              this.clearData();
+
               this.getAllUserInfo();
               this.getUserInfoNum();
             }else {
@@ -488,7 +488,6 @@
         },
         //修改用户数据：表格数据放到form中
         editUserInfo:function (index,row) {
-          this.clearData();
           this.opeType ="编辑用户";
           this.formData.userId = row.userId;
           this.formData.userAccount = row.userAccount;
@@ -514,12 +513,10 @@
           this.formData.userPhone = '';
           this.formData.userEmail = '';
           this.formData.userBirth = '';
+
           this.formData.speAdd = '';
-          this.formData.province='';
-          this.formData.city='';
-          this.formData.county='';
-          this.formData.town='';
-          this.formData.village='';
+
+
         }
       }
     }

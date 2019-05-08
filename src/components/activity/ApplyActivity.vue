@@ -120,7 +120,7 @@
           let userAddress = this.activityFormData.province + "-" + this.activityFormData.city + "-"
             + this.activityFormData.county + "-" + this.activityFormData.town + "-"
             + this.activityFormData.village + ":" + this.activityFormData.speAdd;
-          alert(userAddress)
+          //alert(userAddress)
           let time = this.activityFormData.time;    //开始时间和截至时间数组
           let data = {
             activityId:this.activityFormData.activityId,
