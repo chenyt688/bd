@@ -2,11 +2,41 @@
     <div>
       <br>
       <a style="position: relative;right: -30px" @click="back">返回</a>
-      <p></p>
+      <br><br>
+      <br><br>
+      <h3 style="position: relative;left: 100px"><i>姓名:</i><span>{{this.recipientData.userName}}</span>
+
+        <span style="left: 300px;position: relative"><i>电话号码:</i>{{this.recipientData.userPhone}}</span>
+        <span style="left: 450px;position: relative"><i>身份证号:</i>{{this.recipientData.userIdCard}}</span>
+      </h3>
+      <br>
+      <i style="font-size: 20px;position:relative;left: 100px">个人照片:</i><img :src="this.recipientData.userImgUrl"/>
+      <br><br><br><br>
+      <h3><i style="left: 100px;position: relative">家庭状况:</i><span style="left: 100px;position: relative">{{this.recipientData.familyStatus}}</span></h3>
+      <br><br><br><br>
+      <i style="font-size: 20px;position:relative;left: 100px">个人申请书:</i><img :src="this.recipientData.provImgUrl"/>
+      <br>
+      <br><br><br><br>
+      <i style="font-size: 20px;position:relative;left: 100px">个人户口页:</i><img :src="this.recipientData.selfAccBookImgUrl"/>
+      <br>
+      <br><br><br><br>
+      <i style="font-size: 20px;position:relative;left: 100px">村级证明:</i><img :src="this.recipientData.villageLetterImgUrl"/>
+      <br><br><br><br>
+      <br>
+      <i style="font-size: 20px;position:relative;left: 100px">乡级证明:</i><img :src="this.recipientData.townProveImgUrl"/>
+      <br><br><br><br>
+      <br>
+      <i style="font-size: 20px;position:relative;left: 100px">学籍表:</i><img :src="this.recipientData.studentListImgUrl"/>
+      <br>
+      <br><br><br><br>
+      <i style="font-size: 20px;position:relative;left: 100px">二维码:</i><img :src="this.recipientData.qrcodeUrl"/>
+      <br><br><br><br><br><br><br><br><br>
+
     </div>
 </template>
 
 <script>
+  import Qs from 'qs';
     export default {
         name: "LookRecipientInfo",
       data(){
@@ -60,5 +90,15 @@
 </script>
 
 <style scoped>
+  img{
+    width: 600px;
+    height: 500px;
+    position: relative;
+    left: 400px;
+  }
+  i{
+    position: relative;
+    color: #0da3e2;
 
+  }
 </style>
