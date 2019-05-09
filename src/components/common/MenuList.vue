@@ -130,7 +130,8 @@
             }).then(() => {
               this.$message({type: 'success', message: '退出成功!'});
               this.$axios({method:'get', url:'/api/loginOut'});
-              localStorage.clear();
+              //localStorage.clear();
+              sessionStorage.clear();
               this.$router.push('/');
               location.reload();
             }).catch(() => {

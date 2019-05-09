@@ -26,11 +26,10 @@
       },
       methods: {
         handleRemove(file, fileList) {
-          alert(this.imgType);
+
         },
         handlePreview(file,fileList) {
 
-          alert(file.name);
         },
         msgTip(file,fileList) {
           let fileName = file.name.substring(0,file.name.indexOf("."));

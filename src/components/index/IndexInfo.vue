@@ -31,7 +31,7 @@
           </div><!-- /.row -->
         </div><!-- /.container -->
       </section>
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <br><br><br><br><br><br><br><br>
     </div>
   </div>
 

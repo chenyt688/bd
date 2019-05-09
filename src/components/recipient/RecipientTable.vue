@@ -4,21 +4,21 @@
     <el-button  icon="el-icon-search" style="position:relative;left:40px" @click="getRecipientInfo">搜索</el-button>
     <br><br>
     <el-table :data="recipientTableData" style="width: 100%" height="450"  border  @selection-change="saveMultipleSelection">
-      <el-input prop="recipientId"  hidden></el-input>
-      <el-input prop="userId"  hidden></el-input>
-      <el-table-column  label="序号" fixed width="60px">
+
+      <el-table-column  label="序号" fixed width="100px" >
         <template slot-scope="scope">
              {{scope.$index+1}}
         </template>
       </el-table-column>
+
       <el-table-column prop="userName" label="姓名" width="200px" :formatter="roleStatus"></el-table-column>
-      <el-table-column prop="userIdCard" label="身份证号" width="500px" :formatter="getIdCard"></el-table-column>
-      <el-table-column prop="userPhone" label="电话" width="240px" :formatter="getPhone"></el-table-column>
+      <el-table-column prop="userIdCard" label="身份证号" width="300px" :formatter="getIdCard"></el-table-column>
+      <el-table-column prop="userPhone" label="电话" width="300px" :formatter="getPhone"></el-table-column>
 
-
-      <el-table-column  label="个人照片" width="200" >
-        <img :src="img[0]" style="height: 100px;width: 100px"/>
-      </el-table-column>
+      <el-table-column prop="applicationTime" label="申请时间" width="300px"></el-table-column>
+      <!--<el-table-column  label="个人照片" width="200" >
+        <img :src="img[count]" style="height: 100px;width: 100px"/>
+      </el-table-column>-->
 
       <el-table-column prop="reviewStatus" label="报名状态" width="150px" :formatter="getApplyState"></el-table-column>
       <el-table-column  label="操作" width="150px" fixed="right">
@@ -65,6 +65,7 @@
             page:'1',                  //页数
             pageSize:'10',
             allNum:'',
+            count:0,
             inputCondition:'',
             tempRecipientId:'',
             dialogVisibleCheck:false,
@@ -109,6 +110,7 @@
 
       },
       methods:{
+
           //查询申请信息
         getRecipientInfo(){
           let readyData=Qs.stringify({
@@ -120,7 +122,10 @@
             let _this = this;
             //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
             _this.recipientTableData =response.data;
-            this.img[0] =_this.recipientTableData[0].userImgUrl;
+            /*for(let i =0; i<_this.recipientTableData.length;i++){
+              this.img[i] =_this.recipientTableData[i].userImgUrl;
+            }*/
+
             _this.getNum();
           }).catch(() =>{
             //请求失败返回的数据

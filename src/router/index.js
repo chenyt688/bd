@@ -21,10 +21,12 @@ import ActivityCharPage from '@/pages/ActivityCharPage'
 
 Vue.use(Router)
 
+
+
 export default new Router({
   routes: [
     {path: '/', name: 'indexContentPage', component: indexContentPage},
-    {path: '/userManager', name: 'userManagerPage', component: userManagerPage},
+    {path: '/userManager', name: 'userManagerPage', component: userManagerPage,meta:{requireAuth:true}},
     {path: '/personalCenter', name: 'personalCenter', component: personalCenter},
     {path: '/manageActivityPage', name: 'manageActivityPage', component: manageActivityPage},
     {path: '/applyActivityPage', name: 'applyActivityPage', component: applyActivityPage},
@@ -38,7 +40,8 @@ export default new Router({
     {path: '/LookRecipientInfo', name: 'LookRecipientInfo', component: LookRecipientInfo},
     {path: '/manageFinancePage', name: 'manageFinancePage', component: manageFinancePage},
     {path: '/ActivityCharPage', name: 'ActivityCharPage', component: ActivityCharPage},
-
-
   ],
+
 })
+
+

@@ -14,7 +14,7 @@
       <br><br><br><br>
       <h3><i style="left: 100px;position: relative">家庭状况:</i><span style="left: 100px;position: relative">{{this.recipientData.familyStatus}}</span></h3>
       <br><br><br><br>
-      <i style="font-size: 20px;position:relative;left: 100px">个人申请书:</i><img :src="this.recipientData.provImgUrl"/>
+      <i style="font-size: 20px;position:relative;left: 100px">个人申请书:</i><img :src="this.recipientData.proveImgUrl"/>
       <br>
       <br><br><br><br>
       <i style="font-size: 20px;position:relative;left: 100px">个人户口页:</i><img :src="this.recipientData.selfAccBookImgUrl"/>
@@ -53,7 +53,7 @@
               startTime:'',
               endTime:'',
               familyStatus:'',        //家庭状况
-              provImgUrl:'',         //个人申请书
+              proveImgUrl:'',         //个人申请书
               selfAccBookImgUrl:'',   //个人户口页
               villageLetterImgUrl:'', //村级证明信
               townProveImgUrl:'',     //乡级证明

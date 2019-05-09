@@ -4,10 +4,16 @@ Vue.use(Vuex);
 
 //先声明一个state变量，并赋值一个空对象给它,定义属性
 const state={//要设置的全局访问的state对象
-  userId: localStorage.getItem('userId'),
+
+  userId: sessionStorage.getItem('userId'),
+  userAccount:sessionStorage.getItem('userAccount'),
+  userName:sessionStorage.getItem('userName'),
+  roleId:sessionStorage.getItem('roleId')
+  //localStorage 永久保存
+  /*userId: localStorage.getItem('userId'),
   userAccount:localStorage.getItem('userAccount'),
   userName:localStorage.getItem('userName'),
-  roleId:localStorage.getItem('roleId')
+  roleId:localStorage.getItem('roleId')*/
   //要设置的初始属性值
 };
 

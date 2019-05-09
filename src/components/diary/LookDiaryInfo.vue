@@ -6,16 +6,18 @@
       <div>
         <i class="col-sm-2">用户账号</i><i class="col-sm-2">日记时间</i><i class="col-sm-2">天气</i><i class="col-sm-4">主题</i><i class="col-sm-2">查看日记内容</i>
       </div>
-      <p v-for="item in diaryList" :key="item.diaryId">
-        <br><br>
-        <i class="col-sm-2">{{item.userAccount}}</i>
-        <i class="col-sm-2">{{item.diaryTime}}</i>
-        <i class="col-sm-2">{{item.weather}}</i>
-        <i class="col-sm-4">{{item.diaryTopic}}</i>
-        <i class="col-sm-2"><a @click="lookDiary(item.diaryContent,dialogVisibleDiary=true)">查看日记内容</a></i>
-      </p>
+      <div style="height: 500px">
+        <p v-for="item in diaryList" :key="item.diaryId">
+          <br><br>
+          <i class="col-sm-2">{{item.userAccount}}</i>
+          <i class="col-sm-2">{{item.diaryTime}}</i>
+          <i class="col-sm-2">{{item.weather}}</i>
+          <i class="col-sm-4">{{item.diaryTopic}}</i>
+          <i class="col-sm-2"><a @click="lookDiary(item.diaryContent,dialogVisibleDiary=true)">查看日记内容</a></i>
+        </p>
+      </div>
+
     </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br>
     <!--分页-->
     <template>
       <div class="block" style="left: 20px;position: relative;">
@@ -39,7 +41,6 @@
         </el-dialog>
       </div>
     </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br>
   </div>
 
 

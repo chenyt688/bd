@@ -89,7 +89,7 @@
             startTime:'',
             endTime:'',
             familyStatus:'',        //家庭状况
-            provImgUrl:'',          //个人申请书
+            proveImgUrl:'',          //个人申请书
             selfAccBookImgUrl:'',   //个人户口页
             villageLetterImgUrl:'', //村级证明信
             townProveImgUrl:'',     //乡级证明
