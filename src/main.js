@@ -22,7 +22,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -31,4 +31,20 @@ new Vue({
   components: { App },
   template: '<App/>'
 
-})
+});
+router.beforeEach((to, from, next) => {     //权限拦截，非管理员不能访问志愿者信息管理界面
+  if(to.path =='/userManager'){
+    if(store.state.roleId == '2'){
+      next();
+    }else {
+      next({path:'/'});
+    }
+
+  }else {
+    next();
+  }
+
+
+
+});
+
