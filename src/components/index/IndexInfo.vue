@@ -12,7 +12,7 @@
               <h3 class="section-title">支教招募信息&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<a @click="queryMoreActivity">查看更多</a>]</h3>
               <br>
               <p v-for="item in activityList" :key="item.activityId">
-                <a @click="getActivityById(item)">[{{item.provinceName}}]【{{item.activityEndTime}}】 {{item.topic}} （{{item.demandNum}}）</a>
+                <a @click="getActivityById(item)">[{{item.provinceName}}]【{{item.activityEndTime}}】 {{item.topic}} （{{item.demandNum}}人）</a>
                 <br><br>
               </p>
             </div>

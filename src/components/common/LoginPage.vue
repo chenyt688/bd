@@ -209,6 +209,7 @@
                 let userAccount = $("#userAccount").val();
                 let userPassword = $("#userPassword").val();
                 let roleId = $("#roleId").val();
+
                 let data = 'userAccount=' + userAccount + '&userPassword=' + userPassword + '&roleId=' + roleId;
                 this.$axios.post("/api/acountLogin?" + data).then((response) => {          //这里使用了ES6的语法
                   if (response.data == 'F') {
@@ -217,10 +218,14 @@
                     this.$message({type: 'success', showClose: true, message: '登录成功!'});
                     location.reload();
                     this.user = response.data;
-                    localStorage.setItem('userId', this.user.userId);
+                    /*localStorage.setItem('userId', this.user.userId);
                     localStorage.setItem('userAccount', this.user.userAccount);
                     localStorage.setItem('userName', this.user.userName);
-                    localStorage.setItem('roleId', this.user.roleId);
+                    localStorage.setItem('roleId', this.user.roleId);*/
+                    sessionStorage.setItem('userId', this.user.userId);
+                    sessionStorage.setItem('userAccount', this.user.userAccount);
+                    sessionStorage.setItem('userName', this.user.userName);
+                    sessionStorage.setItem('roleId', this.user.roleId);
                     this.$store.commit('changeState', this.user.userId, this.user.userAccount, this.user.userName, this.user.roleId);
 
                   }

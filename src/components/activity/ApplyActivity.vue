@@ -1,9 +1,9 @@
 <template>
   <div>
     <page-title :msg="msg" :img-url="imgUrl"></page-title>
-    <el-form :model="activityFormData"  :inline="true" style="position:relative;left:80px" :disabled="flag">
+    <el-form :model="activityFormData" :inline="true" style="position:relative;left:80px" :disabled="flag">
       <el-form-item label="主题">
-        <el-input v-model="activityFormData.topic" clearable style="width: 507px"></el-input>
+        <el-input v-model="activityFormData.topic" clearable  style="width: 507px"></el-input>
       </el-form-item>
       <el-form-item label="人数需求">
         <el-input v-model="activityFormData.demandNum" clearable ></el-input>
@@ -51,6 +51,7 @@
   import AddressSelect from '../common/AddressSelect';
   import DuringTime from '../common/DuringTime';
   import PageTitle from "../common/PageTitle";
+
     export default {
       name: "ApplyActivity",
       components: {AddressSelect,PageTitle,DuringTime},
@@ -87,7 +88,8 @@
             speAdd:'',
             time:'',
             provinceName:''
-          }
+          },
+
         }
       },
 
