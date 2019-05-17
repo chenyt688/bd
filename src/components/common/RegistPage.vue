@@ -112,18 +112,23 @@
             let inputMsg = $("#inputMsgforRegister").val();
             let returnYzm = $("#returnYzmforRegister").val();
             let userPhone = $("#userPhoneforRegister").val();
-            if(inputMsg == returnYzm &&inputMsg != '' &&inputMsg != null){
-              this.$axios.post("/api/userRegister?userPhone="+userPhone+"").then((response) =>{          //这里使用了ES6的语法
-                alert(response.data);
-                document.getElementById("loginDiv").style = "display: block";
-                document.getElementById("registDiv").style = "display: none";
+            if(userPhone!=""){
+              if(inputMsg != '' &&inputMsg != null&&inputMsg == returnYzm){
+                this.$axios.post("/api/userRegister?userPhone="+userPhone+"").then((response) =>{          //这里使用了ES6的语法
+                  alert(response.data);
+                  document.getElementById("loginDiv").style = "display: block";
+                  document.getElementById("registDiv").style = "display: none";
 
-              }).catch(() =>{
-                this.$message({type: 'success', showClose: true, message: '请求数据失败！！！'});
-              })
+                }).catch(() =>{
+                  this.$message({type: 'warning', showClose: true, message: '请求数据失败！！！'});
+                })
+              }else {
+                this.$message({type: 'warning', showClose: true, message: '验证码错误！！！'});
+              }
             }else {
-              this.$message({type: 'success', showClose: true, message: '验证码错误！！！'});
+              this.$message({type: 'warning', showClose: true, message: '请输入电话号码！！！'});
             }
+
           }
         }
     }

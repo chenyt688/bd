@@ -55,7 +55,7 @@
           // 绘制图表
           myChart.setOption({
             title : {
-              text: '各个省份申请志愿者活动总数量饼状图',
+              text: '各个省份申请志愿者活动数量饼状图',
               x: 'center'
             },
             tooltip: {

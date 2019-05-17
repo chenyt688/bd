@@ -230,10 +230,11 @@
 
                   }
                 }).catch(() => {
-                  alert("请求数据失败！");     //请求失败返回的数据
+                  //alert("请求数据失败！");     //请求失败返回的数据
+                  this.$message({type: 'warning', showClose: true, message: '请求数据失败！!'});
                 })
               } else {
-                this.$message({type: 'success', showClose: true, message: '验证码错误！！！请重新输入！!'});
+                this.$message({type: 'warning', showClose: true, message: '验证码错误！！！请重新输入！!'});
 
                 $("#code_input").val("");
               }
@@ -241,38 +242,43 @@
               let inputMsg = $("#inputMsg").val();
               let returnYzm = $("#returnYzm").val();
               let userPhone = $("#userPhoneL").val();
-              //alert(returnYzm + "   " +inputMsg);
-              if (inputMsg == returnYzm) {
-                this.$axios.post("/api/phoneLogin?userPhone=" + userPhone).then((response) => {          //这里使用了ES6的语法
-                  if (response.data == 'F') {
-                    this.$message({type: 'success', showClose: true, message: '登录失败!'});
-                  } else {
-                    this.$message({type: 'success', showClose: true, message: '登录成功!'});
-                    location.reload();
-                    this.user = response.data;
-                    /*localStorage.setItem('userId', this.user.userId);
-                    localStorage.setItem('userAccount', this.user.userAccount);
-                    localStorage.setItem('userName', this.user.userName);
-                    localStorage.setItem('roleId', this.user.roleId);*/
 
-                    sessionStorage.setItem('userId', this.user.userId);
-                    sessionStorage.setItem('userAccount', this.user.userAccount);
-                    sessionStorage.setItem('userName', this.user.userName);
-                    sessionStorage.setItem('roleId', this.user.roleId);
-                    this.$store.commit('changeState', this.user.userId, this.user.userAccount, this.user.userName, this.user.roleId);
+              if(userPhone==""){
+                this.$message({type: 'warning', showClose: true, message: '请输入手机号码!'});
+              }else{
+                if (inputMsg!=""&&inputMsg == returnYzm) {
+                  this.$axios.post("/api/phoneLogin?userPhone=" + userPhone).then((response) => {          //这里使用了ES6的语法
+                    if (response.data == 'F') {
+                      this.$message({type: 'success', showClose: true, message: '登录失败!'});
+                    } else {
+                      this.$message({type: 'success', showClose: true, message: '登录成功!'});
+                      location.reload();
+                      this.user = response.data;
+                      /*localStorage.setItem('userId', this.user.userId);
+                      localStorage.setItem('userAccount', this.user.userAccount);
+                      localStorage.setItem('userName', this.user.userName);
+                      localStorage.setItem('roleId', this.user.roleId);*/
 
-                  }
-                }).catch(() => {
-                  alert("请求数据失败！")     //请求失败返回的数据
-                })
-                //$("#form2").submit();
-              } else {
-                this.$message({type: 'success', showClose: true, message: '验证码错误！！！登陆失败！！！'});
+                      sessionStorage.setItem('userId', this.user.userId);
+                      sessionStorage.setItem('userAccount', this.user.userAccount);
+                      sessionStorage.setItem('userName', this.user.userName);
+                      sessionStorage.setItem('roleId', this.user.roleId);
+                      this.$store.commit('changeState', this.user.userId, this.user.userAccount, this.user.userName, this.user.roleId);
+
+                    }
+                  }).catch(() => {
+                    this.$message({type: 'warning', showClose: true, message: '请求数据失败！！！'});
+                  })
+                  //$("#form2").submit();
+                } else {
+                  this.$message({type: 'warning', showClose: true, message: '验证码错误！！！登陆失败！！！'});
+                }
               }
+
 
             }
           }else {
-            this.$message({type: 'success', showClose: true, message: '已有账户登录！！！请先退出！！！'});
+            this.$message({type: 'warning', showClose: true, message: '已有账户登录！！！请先退出！！！'});
           }
         }
       }

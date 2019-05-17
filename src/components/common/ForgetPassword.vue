@@ -123,25 +123,30 @@
         let inputMsg = $("#msgYzm").val();
         let returnYzm = $("#returnYzmForForget").val();
         let userPhone = $("#userPhoneForget").val();
-        if(firPassword == secPassword){
-          if(inputMsg == returnYzm){
-            this.$axios.post("/api/userForgetPassword?userPhone="+userPhone+"&userPassword="+firPassword+"").then((response) =>{          //这里使用了ES6的语法
-              if(response.data == "S"){
-                this.$message({type: 'success', showClose: true, message: '密码修改成功！！！'});
-              }else {
-                this.$message({type: 'success', showClose: true, message: '用户不存在！！！'});
-              }
-            }).catch(() =>{
-              this.$message({type: 'success', showClose: true, message: '请求数据失败！！！'});
-              //alert("请求数据失败！");    //请求失败返回的数据
-            })
-          }else{
-            this.$message({type: 'warning', showClose: true, message: '验证码错误！！！请重新输入！！！'});
+        if(userPhone != ""){
+          if(firPassword!=""&&firPassword == secPassword){
+            if(inputMsg!=""&&inputMsg == returnYzm){
+              this.$axios.post("/api/userForgetPassword?userPhone="+userPhone+"&userPassword="+firPassword+"").then((response) =>{          //这里使用了ES6的语法
+                if(response.data == "S"){
+                  this.$message({type: 'success', showClose: true, message: '密码修改成功！！！'});
+                }else {
+                  this.$message({type: 'warning', showClose: true, message: '用户不存在！！！'});
+                }
+              }).catch(() =>{
+                this.$message({type: 'warning', showClose: true, message: '请求数据失败！！！'});
+                //alert("请求数据失败！");    //请求失败返回的数据
+              })
+            }else{
+              this.$message({type: 'warning', showClose: true, message: '验证码错误！！！请重新输入！！！'});
+            }
+          }else {
+            this.$message({type: 'warning', showClose: true, message: '输入密码不一致！！！'});
+            //alert("输入密码不一致！！！");
           }
         }else {
-          this.$message({type: 'warning', showClose: true, message: '输入密码不一致！！！'});
-          //alert("输入密码不一致！！！");
+          this.$message({type: 'warning', showClose: true, message: '请输入电话号码！！！'});
         }
+
 
 
 

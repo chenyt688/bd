@@ -39,12 +39,8 @@ router.beforeEach((to, from, next) => {     //权限拦截，非管理员不能�
     }else {
       next({path:'/'});
     }
-
   }else {
     next();
   }
-
-
-
 });
 

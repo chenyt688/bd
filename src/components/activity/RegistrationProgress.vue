@@ -59,7 +59,7 @@
               }
             }).catch(() =>{
               //请求失败返回的数据
-              this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
+              this.$message({type: 'warning', showClose: true, message: '暂无报名数据!'});
             })
           }else {
             this.$message({type: 'warning', showClose: true, message: '请登录查询!'});

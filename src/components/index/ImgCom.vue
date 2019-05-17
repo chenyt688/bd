@@ -14,9 +14,9 @@
       data(){
           return{
             imagesbox:[
-              {id:1,idView:require("../../../static/image/1.jpg")},
-              {id:4,idView:require("../../../static/image/4.jpg")},
-              {id:5,idView:require("../../../static/image/5.jpg")}],
+              {id:1,idView:require("../../../static/image/img1.jpg")},
+              {id:4,idView:require("../../../static/image/img2.jpg")},
+              {id:5,idView:require("../../../static/image/img3.jpg")}],
           }
       }
     }
