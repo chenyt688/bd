@@ -7,31 +7,36 @@
       <br><br>
       <section id="about" class="section about">
         <div class="container">
-          <div class="row">
+          <div class="row" >
             <div class="col-sm-6">
-              <h3 class="section-title">支教招募信息&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<a @click="queryMoreActivity">查看更多</a>]</h3>
+              <h3 class="titletext">&nbsp;&nbsp;&nbsp;&nbsp;支教招募信息<a @click="queryMoreActivity" style="color:#FFFFFF;font-size: 15px;margin-left: 300px">查看更多  -></a></h3>
               <br>
-              <p v-for="item in activityList" :key="item.activityId">
-                <a @click="getActivityById(item)">[{{item.provinceName}}]【{{item.activityEndTime}}】 {{item.topic}} （{{item.demandNum}}人）</a>
-                <br><br>
-              </p>
+              <ul v-for="item in activityList" :key="item.activityId">
+                <li style="margin-top: 8px;"> <em>o</em><a @click="getActivityById(item)" >[{{item.provinceName}}]【{{item.activityEndTime}}】 {{item.topic}} （{{item.demandNum}}人）</a></li>
+              </ul>
             </div>
-
-            <div class="col-sm-6">
-              <h3 class="section-title multiple-title">财务监督&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<a @click="queryMoreFinance">查看更多</a>]</h3>
+            <div class="col-sm-6"style="left: 100px">
+              <h3 class="titletext">&nbsp;&nbsp;&nbsp;&nbsp;财务监督<a @click="queryMoreFinance"style="color:#FFFFFF;font-size: 15px;margin-left: 350px">查看更多  -></a></h3>
               <br>
-              <p v-for="item in financeTableData" :key="item.financeId">
-                <a>[{{item.userName}}]【{{item.financeTime}}】 {{item.financeAbout}} （￥{{item.financeAmount}}）</a>
-                <br><br>
-              </p>
-
+              <ul v-for="item in financeTableData" :key="item.financeId">
+                <li style="margin-top: 8px"><em>o</em><a>[{{item.userName}}]【{{item.financeTime}}】 {{item.financeAbout}} （￥{{item.financeAmount}}）</a></li>
+              </ul>
 
             </div><!-- /.col-sm-6 -->
+
           </div><!-- /.row -->
         </div><!-- /.container -->
       </section>
-      <br><br><br><br><br><br><br><br>
+      <br><br>
+      <div class="section-title">
+        <li>—————    &nbsp;&nbsp;&nbsp;&nbsp;友情链接&nbsp;&nbsp;&nbsp;&nbsp;    —————</li>
+       </div>
+      <div style="margin: auto">
+        <a href="https://greencode.aliyun.com" style="color:#888;margin-left: 550px">码上公益</a>
+        <a href="http://www.cta613.org/" style="color:#888;margin-left: 60px">中华支教与助学信息中心</a>
+        <a href="http://www.go9999.com" style="color:#888;margin-left: 60px">支教联盟</a>
+      </div>
+      <br><br><br>
     </div>
   </div>
 
@@ -122,5 +127,35 @@
 </script>
 
 <style scoped>
-
+  .titletext {
+    background-color: #3679e5;
+    border-radius: 3px;
+  }
+  a{
+    font-size: 17px;
+    margin-left: 10px;
+    color: black;
+  }
+  em {
+    float: right;
+    padding-left: 5px;
+    color: black;
+  }
+  em{
+    font-style: normal;
+  }
+  .section-title {
+    display: block;
+    overflow: hidden;
+    text-align: center;
+    margin-bottom: 60px;
+    font-size: 18px;
+    color: #434A4E;
+  }
+  *:after {
+    box-sizing: border-box;
+  }
+  *:after {
+    box-sizing: border-box;
+  }
 </style>
