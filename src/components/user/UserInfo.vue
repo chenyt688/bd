@@ -27,13 +27,13 @@
       </el-table-column>
       <el-table-column prop="userAccount" label="账号" width="180px"></el-table-column>
       <el-table-column prop="userName" label="用户名" width="100px" ></el-table-column>
-      <el-table-column prop="roleId" label="角色" width="100px" :formatter="roleStatus"></el-table-column>
-      <el-table-column prop="userGender" label="性别" width="60px" :formatter="genderStatus"></el-table-column>
+      <el-table-column prop="roleId" label="角色" width="100px" :formatter="roleStatus" sortable></el-table-column>
+      <el-table-column prop="userGender" label="性别" width="80px" :formatter="genderStatus" sortable></el-table-column>
       <el-table-column prop="userIdentityData" label="身份证号" width="180" ></el-table-column>
       <el-table-column prop="userPhone" label="电话" width="110px"></el-table-column>
       <el-table-column prop="userEmail" label="邮箱" width="200px"></el-table-column>
-      <el-table-column prop="userBirth" label="出生日期" width="160px"></el-table-column>
-      <el-table-column prop="userRegistrationTime" label="注册时间" width="160px"></el-table-column>
+      <el-table-column prop="userBirth" label="出生日期" width="160px" sortable></el-table-column>
+      <el-table-column prop="userRegistrationTime" label="注册时间" width="160px" sortable></el-table-column>
       <el-table-column prop="userAddress" label="地址" width="500px"></el-table-column>
       <el-table-column prop="" label="操作" width="100px" fixed="right">
 
@@ -75,7 +75,7 @@
             <el-input v-model="formData.userPassword" clearable  placeholder="默认密码:123456"></el-input>
           </el-form-item>
           <el-form-item label="身份证号">
-            <el-input v-model="formData.userIdentityData" clearable ></el-input>
+            <el-input v-model="formData.userIdentityData" clearable @change="judgeIdCard($event)"></el-input>
           </el-form-item>
           <el-form-item label="姓名">
             <el-input v-model="formData.userName" clearable autocomplete="off"></el-input>
@@ -87,7 +87,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="邮箱">
-            <el-input v-model="formData.userEmail" clearable autocomplete="off"></el-input>
+            <el-input v-model="formData.userEmail" clearable @change="judgeEmail($event)"></el-input>
           </el-form-item>
           <el-form-item label="出生日期">
             <el-date-picker v-model="formData.userBirth" type="date" clearable placeholder="选择日期">
@@ -95,7 +95,7 @@
           </el-form-item>
 
           <el-form-item label="电话">
-            <el-input v-model="formData.userPhone" clearable autocomplete="off"></el-input>
+            <el-input v-model="formData.userPhone" clearable @change="judgePhone($event)"></el-input>
           </el-form-item>
           <br>
           <el-form-item label="省">
@@ -129,7 +129,8 @@
 </template>
 
 <script>
-    import Qs from 'qs'
+    import Qs from 'qs';
+    import {IDCardCheck} from "../../../static/js/judgeIdCard.js";
     export default {
       name: "UserInfo",
       data() {
@@ -213,6 +214,42 @@
         this.getProvinceInfo();
       },
       methods:{
+        judgeIsNull(){
+          let msg=false;
+          if(this.formData.userAccount=='' || this.formData.userPhone ==''){
+            msg = '账号和电话号码不能为空！';
+          }else {
+            msg = true;
+          }
+
+          return msg;
+        },
+        judgeIdCard(e){
+          let v = IDCardCheck(e);
+          if (v != true) {
+            this.$message({type: 'warning', showClose: true, message: v});
+            this.formData.userIdentityData='';
+          }
+        },
+        judgePhone(e){
+          let regMobile=/^0?1[3|4|5|8][0-9]\d{8}$/;//手机
+          let re = regMobile.test(e);
+          if(!re){
+            this.$message({type: 'warning', showClose: true, message: '请输入正确电话号码!'});
+            this.formData.userPhone='';
+          }
+
+        },
+        judgeEmail:function(e){
+          let saveEmail = this.formData.userEmail;
+          let reg = /^[a-zA-Z0-9]+@[a-z0-9]{2,5}\.[a-z]{2,3}(\.[a-z]{2,3})?$/;
+          let result = reg.test(e.trim());
+          if(!result){
+            this.$message({type: 'warning', showClose: true, message: '请输入正确邮箱!'});
+            this.formData.userEmail='';
+          }
+
+        },
         handleClose(done){
           this.$confirm('确认关闭？').then(_ => {done();}).catch(_ => {});
         },
@@ -380,7 +417,8 @@
             _this.tableData = response.data;
             //请求成功返回的数据
           }).catch(() =>{
-            alert("请求数据失败！");    //请求失败返回的数据
+            this.$message({type: 'info', showClose: true, message: '请求数据失败！'});
+
           });
           this.getUserInfoNumByCondition();
 
@@ -445,42 +483,61 @@
 
         //新增或者修改用户信息
         addOrEditUserInfo:function () {
-          let userAddress = this.formData.province + "-" + this.formData.city + "-" + this.formData.county + "-" + this.formData.town + "-" + this.formData.village;
-          let data =
-            'userId=' + this.formData.userId +
-            '&userAccount=' + ""+ this.formData.userAccount +
-            '&userPassword=' + ""+this.formData.userPassword +
-            '&userName=' + ""+this.formData.userName +
-            '&roleId=' + this.formData.roleId +
-            '&userGender=' + this.formData.userGender +
-            '&userIdentityData=' + this.formData.userIdentityData +
-            '&userPhone=' + this.formData.userPhone +
-            '&userBirth=' + this.formData.userBirth +
-            '&userAddress=' + userAddress +
-            '&userEmail=' + this.formData.userEmail +
-            '&speAdd=' + this.formData.speAdd +
-            '&opeType=' + this.opeType;
-          this.$axios.post("/api/addOrEditUserInfo?"+data).then((response) =>{
-            if(response.data !="F"){
-              this.$message({type: 'success', showClose: true, message: '操作成功!'});
-              //this.formData = response.data;
-              //this.tableData = response.data;
+          let msg = this.judgeIsNull();
+          if(msg != true){
+            this.$message({type: 'warning', showClose: true, message: '提交失败！'+msg});
+          }else {
+            let userAddress = this.formData.province + "-" + this.formData.city + "-" + this.formData.county + "-" + this.formData.town + "-" + this.formData.village;
+            let data =
+              'userId=' + this.formData.userId +
+              '&userAccount=' + ""+ this.formData.userAccount +
+              '&userPassword=' + ""+this.formData.userPassword +
+              '&userName=' + ""+this.formData.userName +
+              '&roleId=' + this.formData.roleId +
+              '&userGender=' + this.formData.userGender +
+              '&userIdentityData=' + this.formData.userIdentityData +
+              '&userPhone=' + this.formData.userPhone +
+              '&userBirth=' + this.formData.userBirth +
+              '&userAddress=' + userAddress +
+              '&userEmail=' + this.formData.userEmail +
+              '&speAdd=' + this.formData.speAdd +
+              '&opeType=' + this.opeType;
+            this.$axios.post("/api/addOrEditUserInfo?"+data).then((response) =>{
+              if(response.data !="F"){
+                this.$message({type: 'success', showClose: true, message: '操作成功!'});
+                //this.formData = response.data;
+                //this.tableData = response.data;
 
-              this.getAllUserInfo();
-              this.getUserInfoNum();
-            }else {
-              this.$message({type: 'success', showClose: true, message: '该用户存在后者修改后的号码已经注册！,操作失败！'});
-            }
-          }).catch(() =>{
-            this.$message({type: 'success', showClose: true, message: '操作失败!'});
-          })
+                this.getAllUserInfo();
+                this.getUserInfoNum();
+              }else {
+                this.$message({type: 'warning', showClose: true, message: '该用户存在或者号码已经注册！,操作失败！'});
+              }
+            }).catch(() =>{
+              this.$message({type: 'success', showClose: true, message: '操作失败!'});
+            })
+          }
+
 
 
         },
         //增加用户：修改模态框标题
+        UUId(){
+          let s = [];
+          let hexDigits = "0123456789abcdef";
+          for (var i = 0; i < 20; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+          }
+          s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+          s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+          //s[8] = s[13] = s[18] = s[23] = "-";
+          let uuid = s.join("");
+          return uuid;
+        },
         addUserInfo:function(){
           this.opeType ="新增用户";
           this.clearData();
+          this.formData.userAccount=this.UUId();
           this.formData.roleId = '1';
           this.formData.userGender = '1';
           this.formData.userId=0;

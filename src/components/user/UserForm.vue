@@ -14,7 +14,7 @@
           <el-input v-model="formData.userPassword" clearable  placeholder="默认密码:123456"></el-input>
         </el-form-item>
         <el-form-item label="身份证号">
-          <el-input v-model="formData.userIdentityData" clearable ></el-input>
+          <el-input v-model="formData.userIdentityData" clearable @change="judgeIdCard($event)"></el-input>
         </el-form-item>
         <el-form-item label="姓名">
           <el-input v-model="formData.userName" clearable autocomplete="off"></el-input>
@@ -26,10 +26,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="邮箱">
-          <el-input v-model="formData.userEmail" clearable autocomplete="off"></el-input>
+          <el-input v-model="formData.userEmail" clearable  @change="judgeEmail($event)"></el-input>
         </el-form-item>
         <el-form-item label="电话">
-          <el-input v-model="formData.userPhone" clearable autocomplete="off"></el-input>
+          <el-input v-model="formData.userPhone" clearable  @change="judgePhone($event)"></el-input>
         </el-form-item>
         <el-form-item label="出生日期">
           <el-date-picker v-model="formData.userBirth" type="date" clearable placeholder="选择日期">
@@ -72,6 +72,7 @@
 </template>
 
 <script>
+  import {IDCardCheck} from "../../../static/js/judgeIdCard.js";
     export default {
       name: "UserForm",
       props:["formData"],
@@ -125,6 +126,42 @@
         this.getProvinceInfo();
       },
       methods:{
+        judgeIsNull(){
+          let msg=false;
+          if(this.formData.userAccount=='' || this.formData.userPhone ==''){
+            msg = '账号和电话号码不能为空！';
+          }else {
+            msg = true;
+          }
+
+          return msg;
+        },
+        judgeIdCard(e){
+          let v = IDCardCheck(e);
+          if (v != true) {
+            this.$message({type: 'warning', showClose: true, message: v});
+            this.formData.userIdentityData='';
+          }
+        },
+        judgePhone(e){
+          let regMobile=/^0?1[3|4|5|8][0-9]\d{8}$/;//手机
+          let re = regMobile.test(e);
+          if(!re){
+            this.$message({type: 'warning', showClose: true, message: '请输入正确电话号码!'});
+            this.formData.userPhone='';
+          }
+
+        },
+        judgeEmail:function(e){
+          let saveEmail = this.formData.userEmail;
+          let reg = /^[a-zA-Z0-9]+@[a-z0-9]{2,5}\.[a-z]{2,3}(\.[a-z]{2,3})?$/;
+          let result = reg.test(e.trim());
+          if(!result){
+            this.$message({type: 'warning', showClose: true, message: '请输入正确邮箱!'});
+            this.formData.userEmail='';
+          }
+
+        },
         //地址级联
         getProvinceInfo:function () {
           this.$axios.put("/api/getProvinceInfo").then((response) =>{          //省
@@ -210,30 +247,36 @@
           let userAddress = this.formData.province + "-" + this.formData.city + "-" + this.formData.county + "-" +
             this.formData.town + "-" + this.formData.village;
 
-          let data =
-            'userId=' + this.formData.userId +
-            '&userAccount=' + this.formData.userAccount +
-            '&userPassword=' + this.formData.userPassword +
-            '&userName=' + this.formData.userName +
-            '&roleId=' + this.formData.roleId +
-            '&userGender=' + this.formData.userGender +
-            '&userIdentityData=' + this.formData.userIdentityData +
-            '&userPhone=' + this.formData.userPhone +
-            '&userBirth=' + this.formData.userBirth +
-            '&userAddress=' + userAddress +
-            '&userEmail=' + this.formData.userEmail +
-            '&speAdd=' + this.formData.speAdd +
-            '&opeType=' + '编辑用户';
-          this.$axios.post("/api/addOrEditUserInfo?"+data).then((response) =>{
-            if(response.data !="F"){
-              this.$message({type: 'success', showClose: true, message: '操作成功!'});
-              location.reload();
-            }else {
-              this.$message({type: 'success', showClose: true, message: '该用户存在!,操作失败!'});
-            }
-          }).catch(() =>{
-            this.$message({type: 'success', showClose: true, message: '操作失败!'});
-          })
+          let msg = this.judgeIsNull();
+          if(msg != true){
+            this.$message({type: 'warning', showClose: true, message: '提交失败！'+msg});
+          }else{
+            let data =
+              'userId=' + this.formData.userId +
+              '&userAccount=' + this.formData.userAccount +
+              '&userPassword=' + this.formData.userPassword +
+              '&userName=' + this.formData.userName +
+              '&roleId=' + this.formData.roleId +
+              '&userGender=' + this.formData.userGender +
+              '&userIdentityData=' + this.formData.userIdentityData +
+              '&userPhone=' + this.formData.userPhone +
+              '&userBirth=' + this.formData.userBirth +
+              '&userAddress=' + userAddress +
+              '&userEmail=' + this.formData.userEmail +
+              '&speAdd=' + this.formData.speAdd +
+              '&opeType=' + '编辑用户';
+            this.$axios.post("/api/addOrEditUserInfo?"+data).then((response) =>{
+              if(response.data !="F"){
+                this.$message({type: 'success', showClose: true, message: '操作成功!'});
+                location.reload();
+              }else {
+                this.$message({type: 'success', showClose: true, message: '该用户存在!,操作失败!'});
+              }
+            }).catch(() =>{
+              this.$message({type: 'success', showClose: true, message: '操作失败!'});
+            })
+          }
+
 
           //this.flag =true;
         },

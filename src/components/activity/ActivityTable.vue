@@ -15,12 +15,12 @@
         </template>
       </el-table-column>
       <el-table-column prop="topic" label="主题" width="300px" :formatter="roleStatus"></el-table-column>
-      <el-table-column prop="demandNum" label="人数需求" width="200px"></el-table-column>
-      <el-table-column prop="applicationTime" label="申请时间" width="200px"></el-table-column>
-      <el-table-column prop="activityStartTime" label="活动开始时间" width="200" ></el-table-column>
-      <el-table-column prop="activityEndTime" label="活动截止时间" width="200px"></el-table-column>
+      <el-table-column prop="demandNum" label="人数需求" width="200px" sortable></el-table-column>
+      <el-table-column prop="applicationTime" label="申请时间" width="200px" sortable></el-table-column>
+      <el-table-column prop="activityStartTime" label="活动开始时间" width="200" sortable></el-table-column>
+      <el-table-column prop="activityEndTime" label="活动截止时间" width="200px" sortable></el-table-column>
       <el-table-column prop="activityAddress" label="活动地址" width="500px"></el-table-column>
-      <el-table-column prop="reviewStatus" label="状态" width="100px" :formatter="getActivityState"></el-table-column>
+      <el-table-column prop="reviewStatus" label="状态" sortable width="100px" :formatter="getActivityState"></el-table-column>
       <el-table-column  label="操作" width="190px" fixed="right">
         <template slot-scope="scope">
           <i class="el-icon-edit" title="编辑" style="position: relative;left: 10px" @click="editActivityInfo(scope.$index, scope.row)"></i>

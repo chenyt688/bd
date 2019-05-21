@@ -17,7 +17,7 @@
       <el-table-column prop="userAccount" label="用户账号" width="200px" :formatter="roleStatus"></el-table-column>
       <el-table-column prop="userName" label="用户名" width="200px" :formatter="roleStatus"></el-table-column>
       <el-table-column prop="diaryTopic" label="主题" width="400px"></el-table-column>
-      <el-table-column prop="diaryTime" label="日记时间" width="200px"></el-table-column>
+      <el-table-column prop="diaryTime" label="日记时间" width="200px" sortable></el-table-column>
       <el-table-column prop="weather" label="天气" width="200px"></el-table-column>
       <el-table-column prop="diaryShow" label="状态" width="160px" :formatter="getState"></el-table-column>
       <el-table-column  label="操作" width="100px" fixed="right">

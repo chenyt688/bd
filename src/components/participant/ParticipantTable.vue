@@ -10,10 +10,10 @@
         </el-table-column>
         <el-table-column prop="userAccount" label="账号" width="250px" :formatter="roleStatus"></el-table-column>
         <el-table-column prop="provinceName" label="省份" width="150px"></el-table-column>
-        <el-table-column prop="applyTime" label="申请时间" width="250px"></el-table-column>
+        <el-table-column prop="applyTime" label="申请时间" width="250px" sortable></el-table-column>
         <el-table-column prop="activityTopic" label="活动主题" width="450" ></el-table-column>
-        <el-table-column prop="demandNum" label="人数需求" width="100px"></el-table-column>
-        <el-table-column prop="reviewStatus" label="报名状态" width="150px" :formatter="getState"></el-table-column>
+        <el-table-column prop="demandNum" label="人数需求" width="120px" sortable></el-table-column>
+        <el-table-column prop="reviewStatus" label="报名状态" width="150px" :formatter="getState" sortable></el-table-column>
         <el-table-column  label="操作" width="150px" fixed="right">
           <template slot-scope="scope">
             <i class="el-icon-delete" title="删除报名信息"  @click="deleteInfo(scope.row)"></i>

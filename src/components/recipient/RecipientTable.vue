@@ -13,7 +13,7 @@
 
       <el-table-column prop="userName" label="姓名" width="200px" :formatter="roleStatus"></el-table-column>
       <el-table-column prop="userIdCard" label="身份证号" width="300px" :formatter="getIdCard"></el-table-column>
-      <el-table-column prop="userPhone" label="电话" width="300px" :formatter="getPhone"></el-table-column>
+      <el-table-column prop="userPhone" label="电话" width="300px"></el-table-column>
 
       <el-table-column prop="applicationTime" label="申请时间" width="300px"></el-table-column>
       <!--<el-table-column  label="个人照片" width="200" >

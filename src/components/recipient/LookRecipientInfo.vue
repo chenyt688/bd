@@ -1,11 +1,10 @@
 <template>
-    <div>
+    <div style="width: 80%">
       <br>
       <a style="position: relative;right: -30px" @click="back">返回</a>
       <br><br>
       <br><br>
       <h3 style="position: relative;left: 100px"><i>姓名:</i><span>{{this.recipientData.userName}}</span>
-
         <span style="left: 300px;position: relative"><i>电话号码:</i>{{this.recipientData.userPhone}}</span>
         <span style="left: 450px;position: relative"><i>身份证号:</i>{{this.recipientData.userIdCard}}</span>
       </h3>
@@ -77,6 +76,7 @@
           this.$axios.put("/api/queryRecipientInfoByRecipientId?"+readyData).then((response) =>{
            let _this = this;
            _this.recipientData = response.data;
+            _this.recipientData.userIdCard = _this.recipientData.userIdCard.replace(/^(.{3})(?:\d+)(.{4})$/,"$1******$2")
           }).catch(() =>{
             //请求失败返回的数据
             this.$message({type: 'success', showClose: true, message: '请求数据失败!'});
@@ -91,8 +91,8 @@
 
 <style scoped>
   img{
-    width: 600px;
-    height: 500px;
+    width: 400px;
+    height: 300px;
     position: relative;
     left: 400px;
   }

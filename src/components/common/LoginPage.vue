@@ -249,7 +249,7 @@
                 if (inputMsg!=""&&inputMsg == returnYzm) {
                   this.$axios.post("/api/phoneLogin?userPhone=" + userPhone).then((response) => {          //这里使用了ES6的语法
                     if (response.data == 'F') {
-                      this.$message({type: 'success', showClose: true, message: '登录失败!'});
+                      this.$message({type: 'success', showClose: true, message: '用户不存在!登录失败!'});
                     } else {
                       this.$message({type: 'success', showClose: true, message: '登录成功!'});
                       location.reload();

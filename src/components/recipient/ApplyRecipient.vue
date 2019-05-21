@@ -6,10 +6,10 @@
           <el-input v-model="recipientFormData.userName" clearable style="width: 250px"></el-input>
         </el-form-item>
         <el-form-item label="身份证号" style="position: relative;left: 80px">
-          <el-input v-model="recipientFormData.userIdCard" clearable style="width: 250px"></el-input>
+          <el-input v-model="recipientFormData.userIdCard" clearable style="width: 250px" @change="judgeIdCard($event)"></el-input>
         </el-form-item>
         <el-form-item label="电话" style="position: relative;left: 160px">
-          <el-input v-model="recipientFormData.userPhone" clearable ></el-input>
+          <el-input v-model="recipientFormData.userPhone" clearable @change="judgePhone($event)"></el-input>
         </el-form-item>
         <el-form-item label="家庭状况">
           <el-input type="textarea" placeholder="1000字符以内" :rows="10" v-model="recipientFormData.familyStatus" clearable style="width: 1322px" ></el-input>
@@ -61,6 +61,7 @@
 
 <script>
   import Qs from 'qs';
+  import {IDCardCheck} from "../../../static/js/judgeIdCard.js";
     import PageTitle from "../common/PageTitle";
     import UploadImg from "../common/UploadImg";
     export default {
@@ -107,30 +108,88 @@
         }
       },
       methods: {
+        judgeIsNull(){
+          let msg = 'S';
+          if(this.recipientFormData.userName ==''){
+            msg = 'F';
+          }
+          if(this.recipientFormData.userIdCard ==''){
+            msg = 'F';
+          }
+          if(this.recipientFormData.userPhone ==''){
+            msg = 'F';
+          }
+          if(this.recipientFormData.familyStatus ==''){
+
+            msg = 'F';
+          }
+          /*if(this.recipientFormData.proveImgUrl ==''){
+            alert("2")
+            msg = 'F';
+          }
+          if(this.recipientFormData.selfAccBookImgUrl ==''){
+            alert("3")
+            msg = 'F';
+          }
+          if(this.recipientFormData.villageLetterImgUrl ==''){
+            msg = 'F';
+          }
+          if(this.recipientFormData.townProveImgUrl ==''){
+            msg = 'F';
+          }
+          if(this.recipientFormData.studentListImgUrl ==''){
+            msg = 'F';
+          }*/
+          return msg;
+        },
+        judgeIdCard(e){
+          let v = IDCardCheck(e);
+          if (v != true) {
+            this.$message({type: 'warning', showClose: true, message: v});
+            this.recipientFormData.userIdCard='';
+          }
+        },
+        judgePhone(e){
+          let regMobile=/^0?1[3|4|5|8][0-9]\d{8}$/;//手机
+          let re = regMobile.test(e);
+          if(!re){
+            this.$message({type: 'warning', showClose: true, message: '请输入正确电话号码!'});
+            this.recipientFormData.userPhone='';
+          }
+
+        },
         submitInfo:function () {
-          this.$confirm('提交申请, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            let readyData=Qs.stringify({
-              userName:this.recipientFormData.userName,
-              userIdCard:this.recipientFormData.userIdCard,
-              userPhone:this.recipientFormData.userPhone,
-              familyStatus:this.recipientFormData.familyStatus,
+          let flag = this.judgeIsNull();
+          if(flag == 'S'){
+            this.$confirm('提交申请, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              let readyData=Qs.stringify({
+                userName:this.recipientFormData.userName,
+                userIdCard:this.recipientFormData.userIdCard,
+                userPhone:this.recipientFormData.userPhone,
+                familyStatus:this.recipientFormData.familyStatus,
+              });
+              this.$axios.put("/api/inserRecipientInfo?"+readyData).then((response) =>{
+                if(response.data =="S"){
+                  this.$message({type: 'success', showClose: true, message: '提交成功!'});
+                }else if(response.data =="F2"){
+                  this.$message({type: 'warning', showClose: true, message: '材料未填写完整!提交失败!'});
+                }else {
+                  this.$message({type: 'warning', showClose: true, message: '用户已有申请记录!申请失败!'});
+                }
+              }).catch(() =>{
+                this.$message({type: 'warning', showClose: true, message: '提交失败!'});
+              })
+            }).catch(() => {
+              this.$message({type: 'info', showClose: true, message: '已取消提交'});
             });
-            this.$axios.put("/api/inserRecipientInfo?"+readyData).then((response) =>{
-              if(response.data =="S"){
-                this.$message({type: 'success', showClose: true, message: '提交成功!'});
-              }else{
-                this.$message({type: 'success', showClose: true, message: '用户已经申请!提交失败!'});
-              }
-            }).catch(() =>{
-              this.$message({type: 'success', showClose: true, message: '提交失败!'});
-            })
-          }).catch(() => {
-            this.$message({type: 'info', showClose: true, message: '已取消提交'});
-          });
+          }else {
+            this.$message({type: 'warning', showClose: true, message: '材料未填写完整!提交失败!'});
+          }
+
         },
         backForm(){
           this.recipientFormData.userName ='';

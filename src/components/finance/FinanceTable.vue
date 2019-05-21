@@ -12,11 +12,11 @@
       </template>
     </el-table-column>
     <el-table-column prop="userName" label="捐款人" width="150px" ></el-table-column>
-    <el-table-column prop="financeType" label="支出/收入" width="100px" ></el-table-column>
-    <el-table-column prop="financeTime" label="捐款时间" width="200px" ></el-table-column>
-    <el-table-column prop="financeAbout" label="财务用途" width="500" > </el-table-column>
-    <el-table-column prop="financeChannel" label="捐款渠道" width="200px" ></el-table-column>
-    <el-table-column prop="financeAmount" label="捐款额度" width="200px" :formatter="getNewFinanceAmount"></el-table-column>
+    <el-table-column prop="financeType" label="支出/收入" width="110px" sortable></el-table-column>
+    <el-table-column prop="financeTime" label="捐款时间" width="200px" sortable></el-table-column>
+    <el-table-column prop="financeAbout" label="财务用途" width="500" sortable> </el-table-column>
+    <el-table-column prop="financeChannel" label="捐款渠道" width="200px" sortable></el-table-column>
+    <el-table-column prop="financeAmount" label="捐款额度" width="200px" :formatter="getNewFinanceAmount" sortable></el-table-column>
     <el-table-column  label="操作" width="100px" fixed="right" >
       <template slot-scope="scope">
         <i  v-show="showFlag" >无操作权限</i>

@@ -16,7 +16,7 @@ import manageRecipentPage from '@/pages/manageRecipentPage'
 import LookRecipientInfo from '@/components/recipient/LookRecipientInfo'
 import manageFinancePage from '@/pages/manageFinancePage'
 import ActivityCharPage from '@/pages/ActivityCharPage'
-
+import PictureShowPage from '@/pages/PictureShowPage'
 
 
 Vue.use(Router)
@@ -40,6 +40,7 @@ export default new Router({
     {path: '/LookRecipientInfo', name: 'LookRecipientInfo', component: LookRecipientInfo,meta:{requireAuth: false}},
     {path: '/manageFinancePage', name: 'manageFinancePage', component: manageFinancePage,meta:{requireAuth: false}},
     {path: '/ActivityCharPage', name: 'ActivityCharPage', component: ActivityCharPage,meta:{requireAuth: false}},
+    {path: '/PictureShowPage', name: 'PictureShowPage', component: PictureShowPage,meta:{requireAuth: false}},
   ],
 
 })

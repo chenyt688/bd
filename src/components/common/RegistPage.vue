@@ -115,7 +115,7 @@
             if(userPhone!=""){
               if(inputMsg != '' &&inputMsg != null&&inputMsg == returnYzm){
                 this.$axios.post("/api/userRegister?userPhone="+userPhone+"").then((response) =>{          //这里使用了ES6的语法
-                  alert(response.data);
+                  this.$message({type: 'warning', showClose: true, message: response.data});
                   document.getElementById("loginDiv").style = "display: block";
                   document.getElementById("registDiv").style = "display: none";
 
