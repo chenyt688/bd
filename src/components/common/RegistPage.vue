@@ -9,7 +9,7 @@
           <a id="a2" style="color: green;font-size: 18px" value="phoneLogin" @click="phoneToLogin()">手机号注册</a>
         </div>
         <br>
-        <!--手机号码登录表单-->
+        <!--手机号码注册-->
         <form id="registForm" name="registForm"  action="/api/userRegister">
           <br>
           <div class="fm-item">
@@ -45,6 +45,7 @@
 
 <script>
     let countsec = 60;
+    let time;
     export default {
         name: "RegistPage",
         data(){
@@ -85,27 +86,10 @@
               let codeButton_r = document.getElementById("codeButton_r");//设置按钮为不可用
               codeButton_r.disabled=true;
               countsec--;
-              setTimeout(function() {
+              time = setTimeout(function() {
                 self.getNewMsg_r();
               },1000)
             }
-           /* //发送验证码短信
-            $.ajax({
-              type: "post",
-              async: true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-              url: "/api/yzmData",       //请求发送到/yzmData处
-              data: {},
-              dataType: "json",        //返回数据形式为json
-              success: function (result) {
-                if (result) {
-                  $("#returnYzmforRegister").val(result);
-                }
-              },
-              error: function () {
-                //请求失败时执行该函数
-                alert("发送短信失败!");
-              }
-            })*/
           },
           //注册
           submitInfo: function () {
@@ -118,12 +102,19 @@
                   this.$message({type: 'warning', showClose: true, message: response.data});
                   document.getElementById("loginDiv").style = "display: block";
                   document.getElementById("registDiv").style = "display: none";
-
                 }).catch(() =>{
                   this.$message({type: 'warning', showClose: true, message: '请求数据失败！！！'});
+                  clearTimeout(time);
+                  $("#codeButton_r").val("获取验证码");
+                  let codeButton_r = document.getElementById("codeButton_r");//设置按钮为不可用
+                  codeButton_r.disabled=false;
                 })
               }else {
                 this.$message({type: 'warning', showClose: true, message: '验证码错误！！！'});
+                clearTimeout(time);
+                $("#codeButton_r").val("获取验证码");
+                let codeButton_r = document.getElementById("codeButton_r");//设置按钮为不可用
+                codeButton_r.disabled=false;
               }
             }else {
               this.$message({type: 'warning', showClose: true, message: '请输入电话号码！！！'});

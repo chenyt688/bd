@@ -69,7 +69,6 @@
       getNew_f(){
         //发送验证码短信
         let userPhone = $("#userPhoneForget").val();
-        alert(userPhone)
         this.$axios.put("/api/yzmData?userPhone="+userPhone).then((response) =>{
           $("#returnYzmForForget").val(response.data);
         }).catch(() =>{
@@ -95,27 +94,10 @@
 
 
           countsec--;
-          setTimeout(function() {
+          time = setTimeout(function() {
             self.getNewMsg_f();
           },1000)
         }
-       /* //发送验证码短信
-        $.ajax({
-          type: "post",
-          async: true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-          url: "/api/yzmData",       //请求发送到/yzmData处
-          data: {},
-          dataType: "json",        //返回数据形式为json
-          success: function (result) {
-            if (result) {
-              $("#returnYzmForForget").val(result);
-            }
-          },
-          error: function () {
-            //请求失败时执行该函数
-            alert("发送短信失败!");
-          }
-        })*/
       },
       formSubmit:function () {
         let firPassword = $("#firstUserPassword").val();
@@ -129,15 +111,40 @@
               this.$axios.post("/api/userForgetPassword?userPhone="+userPhone+"&userPassword="+firPassword+"").then((response) =>{          //这里使用了ES6的语法
                 if(response.data == "S"){
                   this.$message({type: 'success', showClose: true, message: '密码修改成功！！！'});
+
+                  clearTimeout(time);
+                  $("#codeButton_f").val("获取验证码");
+                  let codeButton_f = document.getElementById("codeButton_f");//设置按钮为不可用
+                  codeButton_f.disabled=false;
+
+                  document.getElementById("loginDiv").style = "display: block";
+                  document.getElementById("registDiv").style = "display: none";
+                  document.getElementById("forgetDiv").style = "display: none";
+
+
                 }else {
                   this.$message({type: 'warning', showClose: true, message: '用户不存在！！！'});
+
+                  clearTimeout(time);
+                  $("#codeButton_f").val("获取验证码");
+                  let codeButton_f = document.getElementById("codeButton_f");//设置按钮为不可用
+                  codeButton_f.disabled=false;
                 }
               }).catch(() =>{
                 this.$message({type: 'warning', showClose: true, message: '请求数据失败！！！'});
-                //alert("请求数据失败！");    //请求失败返回的数据
+
+                clearTimeout(time);
+                $("#codeButton_f").val("获取验证码");;
+                let codeButton_f = document.getElementById("codeButton_f");//设置按钮为不可用
+                codeButton_f.disabled=false;
               })
             }else{
-              this.$message({type: 'warning', showClose: true, message: '验证码错误！！！请重新输入！！！'});
+              this.$message({type: 'warning', showClose: true, message: '验证码错误！！！'});
+
+              clearTimeout(time);
+              $("#codeButton_f").val("获取验证码");
+              let codeButton_f = document.getElementById("codeButton_f");//设置按钮为不可用
+              codeButton_f.disabled=false;
             }
           }else {
             this.$message({type: 'warning', showClose: true, message: '输入密码不一致！！！'});

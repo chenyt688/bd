@@ -84,6 +84,7 @@
 
   let countsec = 60;
   let verifyCode;
+  let time;
     export default {
       name: "LoginAndRegist",
       data(){
@@ -147,28 +148,12 @@
             //document.getElementById('codeButton').style.cursor = 'not-allowed';
             document.getElementById('codeButton').disabled=true;
             countsec--;
-            setTimeout(function() {
+            time = setTimeout(function() {
               self.getNewMsg();
             },1000)
           }
 
-          /*$.ajax({
-            type: "post",
-            async: true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "/api/yzmData",       //请求发送到/yzmData处
-            data: {},
-            dataType: "json",        //返回数据形式为json
-            success: function (result) {
-              console.log(result);
-              if (result) {
-                $("#returnYzm").val(result);
-              }
-            },
-            error: function () {
-              //请求失败时执行该函数
-              alert("发送短信失败!");
-            }
-          })*/
+
         },
 
         //忘记密码
@@ -249,7 +234,12 @@
                 if (inputMsg!=""&&inputMsg == returnYzm) {
                   this.$axios.post("/api/phoneLogin?userPhone=" + userPhone).then((response) => {          //这里使用了ES6的语法
                     if (response.data == 'F') {
-                      this.$message({type: 'success', showClose: true, message: '用户不存在!登录失败!'});
+                      clearTimeout(time);
+                      $("#codeButton").val("获取验证码");
+                      let codeButton = document.getElementById('codeButton');
+                      codeButton.disabled=false;
+                      this.$message({type: 'warning', showClose: true, message: '用户不存在!登录失败!'});
+
                     } else {
                       this.$message({type: 'success', showClose: true, message: '登录成功!'});
                       location.reload();
