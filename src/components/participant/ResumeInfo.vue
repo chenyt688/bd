@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :model="resumeFormData" :inline="true"  style="position:relative;left:80px" :disabled="flag">
+    <el-form :model="resumeFormData" :inline="true"   :disabled="flag">
       <el-form-item label="ID" style="display: none">
         <el-input v-model="resumeFormData.userId" clearable ></el-input>
       </el-form-item>
