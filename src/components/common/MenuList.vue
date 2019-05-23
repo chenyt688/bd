@@ -123,21 +123,26 @@
             document.getElementById("loginDiv").style = "display: none";
             document.getElementById("registDiv").style = "display: none";
             document.getElementById("forgetDiv").style = "display: none";
-            this.$confirm('用户退出登陆, 是否继续?', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {
-              this.$message({type: 'success', message: '退出成功!'});
-              this.$axios({method:'get', url:'/api/loginOut'});
-              //localStorage.clear();
-              sessionStorage.clear();
-              this.$router.push('/');
-              location.reload();
-            }).catch(() => {
-              this.$message({type: 'info', showClose: true, message: '已取消退出'});
+            if(this.$store.state.userId == '' || this.$store.state.userId == null){
+              this.$message({type: 'warning', message: '用户未登陆!'});
+            }else {
+              this.$confirm('用户退出登陆, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                this.$message({type: 'success', message: '退出成功!'});
+                this.$axios({method:'get', url:'/api/loginOut'});
+                //localStorage.clear();
+                sessionStorage.clear();
+                this.$router.push('/');
+                location.reload();
+              }).catch(() => {
+                this.$message({type: 'info', showClose: true, message: '已取消退出'});
 
-            });
+              });
+            }
+
 
 
             //重新刷新页面

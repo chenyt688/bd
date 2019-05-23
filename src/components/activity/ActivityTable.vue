@@ -27,8 +27,22 @@
           <i class="el-icon-delete" title="删除" style="position:relative;left: 20px" @click="confirmDeleteActivityInfo(scope.$index, scope.row)"></i>
           <i class="el-icon-s-custom" title="查看用户信息" style="position: relative;left: 30px" @click="queryUserInfo(scope.$index, scope.row,dialogVisible = true)"></i>
           <i class="el-icon-document" title="查看活动信息" style="position:relative;left: 40px" @click="toActivityInfo(scope.row,dialogVisibleLook =true)"></i>
-          <i class="el-icon-view" title="审核活动信息"  v-show="checkIcon" style="position:relative;left: 50px;"  @click="checkActivityInfo(scope.row,0,dialogVisibleCheck = true)"></i>
-          <i class="el-icon-finished" title="发布"  v-show="publishIcon" style="position:relative;left: 60px;" @click="publishActivityInfo(scope.row)"></i>
+
+          <i v-if="scope.row.reviewStatus != 2">
+            <i class="el-icon-view" title="审核活动信息" v-if="" v-show="checkIcon" style="position:relative;left: 50px;"  @click="checkActivityInfo(scope.row,0,dialogVisibleCheck = true)"></i>
+          </i>
+          <i v-if="scope.row.reviewStatus == 2">
+            <i class="el-icon-view" title="审核活动信息" v-if="" v-show="checkIcon" style="position:relative;left: 50px;"  @click="checkActivityInfo1"></i>
+          </i>
+
+
+          <i v-if="scope.row.reviewStatus == 1">
+            <i class="el-icon-finished"  title="发布"  v-show="publishIcon" style="position:relative;left: 60px;" @click="publishActivityInfo(scope.row)"></i>
+          </i>
+          <i v-if="scope.row.reviewStatus != 1">
+            <i class="el-icon-finished" title="发布"   v-show="publishIcon" style="position:relative;left: 60px;" @click="publishActivityInfo1(scope.row)"></i>
+          </i>
+
 
         </template>
       </el-table-column>
@@ -100,6 +114,8 @@
       components: {LookActivityInfo, EditActivity, LookUserInfo, ApplyActivity},
       data(){
         return{
+          flag:false,
+          flag2:true,
           saveTempActivity:'',
           checkIcon:false,
           publishIcon:false,
@@ -173,6 +189,12 @@
 
       },
       methods:{
+        checkActivityInfo1(){
+          this.$message({type: 'warning', showClose: true, message: '活动已发布,不能进行操作!'});
+        },
+        publishActivityInfo1(){
+          this.$message({type: 'warning', showClose: true, message: '活动未审核或者已发布!'});
+        },
         //更新状态
         updateActivityState:function(activityId,reviewStatus){
           let readyData=Qs.stringify({
@@ -358,7 +380,6 @@
 
         //编辑活动信息
         editActivityInfo:function(index,rowData){
-
           let roldId = this.$store.state.roleId;  //登录用户的角色id
           let userIdSaved = this.$store.state.userId; //已经保存的用户id
           let userIdSelect = rowData.userId;      //选中申请活动的用户id

@@ -118,7 +118,7 @@
           if(response.data =="S"){
             this.$message({type: 'success', showClose: true, message: '修改成功!'});
           }else {
-            this.$message({type: 'success', showClose: true, message: '修改失败!'});
+            this.$message({type: 'warning', showClose: true, message: '修改失败!'});
           }
         }).catch(() =>{
           this.$message({type: 'success', showClose: true, message: '操作失败!'});

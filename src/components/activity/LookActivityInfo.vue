@@ -93,8 +93,10 @@
               if(response.data == "S"){     //用户没有报名该活动
                 //var _this = this;
                 this.$axios.put("/api/insertParticipant?"+readyData).then((response)=>{
-                  if(response.data =="1"){
+                  if(response.data =="S"){
                     this.$message({type: 'success', showClose: true, message: '报名成功!'});
+                  }else {
+                    this.$message({type: 'warning', showClose: true, message: '活动未审核发布，不能报名!'});
                   }
                 }).catch(() =>{
                   //请求失败返回的数据

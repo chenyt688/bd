@@ -7,9 +7,10 @@
                  action="/api/uploadPicture"
                  multiple
                  :file-list="fileList3"
+                 :before-upload="beforeAvatarUpload"
                  :auto-upload="true"
                  list-type="picture">
-        <el-button sslot="trigger" size="small" style="margin-left: 30px" type="primary" title="只能上传jpg/png文件" @click="changeState">选取图片</el-button>
+        <el-button sslot="trigger" size="small" style="margin-left: 30px" type="primary" title="只能上传jpg/png文件" @click="changeState">上传图片</el-button>
       </el-upload>
       <el-button size="small" style="margin-left: 160px;position: absolute;top: 174px;"  @click="getAllPicture">刷新</el-button>
     </div>
@@ -67,6 +68,16 @@
         },
         changeState(){
           this.show = false;
+        },
+        beforeAvatarUpload(file) {
+          const isJPG = file.type === 'image/jpeg';
+          const isPNG = file.type === 'image/png';
+          if (!isJPG && !isPNG) {
+            this.$message.error('上传头像图片只能是JPG/PNG格式!');
+            this.getAllPicture();
+          }
+
+          return isJPG;
         }
       }
     }
