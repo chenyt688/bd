@@ -9,14 +9,14 @@
         <div class="container">
           <div class="row" >
             <div class="col-sm-6">
-              <h3 class="titletext">&nbsp;&nbsp;&nbsp;&nbsp;支教招募信息<a @click="queryMoreActivity" style="color:#FFFFFF;font-size: 15px;margin-left: 300px">查看更多  -></a></h3>
+              <h3 class="titletext" style="color:#FFFFFF;">&nbsp;&nbsp;&nbsp;&nbsp;支教招募信息<a @click="queryMoreActivity" style="color:#FFFFFF;font-size: 15px;margin-left: 300px">查看更多  -></a></h3>
               <br>
               <ul v-for="item in activityList" :key="item.activityId">
                 <li style="margin-top: 8px;"> <em>o</em><a @click="getActivityById(item)" >[{{item.provinceName}}]【{{item.activityEndTime}}】 {{item.topic}} （{{item.demandNum}}人）</a></li>
               </ul>
             </div>
             <div class="col-sm-6"style="left: 100px">
-              <h3 class="titletext">&nbsp;&nbsp;&nbsp;&nbsp;财务监督<a @click="queryMoreFinance"style="color:#FFFFFF;font-size: 15px;margin-left: 350px">查看更多  -></a></h3>
+              <h3 class="titletext" style="color:#FFFFFF;">&nbsp;&nbsp;&nbsp;&nbsp;财务监督<a @click="queryMoreFinance"style="color:#FFFFFF;font-size: 15px;margin-left: 350px">查看更多  -></a></h3>
               <br>
               <ul v-for="item in financeTableData" :key="item.financeId">
                 <li style="margin-top: 8px"><em>o</em><a>[{{item.userName}}]【{{item.financeTime}}】 {{item.financeAbout}} （￥{{item.financeAmount}}）</a></li>

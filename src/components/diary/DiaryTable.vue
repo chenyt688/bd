@@ -6,7 +6,7 @@
 
     <br><br>
 
-    <el-table :data="diaryTableData" style="width: 100%" height="400"  border>
+    <el-table :data="diaryTableData" style="width: 100%" height="400"  border >
       <el-input prop="diaryId"  hidden></el-input>
       <el-input prop="userId"  hidden></el-input>
       <el-table-column  label="序号" fixed width="60px">

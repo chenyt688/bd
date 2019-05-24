@@ -89,26 +89,31 @@
 
           let readyData = 'userId='+this.activityFormData.userId + '&activityId=' +this.activityFormData.activityId;
           if(this.$store.state.userId != null && this.$store.state.userId != ""){     //判断用户是否已经登录
-            this.$axios.put("/api/queryParticipantIsExistence?"+readyData).then((response)=>{     //判断是否已经报名
-              if(response.data == "S"){     //用户没有报名该活动
-                //var _this = this;
-                this.$axios.put("/api/insertParticipant?"+readyData).then((response)=>{
-                  if(response.data =="S"){
-                    this.$message({type: 'success', showClose: true, message: '报名成功!'});
-                  }else {
-                    this.$message({type: 'warning', showClose: true, message: '活动未审核发布，不能报名!'});
-                  }
-                }).catch(() =>{
-                  //请求失败返回的数据
-                  this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
-                })
-              }else {
-                this.$message({type: 'warning', showClose: true, message: '用户已经报名该活动!'});
-              }
-            }).catch(() =>{
-              //请求失败返回的数据
-              this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
-            })
+            if(this.activityFormData.reviewStatus !== 4){
+              this.$axios.put("/api/queryParticipantIsExistence?"+readyData).then((response)=>{     //判断是否已经报名
+                if(response.data == "S"){     //用户没有报名该活动
+                  //var _this = this;
+                  this.$axios.put("/api/insertParticipant?"+readyData).then((response)=>{
+                    if(response.data =="S"){
+                      this.$message({type: 'success', showClose: true, message: '报名成功!'});
+                    }else {
+                      this.$message({type: 'warning', showClose: true, message: '活动未审核发布，不能报名!'});
+                    }
+                  }).catch(() =>{
+                    //请求失败返回的数据
+                    this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
+                  })
+                }else {
+                  this.$message({type: 'warning', showClose: true, message: '用户已经报名该活动!'});
+                }
+              }).catch(() =>{
+                //请求失败返回的数据
+                this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
+              })
+            }else {
+              this.$message({type: 'warning', showClose: true, message: '该活动已经结束!'});
+            }
+
           }else {
             this.$message({type: 'warning', showClose: true, message: '请先登录!'});
             this.$router.push('/manageActivityPage');

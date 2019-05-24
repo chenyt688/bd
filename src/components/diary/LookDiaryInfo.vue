@@ -6,7 +6,7 @@
       <div>
         <i class="col-sm-2">用户账号</i><i class="col-sm-2">日记时间</i><i class="col-sm-2">天气</i><i class="col-sm-4">主题</i><i class="col-sm-2">查看日记内容</i>
       </div>
-      <div style="height: 500px">
+      <div style="height: 500px;background: url(../../../static/image/beijei.jpg)" >
         <p v-for="item in diaryList" :key="item.diaryId">
           <br><br>
           <i class="col-sm-2">{{item.userAccount}}</i>

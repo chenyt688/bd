@@ -28,10 +28,10 @@
           <i class="el-icon-s-custom" title="查看用户信息" style="position: relative;left: 30px" @click="queryUserInfo(scope.$index, scope.row,dialogVisible = true)"></i>
           <i class="el-icon-document" title="查看活动信息" style="position:relative;left: 40px" @click="toActivityInfo(scope.row,dialogVisibleLook =true)"></i>
 
-          <i v-if="scope.row.reviewStatus != 2">
+          <i v-if="scope.row.reviewStatus != 2 && scope.row.reviewStatus !=4 ">
             <i class="el-icon-view" title="审核活动信息" v-if="" v-show="checkIcon" style="position:relative;left: 50px;"  @click="checkActivityInfo(scope.row,0,dialogVisibleCheck = true)"></i>
           </i>
-          <i v-if="scope.row.reviewStatus == 2">
+          <i v-if="scope.row.reviewStatus == 2 || scope.row.reviewStatus ==4">
             <i class="el-icon-view" title="审核活动信息" v-if="" v-show="checkIcon" style="position:relative;left: 50px;"  @click="checkActivityInfo1"></i>
           </i>
 
@@ -190,10 +190,10 @@
       },
       methods:{
         checkActivityInfo1(){
-          this.$message({type: 'warning', showClose: true, message: '活动已发布,不能进行操作!'});
+          this.$message({type: 'warning', showClose: true, message: '活动已发布或者已结束,不能进行操作!'});
         },
         publishActivityInfo1(){
-          this.$message({type: 'warning', showClose: true, message: '活动未审核或者已发布!'});
+          this.$message({type: 'warning', showClose: true, message: '活动状态非未审核状态，不能进行操作!'});
         },
         //更新状态
         updateActivityState:function(activityId,reviewStatus){
@@ -352,6 +352,9 @@
             case 3:
               statusW = "审核未过";
               break;
+            case 4:
+              statusW = "结束";
+              break;
             default:
               statusW = "待审核";
               break;
@@ -384,13 +387,15 @@
           let userIdSaved = this.$store.state.userId; //已经保存的用户id
           let userIdSelect = rowData.userId;      //选中申请活动的用户id
           let activityState = rowData.reviewStatus;
-
           if(roldId == 2){      //管理员可以直接编辑
-            this.queryActivityBySelected(rowData);
-            this.dialogVisibleActiVityToEdit=true;
-
+            if(rowData.reviewStatus !== 4){   //活动结束不可修改
+              this.queryActivityBySelected(rowData);
+              this.dialogVisibleActiVityToEdit=true;
+            }else {
+              this.$message({type: 'warning', showClose: true, message: '该活动已经结束,不能进行修改!'});
+            }
           }else{                //一般用户只能编辑自己申请的未审核的活动
-            if(activityState == 0 && userIdSaved == userIdSelect){  //待审核状态可以编辑
+            if(activityState === 0 && userIdSaved === userIdSelect){  //待审核状态可以编辑
               this.queryActivityBySelected(rowData);
               this.dialogVisibleActiVityToEdit=true;
 

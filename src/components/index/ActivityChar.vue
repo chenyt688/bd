@@ -1,11 +1,21 @@
 <template>
     <div>
       <page-title :msg="msg"></page-title>
-      <a style="position: relative;left: 50px">柱  状  图</a>
-      <div id="myChart" :style="{width: '100%', height: '500px'}" ></div>
-      <br><br><br>
-      <a style="position: relative;left: 50px">饼  状  图</a>
-      <div id="myChart1"  :style="{width: '100%', height: '500px'}" ></div>
+      <div class="block" style="margin-left: 100px;">
+        <span class="demonstration">选择年：</span>
+        <el-date-picker
+          v-model="year"
+          align="right"
+          @change="getActivityData"
+          type="year"
+          placeholder="选择年">
+        </el-date-picker>
+        <a style="margin-left: 50px" @click="changeChart(1)">柱  状  图</a>
+        <a style="margin-left: 50px" @click="changeChart(2)">饼  状  图</a>
+      </div>
+
+      <div id="myChart" style="width: 100%; height: 500px;margin-top: 40px" v-show="flag1"></div>
+      <div id="myChart1" style="width: 100%; height: 500px;margin-top: 40px" v-show="flag2"></div>
       <br><br><br>
       <br><br><br>
     </div>
@@ -13,6 +23,7 @@
 
 <script>
     import PageTitle from "../common/PageTitle";
+    import Qs from 'qs';
 
     export default {
       name: "ActivityChar",
@@ -20,6 +31,10 @@
       data(){
         return{
           msg:'数据分析',
+          year:'',
+          flag1:true,
+          flag2:false,
+          type:1,
           chartData:{
             provinceName:'',
             num:'',
@@ -33,14 +48,36 @@
         //this.drawLineChart();
       },
       methods:{
+        changeChart(val){
+          if(val ===1){
+            this.flag1=true;
+            this.flag2=false;
+            this.type =1;
+            this.drawLineChart();
+          }else {
+            this.flag1=false;
+            this.flag2=true;
+            this.type =2;
+            this.drawRatioChart();
+
+          }
+        },
 
         //获取各个省份申报活动的数据
         getActivityData(){
-          this.$axios.post("/api/getActivityCountByProvinceName").then((response) =>{
+          let readyData=Qs.stringify({
+            year:this.year
+          });
+          console.log(this.year)
+          this.$axios.put("/api/getActivityCountByProvinceName?"+readyData).then((response) =>{
             let _this = this;
             _this.chartData = response.data;
-            this.drawLineChart();
-            this.drawRatioChart();
+            if(this.type ===1){
+              this.drawLineChart();
+            }else {
+              this.drawRatioChart();
+            }
+
           }).catch(() =>{
             this.$message({type: 'danger', showClose: true, message: '请求异常!'});
           });
@@ -52,10 +89,23 @@
         drawRatioChart(){
           // 基于准备好的dom，初始化echarts实例
           let myChart = this.$echarts.init(document.getElementById('myChart1'));
+          myChart.resize({ width: 1540, height: 500 });
+          let time;
+          if(this.year !==''&& this.year !==null){
+            time = this.year.getFullYear();
+          }
+
           // 绘制图表
+          let title;
+          if(this.year ==='' || this.year ===null){
+            title ='所有年份各个省份申请志愿者活动数量饼状图'
+          }else {
+            title =time+'年各个省份申请志愿者活动数量饼状图'
+          }
+
           myChart.setOption({
             title : {
-              text: '各个省份申请志愿者活动数量饼状图',
+              text: title,
               x: 'center'
             },
             tooltip: {
@@ -120,10 +170,20 @@
         //生成柱状图
         drawLineChart() {
           let myChart = this.$echarts.init(document.getElementById('myChart'));
+          let title;
+          let time;
+          if(this.year !=='' && this.year !==null){
+            time = this.year.getFullYear();
+          }
+          if(this.year ==='' || this.year ===null){
+            title ='所有年份各个省份申请志愿者活动数量情况'
+          }else {
+            title =time+'年各个省份申请志愿者活动数量情况'
+          }
           myChart.setOption({
             color: ['#3398DB'],
             title: {
-              text: '各个省份申请志愿者活动总数量情况',
+              text: title,
               x:'center'
             },
             tooltip : {
