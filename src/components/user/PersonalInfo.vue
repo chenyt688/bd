@@ -69,14 +69,19 @@
         getUserInfoByUserId:function () {
           this.$axios.post("/api/getUserInfoByUserId").then((response) =>{          //初始用户信息
             let _this = this
-            _this.formData= response.data;
-            _this.formData.roleId = '' + _this.formData.roleId;
-            _this.formData.userGender = ''+_this.formData.userGender;
-            _this.resumeFormData.userId = _this.formData.userId;
+            this.formData= response.data;
+            this.formData.roleId = '' + this.formData.roleId;
+            this.formData.userGender = ''+this.formData.userGender;
+            if(this.formData.userBirth ===null){
+              this.formData.userBirth='1990-01-01';
+            }
+            if(this.formData.userGender === '0'){
+              this.formData.userGender = '1'
+            }
+            this.resumeFormData.userId = this.formData.userId;
           })
         },
         getUserResumeByUserId:function () {
-
           this.$axios.post("/api/getUserResumeByUserId").then((response) =>{        //初始化用户简历
             let _this = this
             _this.resumeFormData= response.data;

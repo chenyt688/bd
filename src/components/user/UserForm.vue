@@ -31,7 +31,7 @@
         <el-form-item label="电话">
           <el-input v-model="formData.userPhone" clearable  @change="judgePhone($event)"></el-input>
         </el-form-item>
-        <el-form-item label="出生日期">
+        <el-form-item label="出生日期" >
           <el-date-picker v-model="formData.userBirth" type="date" clearable placeholder="选择日期">
           </el-date-picker>
         </el-form-item>
@@ -126,6 +126,7 @@
         this.getProvinceInfo();
       },
       methods:{
+
         judgeIsNull(){
           let msg=false;
           if(this.formData.userAccount=='' || this.formData.userPhone ==''){
@@ -212,7 +213,7 @@
           document.getElementById("selectDiv").style = "display: none";
           document.getElementById("showSelect").style = "display: block";
 
-          this.formData.userAccount= this.formDataBat.userAccount;
+          this.formData.userAccount = this.formDataBat.userAccount;
           this.formData.userId= this.formDataBat.userId;
           this.formData.userPassword= this.formDataBat.userPassword;
           this.formData.userName= this.formDataBat.userName;
@@ -226,6 +227,24 @@
         },
         //新增或者修改用户信息
         editUserInfo:function () {
+          if(this.formData.userEmail == null){
+            this.formData.userEmail = '';
+          }
+          if(this.formData.userIdentityData === null){
+            this.formData.userIdentityData="";
+          }
+          if(this.formData.userName == null){
+            this.formData.userName = "";
+          }
+          if(this.formData.userPhone == null){
+            this.formData.userPhone = "";
+          }
+          if(this.formData.userPhone == null){
+            this.formData.userPhone == "";
+          }
+          if(this.formData.userBirth == null){
+            this.formData.userBirth = '1990-01-01';;
+          }
           if(this.formData.province == null){
             this.formData.province= "";
           }

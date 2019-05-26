@@ -4,8 +4,8 @@
     <div class="container">
       <!-- nav -->
       <nav class="navbar navbar-default ow-navigation">
-          <img src="static/image/logo.jpg" style="width: 150px;height: 80px;left: 800px"/>
-          <a href="#/" class="navbar-brand">支 <span>教</span></a>
+          <img src="../../../static/image/logo.jpg" style="width: 150px;height: 80px;left: 800px"/>
+          <a href="/" class="navbar-brand">支 <span>教</span></a>
         <div class="navbar-collapse collapse navbar-right" id="navbar">
           <ul class="nav navbar-nav">
             <li class="langs-block" v-for="basemenu in baseMenuInfo">
@@ -18,7 +18,7 @@
                 </div>
               </div>
             </li>
-            <input type="hidden" value="1" id="loginId"></input>
+            <input type="hidden" value="1" id="loginId"/>
             <li><a  title="登陆/注册" @click="login" ><i class="icon icon-User"></i></a></li>
             <!--<li><a  title="搜索" @click="search"><i class="icon icon-Search"></i></a></li>-->
             <li><a  title="退出" @click="exitLogin"><i class="icon icon-Exit"></i></a></li>
@@ -30,7 +30,7 @@
       </nav><!-- nav /- -->
       <div class="tp-mask-wrap" style="display: none" id="divsearch">
         <span><i class="icon_close" style="left: 1110px;position: relative;top:-10px" @click="close"></i></span>
-        <input type="hidden" value="1" id="searchInput"></input>
+        <input type="hidden" value="1" id="searchInput"/>
         <input type="text" id="inputSearch" class="form-control"  style="width: 180px;left: 920px;position: relative;top: -35px" placeholder="搜索" @keyup.enter ="submit"/>
       </div><!-- Search Box /- -->
     </div><!-- Container /- -->

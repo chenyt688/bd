@@ -24,6 +24,7 @@ Vue.use(Router)
 
 
 export default new Router({
+  mode:'history',
   routes: [
     {path: '/', name: 'indexContentPage', component: indexContentPage,meta:{requireAuth: false}},
     {path: '/userManager', name: 'userManagerPage', component: userManagerPage,meta:{requireAuth:true}},

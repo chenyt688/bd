@@ -19,7 +19,7 @@
       <el-image v-for="p in picture"
         style="width: 290px; height: 150px;margin-left: 12px;margin-top: 12px"
         :src="p.img"
-        :fit="fits"></el-image>
+        :fit="fits" v-bind:key="p.img"></el-image>
     </div>
     <br><br><br><br><br>
     <br><br><br><br><br>

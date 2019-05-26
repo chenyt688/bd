@@ -272,6 +272,13 @@
           if(this.$store.state.roleId != null && this.$store.state.roleId == '2'){
             if(input == 'personal'){
               this.queryActivityNumByUserLoging();
+            }else if(input !==""){
+              this.$axios.put("/api/getActivityAccountByInput?input="+input).then((response) =>{
+                let _this= this;
+                _this.allNum = response.data;
+              }).catch(() =>{
+                this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
+              })
             }else {
               this.$axios.post("/api/getActivityAccount").then((response) =>{
                 let _this= this;
@@ -284,7 +291,14 @@
           }else {     //获取发布活动的数量
             if(input == 'personal'){
               this.queryActivityNumByUserLoging();
-            }else {
+            }else if(input !==""){
+              this.$axios.put("/api/getActivityAccountByInput?input="+input).then((response) =>{
+                let _this= this;
+                _this.allNum = response.data;
+              }).catch(() =>{
+                this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
+              })
+            }else{
               this.$axios.post("/api/getActivityAccountPublished").then((response) =>{
                 let _this= this;
                 _this.allNum = response.data;
@@ -446,12 +460,13 @@
             let _this = this;
             //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
             _this.tableData =response.data;
+            this.getActivityCount();
           }).catch(() =>{
             //请求失败返回的数据
             this.$message({type: 'success', showClose: true, message: '请求数据失败!'});
           });
 
-          this.getActivityCount();
+
         },
 
         //改变页面大小

@@ -199,7 +199,9 @@
                 this.$axios.post("/api/acountLogin?" + data).then((response) => {          //这里使用了ES6的语法
                   if (response.data == 'F') {
                     this.$message({type: 'success', showClose: true, message: '登录失败!   账号密码错误!'});
-                  } else {
+                  } else if(response.data == 'F1'){
+                    this.$message({type: 'warning', showClose: true, message: '已有用户登录,请先退出其他账户!'});
+                  }else {
                     this.$message({type: 'success', showClose: true, message: '登录成功!'});
                     location.reload();
                     this.user = response.data;
@@ -240,7 +242,9 @@
                       codeButton.disabled=false;
                       this.$message({type: 'warning', showClose: true, message: '用户不存在!登录失败!'});
 
-                    } else {
+                    }else if(response.data == 'F1'){
+                      this.$message({type: 'warning', showClose: true, message: '已有用户登录，请先退出!'});
+                    }else {
                       this.$message({type: 'success', showClose: true, message: '登录成功!'});
                       location.reload();
                       this.user = response.data;

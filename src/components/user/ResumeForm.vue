@@ -105,7 +105,7 @@
               this.$message({type: 'success', showClose: true, message: '操作成功!'});
             }
           }).catch(() =>{
-            this.$message({type: 'success', showClose: true, message: '操作失败!'});
+            this.$message({type: 'warning', showClose: true, message: '请登录操作!'});
           })
         },
         backStatue:function () {      //取消编辑
