@@ -265,35 +265,39 @@
           }
           let userAddress = this.formData.province + "-" + this.formData.city + "-" + this.formData.county + "-" +
             this.formData.town + "-" + this.formData.village;
+          if(this.$store.state.userId === '' || this.$store.state.userId  ===null){
+            this.$message({type: 'warning', showClose: true, message: '请登录操作！'});
+          }else {
+            let msg = this.judgeIsNull();
+            if(msg != true){
+              this.$message({type: 'warning', showClose: true, message: '提交失败！'+msg});
+            }else{
+              let data =
+                'userId=' + this.formData.userId +
+                '&userAccount=' + this.formData.userAccount +
+                '&userPassword=' + this.formData.userPassword +
+                '&userName=' + this.formData.userName +
+                '&roleId=' + this.formData.roleId +
+                '&userGender=' + this.formData.userGender +
+                '&userIdentityData=' + this.formData.userIdentityData +
+                '&userPhone=' + this.formData.userPhone +
+                '&userBirth=' + this.formData.userBirth +
+                '&userAddress=' + userAddress +
+                '&userEmail=' + this.formData.userEmail +
+                '&speAdd=' + this.formData.speAdd +
+                '&opeType=' + '编辑用户';
+              this.$axios.post("/api/addOrEditUserInfo?"+data).then((response) =>{
+                if(response.data !="F"){
+                  this.$message({type: 'success', showClose: true, message: '操作成功!'});
+                  location.reload();
+                }else {
+                  this.$message({type: 'success', showClose: true, message: '该用户存在!,操作失败!'});
+                }
+              }).catch(() =>{
+                this.$message({type: 'success', showClose: true, message: '操作失败!'});
+              })
+          }
 
-          let msg = this.judgeIsNull();
-          if(msg != true){
-            this.$message({type: 'warning', showClose: true, message: '提交失败！'+msg});
-          }else{
-            let data =
-              'userId=' + this.formData.userId +
-              '&userAccount=' + this.formData.userAccount +
-              '&userPassword=' + this.formData.userPassword +
-              '&userName=' + this.formData.userName +
-              '&roleId=' + this.formData.roleId +
-              '&userGender=' + this.formData.userGender +
-              '&userIdentityData=' + this.formData.userIdentityData +
-              '&userPhone=' + this.formData.userPhone +
-              '&userBirth=' + this.formData.userBirth +
-              '&userAddress=' + userAddress +
-              '&userEmail=' + this.formData.userEmail +
-              '&speAdd=' + this.formData.speAdd +
-              '&opeType=' + '编辑用户';
-            this.$axios.post("/api/addOrEditUserInfo?"+data).then((response) =>{
-              if(response.data !="F"){
-                this.$message({type: 'success', showClose: true, message: '操作成功!'});
-                location.reload();
-              }else {
-                this.$message({type: 'success', showClose: true, message: '该用户存在!,操作失败!'});
-              }
-            }).catch(() =>{
-              this.$message({type: 'success', showClose: true, message: '操作失败!'});
-            })
           }
 
 

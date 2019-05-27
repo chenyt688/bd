@@ -159,48 +159,52 @@
         },
         submitForm:function () {
           let msg = this.judgeIsNull();
-
-          if(msg == ''){
-            let userAddress = this.activityFormData.province + "-" + this.activityFormData.city + "-"
-              + this.activityFormData.county + "-" + this.activityFormData.town + "-"
-              + this.activityFormData.village + ":" + this.activityFormData.speAdd;
-            //alert(userAddress)
-            let time = this.activityFormData.time;    //开始时间和截至时间数组
-            let data = {
-              activityId:this.activityFormData.activityId,
-              userId:this.$store.state.userId,
-              activityAddress:userAddress,
-              applicationTime:this.activityFormData.applicationTime,
-              passTime:this.activityFormData.passTime,
-              activityStartTime:time[0],         //time值包括开始和截至时间
-              activityEndTime:time[1],
-              topic:this.activityFormData.topic,
-              imgUrl:this.activityFormData.imgUrl,
-              demandNum:this.activityFormData.demandNum,
-              organizationProfiles:this.activityFormData.organizationProfiles,
-              workContent:this.activityFormData.workContent,
-              treatmentGain:this.activityFormData.treatmentGain,
-              conditions:this.activityFormData.conditions,
-              contactInfo:this.activityFormData.contactInfo,
-              reviewStatus:this.activityFormData.reviewStatus,
-              delFlag:this.activityFormData.delFlag,
-              provinceName:this.activityFormData.provinceName,
-            };
-            //alert(data.activityAddress)
-            //var data = 'activityAddress=' + userAddress;
-
-            this.$axios.post("/api/addActivityInfo",data).then((response) =>{
-              if(response.data =="S"){
-                this.$message({type: 'success', showClose: true, message: '保存成功!'});
-              }else {
-                this.$message({type: 'warning', showClose: true, message: '用户未登陆!  保存失败!'});
-              }
-            }).catch(() =>{
-              this.$message({type: 'warning', showClose: true, message: '操作失败!'});
-            })
+          if(this.$store.state.userId ===''||this.$store.state.userId === null){
+            this.$message({type: 'warning', showClose: true, message: '请登录申请!'});
           }else {
-            this.$message({type: 'warning', showClose: true, message: msg});
+            if(msg == ''){
+              let userAddress = this.activityFormData.province + "-" + this.activityFormData.city + "-"
+                + this.activityFormData.county + "-" + this.activityFormData.town + "-"
+                + this.activityFormData.village + ":" + this.activityFormData.speAdd;
+              //alert(userAddress)
+              let time = this.activityFormData.time;    //开始时间和截至时间数组
+              let data = {
+                activityId:this.activityFormData.activityId,
+                userId:this.$store.state.userId,
+                activityAddress:userAddress,
+                applicationTime:this.activityFormData.applicationTime,
+                passTime:this.activityFormData.passTime,
+                activityStartTime:time[0],         //time值包括开始和截至时间
+                activityEndTime:time[1],
+                topic:this.activityFormData.topic,
+                imgUrl:this.activityFormData.imgUrl,
+                demandNum:this.activityFormData.demandNum,
+                organizationProfiles:this.activityFormData.organizationProfiles,
+                workContent:this.activityFormData.workContent,
+                treatmentGain:this.activityFormData.treatmentGain,
+                conditions:this.activityFormData.conditions,
+                contactInfo:this.activityFormData.contactInfo,
+                reviewStatus:this.activityFormData.reviewStatus,
+                delFlag:this.activityFormData.delFlag,
+                provinceName:this.activityFormData.provinceName,
+              };
+              //alert(data.activityAddress)
+              //var data = 'activityAddress=' + userAddress;
+
+              this.$axios.post("/api/addActivityInfo",data).then((response) =>{
+                if(response.data =="S"){
+                  this.$message({type: 'success', showClose: true, message: '保存成功!'});
+                }else {
+                  this.$message({type: 'warning', showClose: true, message: '用户未登陆!  保存失败!'});
+                }
+              }).catch(() =>{
+                this.$message({type: 'warning', showClose: true, message: '操作失败!'});
+              })
+            }else {
+              this.$message({type: 'warning', showClose: true, message: msg});
+            }
           }
+
 
 
         }

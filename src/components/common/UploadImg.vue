@@ -1,11 +1,12 @@
 <template>
     <div>
-      <el-upload :data="imgType" ref='upload'
+      <el-upload :data1="imgType" ref='upload'
         class="upload-demo" name="picture"
         action="/api/uploadImg"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :file-list="fileList"
+                 :data="userIdStr"
         :before-upload="msgTip"
         :auto-upload="true"
         list-type="picture">
@@ -39,8 +40,9 @@
             this.$refs.upload.clearFiles();
           }else {
             this.$message({type: 'warning', showClose: true, message: '最多上传一张图片!'});
-            this.imgType = this.$store.state.userId;
+            //this.imgType = this.$store.state.userId;
           }
+
 
         }
       }

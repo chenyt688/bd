@@ -184,7 +184,7 @@
          this.publishIcon = true;
         }
 
-        this.searchByCondition();
+        this.searchByCondition(1);
         this.getActivityCount();
 
       },
@@ -401,9 +401,6 @@
         },
         //条件查询活动信息
         searchByCondition:function(val){
-          if(val === null || val === ''){
-            val =1;
-          }
           if(val === 1){      //搜索
             if(this.inputCondition === null || this.inputCondition === ""){  //输入框无值 查询所有
               this.type =1;
@@ -440,13 +437,22 @@
         handleSizeChange(val) {
           this.pageSize = val;
           this.getActivityCount();
-          this.searchByCondition();
+          if(this.type===1 || this.type===2){
+            this.searchByCondition(1);
+          }else {
+            this.searchByCondition(2);
+          }
         },
         //改变页码
         handleCurrentChange(val) {
           this.page = val;
           this.getActivityCount();
-          this.searchByCondition();
+          if(this.type===1 || this.type===2){
+            this.searchByCondition(1);
+          }else {
+            this.searchByCondition(2);
+          }
+
         },
       },
     }

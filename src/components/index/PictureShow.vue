@@ -38,7 +38,7 @@
           return {
             msg:'支教图片风采',
             show:true,
-            userIdStr:this.$store.state.userId,
+            userIdStr:'',
             showOperate:false,
             fits: ['fill'],
             fileList3:[],
@@ -52,6 +52,7 @@
           }
       },
       created(){
+        this.userIdStr = this.$store.state.userId;
         if(this.$store.state.userId !='' &&this.$store.state.userId != null ){
           this.showOperate = true;
         }
