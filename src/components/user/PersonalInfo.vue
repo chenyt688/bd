@@ -67,7 +67,7 @@
       },
       methods:{
         getUserInfoByUserId:function () {
-          this.$axios.post("/api/getUserInfoByUserId").then((response) =>{          //初始用户信息
+          this.$axios.put("/api/getUserInfoByUserId?userIdStr="+this.$store.state.userId).then((response) =>{          //初始用户信息
             let _this = this
             this.formData= response.data;
             this.formData.roleId = '' + this.formData.roleId;
@@ -82,7 +82,7 @@
           })
         },
         getUserResumeByUserId:function () {
-          this.$axios.post("/api/getUserResumeByUserId").then((response) =>{        //初始化用户简历
+          this.$axios.put("/api/getUserResumeByUserId?userIdStr=" +this.$store.state.userId).then((response) =>{        //初始化用户简历
             let _this = this
             _this.resumeFormData= response.data;
             if(_this.resumeFormData.adjustment==1){

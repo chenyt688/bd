@@ -5,6 +5,7 @@
       <el-upload ref='upload' style="width: 30%"
                  class="upload-demo" name="picture"
                  action="/api/uploadPicture"
+                 :data="userIdStr"
                  multiple
                  :file-list="fileList3"
                  :before-upload="beforeAvatarUpload"
@@ -37,6 +38,7 @@
           return {
             msg:'支教图片风采',
             show:true,
+            userIdStr:this.$store.state.userId,
             showOperate:false,
             fits: ['fill'],
             fileList3:[],

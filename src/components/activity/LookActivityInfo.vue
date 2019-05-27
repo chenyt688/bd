@@ -87,7 +87,7 @@
         },
         joinActivity:function () {
 
-          let readyData = 'userId='+this.activityFormData.userId + '&activityId=' +this.activityFormData.activityId;
+          let readyData = 'userId='+this.$store.state.userId + '&activityId=' +this.activityFormData.activityId;
           if(this.$store.state.userId != null && this.$store.state.userId != ""){     //判断用户是否已经登录
             if(this.activityFormData.reviewStatus !== 4){
               this.$axios.put("/api/queryParticipantIsExistence?"+readyData).then((response)=>{     //判断是否已经报名

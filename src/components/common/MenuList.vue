@@ -103,10 +103,7 @@
 
           //获取子菜单
           getMenu:function(){
-            this.$axios({
-              method:'post',
-              url:'/api/getSupmenu'
-            }).then((response) =>{          //这里使用了ES6的语法
+            this.$axios.put("/api/getSupmenu?userIdStr="+this.$store.state.userId).then((response) =>{          //这里使用了ES6的语法
               let _this = this;
               //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
               _this.roleMenuInfo = response.data;
@@ -115,6 +112,8 @@
             }).catch(() =>{
               alert("请求数据失败！");     //请求失败返回的数据
             })
+
+
           },
 
           //用户退出登录
@@ -132,7 +131,7 @@
                 type: 'warning'
               }).then(() => {
                 this.$message({type: 'success', message: '退出成功!'});
-                this.$axios({method:'get', url:'/api/loginOut'});
+                this.$axios.put('/api/loginOut?userIdStr='+this.$store.state.userId);
                 //localStorage.clear();
                 sessionStorage.clear();
                 this.$router.push('/');

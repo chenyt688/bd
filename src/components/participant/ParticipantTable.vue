@@ -133,24 +133,35 @@
         //查询报名情况
         queryAllJoinInfo(){
           let readyData=Qs.stringify({
+            userIdStr:this.$store.state.userId,
             page:this.page,
             pageSize:this.pageSize,
           });
           this.$axios.put("/api/queryAllJoinInfo?"+readyData).then((response) =>{
             let _this= this;
-            _this.participantTableData = response.data;
+            if( response.data ==="F"){
+              this.$message({type: 'warning', showClose: true, message: '无报名数据!'});
+            }else {
+              _this.participantTableData = response.data;
+            }
+
           }).catch(() =>{
-            this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
+            this.$message({type: 'warning', showClose: true, message: '请求数据异常!'});
           })
         },
         //查询数量
         queryParticipantNum(){
-          this.$axios.put("/api/queryParticipantNum").then((response) =>{
-            let _this= this;
-            _this.allNum = response.data;
-          }).catch(() =>{
-            this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
-          })
+          if(this.$store.state.userId ==="" || this.$store.state.userId === null){
+            this.allNum = 0;
+          }else {
+            this.$axios.put("/api/queryParticipantNum?userIdStr="+this.$store.state.userId).then((response) =>{
+              let _this= this;
+              _this.allNum = response.data;
+            }).catch(() =>{
+              this.$message({type: 'warning', showClose: true, message: '请求数据异常!'});
+            })
+          }
+
         },
         getState(row){
           let state = row.reviewStatus;

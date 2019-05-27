@@ -154,6 +154,7 @@
         //条件查询
         searchDiaryByCondition:function(){
           let readyData=Qs.stringify({
+            userIdStr:this.$store.state.userId,
             page:this.page,
             pageSize:this.pageSize,
             inputCondition:this.inputCondition
@@ -234,7 +235,7 @@
         },
         //查询日记数量
         queryDiaryNum:function(){
-          this.$axios.post("/api/queryDiaryNum").then((response) =>{
+          this.$axios.post("/api/queryDiaryNum?userIdStr="+this.$store.state.userId).then((response) =>{
             let _this = this;
             _this.allNum = response.data;
           }).catch(() =>{
@@ -285,6 +286,7 @@
           let readyData=Qs.stringify({
             page:this.page,
             pageSize:this.pageSize,
+            userIdStr:this.$store.state.userId
           });
           if(this.$store.state.userId != "" && this.$store.state.userId != null){     //登陆状态可以管理日记信息
             this.$axios.put("/api/queryDiaryInfo?" +readyData).then((response) =>{

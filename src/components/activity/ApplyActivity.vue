@@ -168,7 +168,7 @@
             let time = this.activityFormData.time;    //开始时间和截至时间数组
             let data = {
               activityId:this.activityFormData.activityId,
-              userId:this.activityFormData.userId,
+              userId:this.$store.state.userId,
               activityAddress:userAddress,
               applicationTime:this.activityFormData.applicationTime,
               passTime:this.activityFormData.passTime,

@@ -20,6 +20,7 @@
       props:["imgType"],
       data() {
         return {
+          userIdStr:this.$store.state.userId,
           fileList: []
         };
 
@@ -38,6 +39,7 @@
             this.$refs.upload.clearFiles();
           }else {
             this.$message({type: 'warning', showClose: true, message: '最多上传一张图片!'});
+            this.imgType = this.$store.state.userId;
           }
 
         }

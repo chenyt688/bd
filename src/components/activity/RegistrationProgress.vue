@@ -51,7 +51,7 @@
       methods:{
         getState:function () {
           if(this.$store.state.userId != null && this.$store.state.userId != ""){
-            this.$axios.post("/api/queryJoinByUserId").then((response) =>{
+            this.$axios.put("/api/queryJoinByUserId?userIdStr="+this.$store.state.userId).then((response) =>{
               let _this = this;
               if(response.data == 'F'){
                 this.joinState = [{state:0,activityTopic:'暂无报名数据'}];

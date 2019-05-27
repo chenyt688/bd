@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-input placeholder="请输入查询条件" v-model="inputCondition" clearable style="width: 260px;left: 20px"></el-input>
-    <el-button  icon="el-icon-search" style="position:relative;left:40px" @click="searchByCondition()">搜索</el-button>
-    <el-button  icon="el-icon-search" style="position:relative;left:40px" @click="searchByCondition('personal')">查询个人申请的活动</el-button>
+    <el-button  icon="el-icon-search" style="position:relative;left:40px" @click="searchByCondition(1)">搜索</el-button>
+    <el-button  icon="el-icon-search" style="position:relative;left:40px" @click="searchByCondition(2)">查询个人申请的活动</el-button>
     <br><br>
 
     <el-table :data="tableData" style="width: 100%" height="400"  border  @selection-change="saveMultipleSelection">
@@ -116,6 +116,7 @@
         return{
           flag:false,
           flag2:true,
+          type:1,
           saveTempActivity:'',
           checkIcon:false,
           publishIcon:false,
@@ -178,14 +179,13 @@
         if(this.tableData.activityId == null){
           this.tableData=''
         }
-
-        if(this.$store.state.roleId == '2'){    //非管理员不能审核和下发志愿活动
+        if(this.$store.state.roleId === '2'){    //非管理员不能审核和下发志愿活动
          this.checkIcon = true;
          this.publishIcon = true;
         }
 
+        this.searchByCondition();
         this.getActivityCount();
-        this.getAllActivityInfo();
 
       },
       methods:{
@@ -203,11 +203,11 @@
           });
           this.$axios.put("/api/updateActivityState?"+readyData).then(() =>{
             this.$message({type: 'success', showClose: true, message: '活动状态更新!'});
-            this.getAllActivityInfo();
+            this.searchByCondition();
           }).catch(() =>{
             this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
           });
-          this.getAllActivityInfo();
+
         },
         publishActivityInfo:function(rowData){
           let activityId = rowData.activityId;
@@ -243,76 +243,32 @@
           this.$confirm('确认关闭？').then(_ => {done();}).catch(_ => {});
           this.getAllActivityInfo();
         },
-        //管理员获取所有的活动信息
-        getAllActivityInfo:function () {
-          let readyData=Qs.stringify({
-            page:this.page,
-            pageSize:this.pageSize,
-          });
-          this.$axios.put("/api/queryAllActivityInfo?"+readyData).then((response) =>{
-            let _this= this;
-            _this.tableData = response.data;
-          }).catch(() =>{
-            this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
-          })
-        },
-        //获取登录用户申请志愿者活动的数量
-        queryActivityNumByUserLoging:function(){
-          this.$axios.post("/api/queryActivityNumByUserLoging").then((response) =>{
-            let _this= this;
-            _this.allNum = response.data;
-          }).catch(() =>{
-            this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
-          })
-        },
+
+
 
         //获取活动总数
         getActivityCount:function () {
-          let input = this.inputCondition;
-          if(this.$store.state.roleId != null && this.$store.state.roleId == '2'){
-            if(input == 'personal'){
-              this.queryActivityNumByUserLoging();
-            }else if(input !==""){
-              this.$axios.put("/api/getActivityAccountByInput?input="+input).then((response) =>{
-                let _this= this;
-                _this.allNum = response.data;
-              }).catch(() =>{
-                this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
-              })
-            }else {
-              this.$axios.post("/api/getActivityAccount").then((response) =>{
-                let _this= this;
-                _this.allNum = response.data;
-              }).catch(() =>{
-                this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
-              })
-            }
 
-          }else {     //获取发布活动的数量
-            if(input == 'personal'){
-              this.queryActivityNumByUserLoging();
-            }else if(input !==""){
-              this.$axios.put("/api/getActivityAccountByInput?input="+input).then((response) =>{
-                let _this= this;
-                _this.allNum = response.data;
-              }).catch(() =>{
-                this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
-              })
-            }else{
-              this.$axios.post("/api/getActivityAccountPublished").then((response) =>{
-                let _this= this;
-                _this.allNum = response.data;
-              }).catch(() =>{
-                this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
-              })
-            }
-          }
-
+          let readyData=Qs.stringify({
+            userIdStr:this.$store.state.userId,
+            page:this.page,
+            pageSize:this.pageSize,
+            inputCondition:this.inputCondition,
+            type:this.type,
+          });
+          this.$axios.put("/api/getActivityNumByCondition?"+readyData).then((response) =>{          //这里使用了ES6的语法
+            let _this = this;
+            _this.allNum = response.data;
+          }).catch(() =>{
+            //请求失败返回的数据
+            this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
+          });
         },
 
         deleteActivity:function(rowData){
           let readyData=Qs.stringify({
             activityId:rowData.activityId,
+            userIdStr:this.$store.state.userId
           });
           this.$axios.put("/api/deleteActivityInfoById?"+readyData).then((response) =>{
             if(response.data =="S"){
@@ -378,7 +334,6 @@
 
         //查看申请活动的用户信息
         queryUserInfo:function(index,rowData){
-
           let userId = rowData.userId;
           this.$axios.post('/api/getUserInfoByUserIdToActivity?userId='+userId).then((response) =>{
             let _this = this;
@@ -444,49 +399,54 @@
           })
 
         },
-
         //条件查询活动信息
         searchByCondition:function(val){
-
-          if(val != null){      //查询个人申办的志愿者活动  val ='personal'
-            this.inputCondition = val;
+          if(val === null || val === ''){
+            val =1;
           }
-          let readyData=Qs.stringify({
-            page:this.page,
-            pageSize:this.pageSize,
-            inputCondition:this.inputCondition
-          });
-          this.$axios.put("/api/getActivityInfoByCondition?"+readyData).then((response) =>{          //这里使用了ES6的语法
-            let _this = this;
-            //回调函数处于其它函数的内部this不会与任何对象绑定，为undefined
-            _this.tableData =response.data;
-            this.getActivityCount();
-          }).catch(() =>{
-            //请求失败返回的数据
-            this.$message({type: 'success', showClose: true, message: '请求数据失败!'});
-          });
+          if(val === 1){      //搜索
+            if(this.inputCondition === null || this.inputCondition === ""){  //输入框无值 查询所有
+              this.type =1;
+            }else {          //条件查询
+              this.type =2;
+            }
+          }else {   //查看个人申请的活动
+            this.type =3;
 
+          }
+          if(this.type ===3 && (this.$store.state.userId ==='' || this.$store.state.userId ===null)){
+            this.$message({type: 'warning', showClose: true, message: '请登录查看个人申请的支教活动!'});
+          }else {
+            let readyData=Qs.stringify({
+              userIdStr:this.$store.state.userId,
+              page:this.page,
+              pageSize:this.pageSize,
+              inputCondition:this.inputCondition,
+              type:this.type,
+            });
+            this.$axios.put("/api/getActivityInfoByCondition?"+readyData).then((response) =>{          //这里使用了ES6的语法
+              let _this = this;
+              _this.tableData =response.data;
+              this.getActivityCount();
+            }).catch(() =>{
+              //请求失败返回的数据
+              this.$message({type: 'warning', showClose: true, message: '请求数据失败!'});
+            });
+          }
 
         },
 
         //改变页面大小
         handleSizeChange(val) {
           this.pageSize = val;
-
-          if(this.inputCondition != '' && this.inputCondition!= null){
-            this.searchByCondition();
-          }else {
-            this.getAllActivityInfo();
-          }
+          this.getActivityCount();
+          this.searchByCondition();
         },
         //改变页码
         handleCurrentChange(val) {
           this.page = val;
-          if(this.inputCondition != '' && this.inputCondition!= null){
-            this.searchByCondition();
-          }else {
-            this.getAllActivityInfo();
-          }
+          this.getActivityCount();
+          this.searchByCondition();
         },
       },
     }

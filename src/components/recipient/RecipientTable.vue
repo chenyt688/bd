@@ -114,6 +114,7 @@
           //查询申请信息
         getRecipientInfo(){
           let readyData=Qs.stringify({
+            userIdStr:this.$store.state.userId,
             page:this.page,
             pageSize:this.pageSize,
             condition:this.inputCondition
@@ -135,6 +136,7 @@
         //获取申请信息数量
         getNum(){
           let readyData=Qs.stringify({
+            userIdStr:this.$store.state.userId,
             condition:this.inputCondition
           });
           this.$axios.put("/api/queryAllRecipientInfoNum?"+readyData).then((response) =>{          //这里使用了ES6的语法

@@ -167,6 +167,7 @@
               type: 'warning'
             }).then(() => {
               let readyData=Qs.stringify({
+                userIdStr:this.$store.state.userId,
                 userName:this.recipientFormData.userName,
                 userIdCard:this.recipientFormData.userIdCard,
                 userPhone:this.recipientFormData.userPhone,
