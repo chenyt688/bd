@@ -6,10 +6,10 @@
         <div>
 
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a id="a2" style="color: green;font-size: 18px" value="" @click="phoneToLogin()">重置密码</a>
+          <a id="a2" style="color: white;font-size: 18px" value="" @click="phoneToLogin()">重置密码</a>
         </div>
         <br>
-        <!--手机号码登录表单-->
+
         <form id="forgetForm" name="forgetForm"  action="/forgetForm">
 
           <div class="fm-item">
@@ -35,15 +35,15 @@
             <label>短信验证码:</label><br>
             <input type="text" style="width: 110px;height: 30px" maxlength="16" id="msgYzm" name="msgYzm" class="i-text" placeholder="请输入验证码" >
             &nbsp;&nbsp;
-            <input type="button" style="height: 30px;width: 100px" id="codeButton_f" @click="getNew_f" value="获取验证码">
+            <input type="button" style="height: 30px;width: 100px;background-color: white;color: black" id="codeButton_f" @click="getNew_f" value="获取验证码">
             <input type="hidden" id="returnYzmForForget" name="returnYzmForForget" value="">
           </div>
           <br><br>
 
           &nbsp;&nbsp;
-          <button type="button" style="width: 80px;height: 30px;margin: auto;color: #79a605" @click="formSubmit">确认</button>
+          <button type="button" style="width: 80px;height: 30px;margin: auto;background-color: white;color: green" @click="formSubmit">确认</button>
           &nbsp;&nbsp;&nbsp;&nbsp;
-          <button type="button" style="width: 80px;height: 30px;margin: auto;color: #79a605" @click="backToLogin">返回</button><br><br>
+          <button type="button" style="width: 80px;height: 30px;margin: auto;background-color: white;color: green" @click="backToLogin">返回</button><br><br>
         </form>
       </div>
 
@@ -69,12 +69,16 @@
       getNew_f(){
         //发送验证码短信
         let userPhone = $("#userPhoneForget").val();
-        this.$axios.put("/api/yzmData?userPhone="+userPhone).then((response) =>{
-          $("#returnYzmForForget").val(response.data);
-        }).catch(() =>{
-          this.$message({type: 'success', showClose: true, message: '操作失败!'});
-        });
-        this.getNewMsg_f();
+        if(userPhone ==null || userPhone ==''){
+          this.$message({type: 'warning', showClose: true, message: '请输入电话号码!'});
+        }else {
+          this.$axios.put("/api/yzmData?userPhone=" + userPhone).then((response) => {
+            $("#returnYzmForForget").val(response.data);
+          }).catch(() => {
+            this.$message({type: 'success', showClose: true, message: '操作失败!'});
+          });
+          this.getNewMsg_f();
+        }
       },
       getNewMsg_f:function(){
         let self=this;
@@ -164,5 +168,12 @@
 </script>
 
 <style scoped>
-
+  #o-box-down {
+    padding: 30px 0 0 40px;
+    color: white;
+  }
+  input{
+    background-color: white;
+    color: black;
+  }
 </style>

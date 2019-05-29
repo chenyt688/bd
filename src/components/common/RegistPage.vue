@@ -6,7 +6,7 @@
         <div>
 
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a id="a2" style="color: green;font-size: 18px" value="phoneLogin" @click="phoneToLogin()">手机号注册</a>
+          <a id="a2" style="color: white;font-size: 18px" value="phoneLogin" @click="phoneToLogin()">手机号注册</a>
         </div>
         <br>
         <!--手机号码注册-->
@@ -25,15 +25,15 @@
             <label>短信验证码:</label><br>
             <input type="text" style="width: 110px;height: 30px" maxlength="6" id="inputMsgforRegister" name="inputMsgforRegister" class="i-text" placeholder="请输入验证码" >
             &nbsp;
-            <input type="button" style="height: 30px;width: 100px" id="codeButton_r" @click="getMsg_r" value="获取验证码">
+            <input type="button" style="height: 30px;width: 100px;background-color: white;color: black" id="codeButton_r" @click="getMsg_r" value="获取验证码">
             <input type="hidden" id="returnYzmforRegister" name="returnYzmforRegister" value="">
           </div>
           <br><br>
 
           &nbsp;&nbsp;
-          <button type="button" style="width: 80px;height: 30px;margin: auto;color: #79a605" @click="submitInfo">注册</button>
+          <button type="button" style="width: 80px;height: 30px;margin: auto;background-color: white;color: green" @click="submitInfo">注册</button>
           &nbsp;&nbsp;&nbsp;&nbsp;
-          <button type="button" style="width: 80px;height: 30px;margin: auto;color: #79a605" @click="backToLogin">返回</button><br><br>
+          <button type="button" style="width: 80px;height: 30px;margin: auto;background-color: white;color: green" @click="backToLogin">返回</button><br><br>
         </form>
       </div>
 
@@ -63,12 +63,17 @@
           getMsg_r(){
             //发送验证码短信
             let userPhone = $("#userPhoneforRegister").val();
-            this.$axios.put("/api/yzmData?userPhone="+userPhone).then((response) =>{
-              $("#returnYzmforRegister").val(response.data);
-            }).catch(() =>{
-              this.$message({type: 'success', showClose: true, message: '操作失败!'});
-            });
-            this.getNewMsg_r();
+
+            if(userPhone ==null || userPhone ==''){
+              this.$message({type: 'warning', showClose: true, message: '请输入电话号码!'});
+            }else {
+              this.$axios.put("/api/yzmData?userPhone=" + userPhone).then((response) => {
+                $("#returnYzmforRegister").val(response.data);
+              }).catch(() => {
+                this.$message({type: 'success', showClose: true, message: '操作失败!'});
+              });
+              this.getNewMsg_r();
+            }
           },
           getNewMsg_r:function(){
             let self=this;
@@ -126,5 +131,12 @@
 </script>
 
 <style scoped>
-
+  #o-box-down {
+    padding: 30px 0 0 40px;
+    color: white;
+  }
+  input{
+    background-color: white;
+    color: black;
+  }
 </style>

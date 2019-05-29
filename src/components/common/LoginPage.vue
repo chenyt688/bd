@@ -7,7 +7,7 @@
       <div id="o-box-down"  style="table-layout:fixed;">
         <div>
           &nbsp;&nbsp;&nbsp;&nbsp;
-          <a id="accoutA1" style="color: green;font-size: 18px" value="accountLogin" @click="accountToLogin">账号登录</a>
+          <a id="accoutA1" style="color: white;font-size: 18px" value="accountLogin" @click="accountToLogin">账号登录</a>
           &nbsp;&nbsp;&nbsp;&nbsp;
           &nbsp;&nbsp;&nbsp;&nbsp;
           <a id="accoutA2" style="color: black;font-size: 18px" value="phoneLogin" @click="phoneToLogin()">手机号登录</a>
@@ -58,14 +58,14 @@
             <label>短信验证码:</label><br>
             <input type="text" style="width: 110px;height: 30px" maxlength="6" id="inputMsg" name="inputMsg" class="i-text" placeholder="请输入验证码" >
             &nbsp;
-            <input type="button" style="height: 30px;width: 100px" id="codeButton" @click="getNew" value="获取验证码">
+            <input type="button" style="height: 30px;width: 100px;background-color: white;color: black" id="codeButton" @click="getNew" value="获取验证码">
             <input type="hidden" id="returnYzm" name="returnYzm" value="">
           </div>
           <br><br>
         </form>
         <br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button type="button" style="width: 150px;height: 30px;margin: auto;color: #79a605" @click="submitInfo">登录</button><br><br>
+        <button type="button" style="width: 150px;height: 30px;margin: auto;background-color: white;color: green" @click="submitInfo">登录</button><br><br>
         <div class="bottom">
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <span class="helper-text"><i class="fa fa-lock"></i> <a @click="registPage" style="color: red">注册</a></span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -127,12 +127,17 @@
         getNew:function(){
           //发送验证码短信
           let userPhone = $("#userPhoneL").val();
-          this.$axios.put("/api/yzmData?userPhone="+userPhone).then((response) =>{
+          if(userPhone ==null || userPhone ==''){
+            this.$message({type: 'warning', showClose: true, message: '请输入电话号码!'});
+          }else {
+            this.$axios.put("/api/yzmData?userPhone="+userPhone).then((response) =>{
               $("#returnYzm").val(response.data);
-          }).catch(() =>{
-            this.$message({type: 'success', showClose: true, message: '操作失败!'});
-          });
-          this.getNewMsg();
+            }).catch(() =>{
+              this.$message({type: 'success', showClose: true, message: '操作失败!'});
+            });
+            this.getNewMsg();
+          }
+
         },
         getNewMsg:function(){
           let self=this;
@@ -172,7 +177,7 @@
         accountToLogin: function () {
           form1.style.display = 'block';
           form2.style.display = 'none';
-          accoutA1.style.color = 'green';
+          accoutA1.style.color = 'white';
           accoutA2.style.color = 'black';
         },
         //电话号码登陆
@@ -180,13 +185,13 @@
           form1.style.display = 'none';
           form2.style.display = 'block';
           accoutA1.style.color = 'black';
-          accoutA2.style.color = 'green';
+          accoutA2.style.color = 'white';
         },
 
         //提交表单数据
         submitInfo: function () {
           if (this.$store.state.userId == null) {
-            if (accoutA1.style.color == "green") {      //账号密码登录
+            if (accoutA1.style.color == "white") {      //账号密码登录
               let code_input = $("#code_input").val();
               let res = verifyCode.validate(code_input);  //判断验证码是否正确
               if (res) {
@@ -282,5 +287,16 @@
 </script>
 
 <style scoped>
-
+  #o-box-down {
+    padding: 30px 0 0 40px;
+    color: white;
+  }
+  input{
+    background-color: white;
+    color: black;
+  }
+  select{
+    background-color: white;
+    color: black;
+  }
 </style>
