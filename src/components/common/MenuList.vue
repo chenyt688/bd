@@ -9,7 +9,7 @@
         <div class="navbar-collapse collapse navbar-right" id="navbar">
           <ul class="nav navbar-nav">
             <li class="langs-block" v-for="basemenu in baseMenuInfo">
-              <a href="/" class="current" >{{basemenu.basisMenuName}} </a>
+              <a href="#/" class="current" >{{basemenu.basisMenuName}} </a>
               <div class="langs-block-others-wrapper" >
                 <div class="langs-block-others" style="top:-45px;width: 150px" >
                   <i v-for="rolemenu in roleMenuInfo.supmenuList" v-if="rolemenu.basisMenuId == basemenu.basisMenuId" >
@@ -70,8 +70,9 @@
         created(){
          /* //获取角色菜单
           */
-          this.getMenu();
           this.getBaseMenu();
+          this.getMenu();
+
           let roleName = '';
           if(this.$store.state.roleId == '1'){
             roleName = '(用户）';
@@ -123,14 +124,14 @@
             document.getElementById("registDiv").style = "display: none";
             document.getElementById("forgetDiv").style = "display: none";
             if(this.$store.state.userId == '' || this.$store.state.userId == null){
-              this.$message({type: 'warning', message: '用户未登陆!'});
+              this.$message({type: 'warning',showClose: true, message: '用户未登陆!'});
             }else {
               this.$confirm('用户退出登陆, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
               }).then(() => {
-                this.$message({type: 'success', message: '退出成功!'});
+                this.$message({type: 'success', showClose: true,message: '退出成功!'});
                 this.$axios.put('/api/loginOut?userIdStr='+this.$store.state.userId);
                 //localStorage.clear();
                 sessionStorage.clear();

@@ -13,6 +13,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         target: 'http://localhost:8888',//后端接口地址
+        //target: 'http://47.101.222.234:8888',//后端接口地址
         changeOrigin: true,//是否允许跨越
         pathRewrite: {
           '^/api': '/',//重写,
@@ -59,6 +60,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+    //assetsPublicPath: './',
 
     /**
      * Source Maps

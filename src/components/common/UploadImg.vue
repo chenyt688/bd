@@ -21,7 +21,9 @@
       props:["imgType"],
       data() {
         return {
-          userIdStr:this.$store.state.userId,
+          userIdStr:{
+            userIdStr:this.$store.state.userId
+          },
           fileList: []
         };
 

@@ -203,7 +203,11 @@
           });
           this.$axios.put("/api/updateActivityState?"+readyData).then(() =>{
             this.$message({type: 'success', showClose: true, message: '活动状态更新!'});
-            this.searchByCondition();
+            if(this.type ===1 || this.type ===2){
+              this.searchByCondition(1);
+            }else {
+              this.searchByCondition(2);
+            }
           }).catch(() =>{
             this.$message({type: 'success', showClose: true, message: '请求数据异常!'});
           });
@@ -237,11 +241,20 @@
 
         closeEdit:function(){
           this.dialogVisibleActiVityToEdit = false;
-          this.getAllActivityInfo();
+          if(this.type ===1 || this.type ===2){
+            this.searchByCondition(1);
+          }else {
+            this.searchByCondition(2);
+          }
+
         },
         handleClose(done){
           this.$confirm('确认关闭？').then(_ => {done();}).catch(_ => {});
-          this.getAllActivityInfo();
+          if(this.type ===1 || this.type ===2){
+            this.searchByCondition(1);
+          }else {
+            this.searchByCondition(2);
+          }
         },
 
 
@@ -271,10 +284,14 @@
             userIdStr:this.$store.state.userId
           });
           this.$axios.put("/api/deleteActivityInfoById?"+readyData).then((response) =>{
-            if(response.data =="S"){
+            if(response.data =='S'){
               this.$message({type: 'success', showClose: true, message: '删除成功!'});
               this.getActivityCount();
-              this.getAllActivityInfo();
+              if(this.type ===1 || this.type ===2){
+                this.searchByCondition(1);
+              }else {
+                this.searchByCondition(2);
+              }
             }else {
               this.$message({type: 'success', showClose: true, message: '无权限,删除失败!'});
             }
@@ -297,7 +314,7 @@
             if(roldId == '2'){      //管理员可以直接删除
               this.deleteActivity(rowData);
             }else{                //一般用户只能删除自己申请的未审核的活动
-              if(activityState == 0 && userIdSaved == userIdSelect){  //待审核状态可以删除
+              if(activityState === 0 && userIdSaved == userIdSelect){  //待审核状态可以删除
                 this.deleteActivity(rowData);
               }else {
                 this.$message({type: 'success', showClose: true, message: '无权限删除!'});
@@ -364,7 +381,7 @@
               this.$message({type: 'warning', showClose: true, message: '该活动已经结束,不能进行修改!'});
             }
           }else{                //一般用户只能编辑自己申请的未审核的活动
-            if(activityState === 0 && userIdSaved === userIdSelect){  //待审核状态可以编辑
+            if(activityState == '0' && userIdSaved == userIdSelect){  //待审核状态可以编辑
               this.queryActivityBySelected(rowData);
               this.dialogVisibleActiVityToEdit=true;
 
