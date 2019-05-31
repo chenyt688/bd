@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img-com></img-com>
+    <img-com :activityId="activityList[0].activityId"></img-com>
 
 
     <div>

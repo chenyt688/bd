@@ -10,7 +10,7 @@
         :before-upload="msgTip"
         :auto-upload="true"
         list-type="picture">
-        <el-button size="small" type="primary" title="只能上传jpg文件，且不超过500kb">图片上传({{this.imgType+".jpg"}})</el-button>
+        <el-button size="small" type="primary" title="只能上传jpg文件">图片上传({{this.imgType+".jpg"}})</el-button>
       </el-upload>
     </div>
 </template>

@@ -1,8 +1,8 @@
 <template>
   <div class="block">
     <el-carousel height="350px">
-      <el-carousel-item  v-for="imgItem in imagesbox" :key="imgItem.id">
-        <img :src="imgItem.idView" class="image" >
+      <el-carousel-item  v-for="imgItem in imagesbox" :key="imgItem.id" >
+        <img :src="imgItem.idView" class="image" @click="getActivityById(activityId)">
       </el-carousel-item>
     </el-carousel>
   </div>
@@ -11,6 +11,7 @@
 <script>
     export default {
       name: "ImgCom",
+      props:["activityId"],
       data(){
           return{
             imagesbox:[
@@ -18,6 +19,16 @@
               {id:4,idView:require("../../../static/image/img2.jpg")},
               {id:5,idView:require("../../../static/image/img3.jpg")}],
           }
+      },
+      methods:{
+        getActivityById:function (activityId) {
+          this.$router.push({
+            path: '/lookActivityInfo',
+            query: {
+              activityId:activityId
+            }
+          })
+        },
       }
     }
 </script>
